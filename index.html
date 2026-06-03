@@ -3,17 +3,15 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="LinkToVideo — Download videos from YouTube, Instagram, Terabox and more. Created by Vinay."/>
+  <meta name="description" content="LinkToVideo — Download videos from YouTube, Instagram, TikTok and more. Created by Vinay."/>
   <meta name="author" content="Vinay"/>
   <title>LinkToVideo — by Vinay</title>
   <style>
-    /* ── Variables ───────────────────────────────────────────── */
     :root {
       --ah:245; --as:80%; --al:62%;
       --ac:hsl(var(--ah),var(--as),var(--al));
       --a2:hsl(calc(var(--ah)+30),78%,68%);
       --a3:hsl(190,80%,55%);
-      --np:#f472b6; --nc:#22d3ee; --ng:#4ade80;
       --bg:#030712; --g1:rgba(255,255,255,.04);
       --gb:rgba(255,255,255,.09);
       --t1:#f1f5f9; --t2:#94a3b8; --t3:#475569;
@@ -24,7 +22,6 @@
     html{scroll-behavior:smooth;}
     body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden;line-height:1.6;}
 
-    /* ── Page loader ─────────────────────────────────────────── */
     #loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease;}
     #loader.off{opacity:0;visibility:hidden;pointer-events:none;}
     .ld{display:flex;flex-direction:column;align-items:center;gap:16px;}
@@ -35,7 +32,6 @@
     @keyframes ldf{from{width:0}to{width:100%}}
     .ld-txt{font-size:.72rem;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;}
 
-    /* ── BG ──────────────────────────────────────────────────── */
     .bg-g{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 90% 70% at 15% 5%,hsla(var(--ah),var(--as),50%,.13) 0%,transparent 65%),radial-gradient(ellipse 70% 55% at 85% 85%,hsla(calc(var(--ah)+30),75%,55%,.10) 0%,transparent 65%);}
     .bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(hsla(var(--ah),var(--as),50%,.03) 1px,transparent 1px),linear-gradient(90deg,hsla(var(--ah),var(--as),50%,.03) 1px,transparent 1px);background-size:65px 65px;}
     .orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;animation:of linear infinite;}
@@ -44,110 +40,18 @@
     @keyframes of{0%{transform:translate(0,0) scale(1);}50%{transform:translate(40px,-30px) scale(1.06);}100%{transform:translate(0,0) scale(1);}}
     #bgc{position:fixed;inset:0;z-index:0;pointer-events:none;}
 
-    /* ════════════════════════════════════════════════════════════
-       BIG "CREATED BY VINAY" HERO BANNER
-    ════════════════════════════════════════════════════════════ */
-    .vinay-banner {
-      position: relative; z-index: 10;
-      width: 100%;
-      background: linear-gradient(135deg, rgba(10,15,35,0.95) 0%, rgba(20,10,50,0.95) 50%, rgba(10,15,35,0.95) 100%);
-      border-bottom: 2px solid transparent;
-      border-image: linear-gradient(90deg, transparent, var(--ac), var(--a2), var(--ac), transparent) 1;
-      padding: 28px 20px;
-      text-align: center;
-      overflow: hidden;
-    }
+    .vinay-banner{position:relative;z-index:10;width:100%;background:linear-gradient(135deg,rgba(10,15,35,.95) 0%,rgba(20,10,50,.95) 50%,rgba(10,15,35,.95) 100%);border-bottom:2px solid transparent;border-image:linear-gradient(90deg,transparent,var(--ac),var(--a2),var(--ac),transparent) 1;padding:28px 20px;text-align:center;overflow:hidden;}
+    .vinay-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 100% at 50% 50%,hsla(var(--ah),var(--as),50%,.08),transparent);pointer-events:none;}
+    .vinay-top-line{font-size:.72rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:12px;}
+    .vinay-top-line::before,.vinay-top-line::after{content:'';flex:1;max-width:140px;height:1px;background:linear-gradient(90deg,transparent,var(--ac));}
+    .vinay-top-line::after{background:linear-gradient(-90deg,transparent,var(--ac));}
+    .vinay-name{font-size:clamp(3rem,10vw,6.5rem);font-weight:900;letter-spacing:.05em;line-height:1;background:linear-gradient(135deg,#fff 0%,var(--ac) 40%,var(--a2) 70%,var(--a3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 30px hsla(var(--ah),var(--as),60%,.6));animation:namePulse 3s ease-in-out infinite alternate;display:block;margin-bottom:8px;}
+    @keyframes namePulse{from{filter:drop-shadow(0 0 20px hsla(var(--ah),var(--as),60%,.4));}to{filter:drop-shadow(0 0 50px hsla(var(--ah),var(--as),60%,.9));}}
+    .vinay-sub{font-size:clamp(.8rem,2vw,1rem);font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--a3);display:flex;align-items:center;justify-content:center;gap:14px;}
+    .vdot{width:6px;height:6px;border-radius:50%;background:var(--ac);box-shadow:0 0 10px var(--ac);display:inline-block;animation:blink 1.8s ease-in-out infinite;}
+    @keyframes blink{0%,100%{opacity:1;}50%{opacity:.15;}}
+    .vinay-badge{display:inline-flex;align-items:center;gap:6px;background:hsla(var(--ah),var(--as),50%,.1);border:1px solid hsla(var(--ah),var(--as),60%,.3);padding:5px 16px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-top:12px;}
 
-    .vinay-banner::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 100% at 50% 50%, hsla(var(--ah),var(--as),50%,.08), transparent);
-      pointer-events: none;
-    }
-
-    .vinay-top-line {
-      font-size: .72rem;
-      font-weight: 700;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--t3);
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-    }
-
-    .vinay-top-line::before,
-    .vinay-top-line::after {
-      content: '';
-      flex: 1;
-      max-width: 140px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--ac));
-    }
-    .vinay-top-line::after {
-      background: linear-gradient(-90deg, transparent, var(--ac));
-    }
-
-    .vinay-name {
-      font-size: clamp(3rem, 10vw, 6.5rem);
-      font-weight: 900;
-      letter-spacing: .05em;
-      line-height: 1;
-      background: linear-gradient(135deg, #fff 0%, var(--ac) 40%, var(--a2) 70%, var(--a3) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 30px hsla(var(--ah),var(--as),60%,.6));
-      animation: namePulse 3s ease-in-out infinite alternate;
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    @keyframes namePulse {
-      from { filter: drop-shadow(0 0 20px hsla(var(--ah),var(--as),60%,.4)); }
-      to   { filter: drop-shadow(0 0 50px hsla(var(--ah),var(--as),60%,.9)); }
-    }
-
-    .vinay-sub {
-      font-size: clamp(.8rem, 2vw, 1rem);
-      font-weight: 600;
-      letter-spacing: .25em;
-      text-transform: uppercase;
-      color: var(--a3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-    }
-
-    .vdot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--ac);
-      box-shadow: 0 0 10px var(--ac);
-      display: inline-block;
-      animation: blink 1.8s ease-in-out infinite;
-    }
-
-    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.15;} }
-
-    .vinay-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: hsla(var(--ah),var(--as),50%,.1);
-      border: 1px solid hsla(var(--ah),var(--as),60%,.3);
-      padding: 5px 16px;
-      border-radius: 20px;
-      font-size: .75rem;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--ac);
-      margin-top: 12px;
-    }
-
-    /* ── Header ──────────────────────────────────────────────── */
     header{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:16px 36px;border-bottom:1px solid var(--gb);backdrop-filter:blur(24px);background:rgba(3,7,18,.7);}
     .logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
     .logo-ic{width:36px;height:36px;background:linear-gradient(135deg,var(--ac),var(--a2));border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px hsla(var(--ah),var(--as),60%,.5);}
@@ -160,10 +64,7 @@
     #cpick::-webkit-color-swatch{border:none;border-radius:50%;}
     .nbadge{font-size:.67rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:20px;border:1px solid hsla(var(--ah),var(--as),60%,.4);color:var(--ac);background:hsla(var(--ah),var(--as),60%,.08);}
 
-    /* ── Layout ──────────────────────────────────────────────── */
     .wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 20px 80px;}
-
-    /* ── Hero ────────────────────────────────────────────────── */
     .hero{text-align:center;padding:60px 0 44px;}
     .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--a3);background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.22);padding:6px 18px;border-radius:20px;margin-bottom:22px;}
     .eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--a3);animation:blink 2s ease-in-out infinite;}
@@ -171,7 +72,6 @@
     h1.ht span{background:linear-gradient(135deg,var(--ac),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
     .hsub{font-size:1rem;color:var(--t2);max-width:520px;margin:0 auto;}
 
-    /* ── Stats ───────────────────────────────────────────────── */
     .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
     .sb{background:var(--g1);border:1px solid var(--gb);border-radius:var(--r);padding:16px 12px;text-align:center;backdrop-filter:blur(20px);transition:var(--tr);position:relative;overflow:hidden;}
     .sb::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--ac),transparent);opacity:.6;}
@@ -179,12 +79,10 @@
     .sn{font-size:1.55rem;font-weight:900;letter-spacing:-.04em;background:linear-gradient(135deg,var(--ac),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
     .sl{font-size:.7rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);}
 
-    /* ── Card ────────────────────────────────────────────────── */
     .card{background:var(--g1);border:1px solid var(--gb);border-radius:var(--rl);backdrop-filter:blur(28px);padding:30px;transition:var(--tr);margin-bottom:24px;}
     .card.glow{box-shadow:0 0 0 1px hsla(var(--ah),var(--as),60%,.14),0 0 50px hsla(var(--ah),var(--as),50%,.08);}
     .card:hover{border-color:hsla(var(--ah),var(--as),60%,.2);}
 
-    /* ── Input ───────────────────────────────────────────────── */
     .ilbl{display:block;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);margin-bottom:11px;}
     .irow{display:flex;gap:10px;}
     .ui{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--gb);border-radius:var(--r);padding:14px 18px;color:var(--t1);font-size:.95rem;font-family:inherit;outline:none;transition:var(--tr);min-width:0;}
@@ -192,7 +90,6 @@
     .ui:focus{border-color:var(--ac);background:hsla(var(--ah),var(--as),50%,.06);box-shadow:0 0 0 3px hsla(var(--ah),var(--as),50%,.14),0 0 24px hsla(var(--ah),var(--as),50%,.1);}
     .ui.err{border-color:var(--er);box-shadow:0 0 0 3px rgba(239,68,68,.14);}
 
-    /* ── Buttons ─────────────────────────────────────────────── */
     .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:13px 19px;border-radius:var(--r);border:none;cursor:pointer;font-size:.88rem;font-weight:700;font-family:inherit;transition:var(--tr);white-space:nowrap;user-select:none;}
     .bic{padding:13px;aspect-ratio:1;}
     .bsm{padding:6px 14px;font-size:.78rem;}
@@ -206,58 +103,29 @@
     .bok:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
     .bplay{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;box-shadow:0 4px 18px rgba(168,85,247,.4);}
     .bplay:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(168,85,247,.55);}
-
     .spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:sp .65s linear infinite;flex-shrink:0;}
     @keyframes sp{to{transform:rotate(360deg);}}
 
-    /* ── Errors / notices ────────────────────────────────────── */
     .emsg{display:flex;align-items:flex-start;gap:8px;margin-top:11px;padding:11px 15px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.22);border-radius:8px;color:#fca5a5;font-size:.855rem;}
     .emsg.h{display:none;}
     .notice{display:flex;align-items:flex-start;gap:9px;padding:11px 15px;border-radius:9px;font-size:.83rem;line-height:1.55;}
     .ni{background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.22);color:#c7d2fe;}
     .nw{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.22);color:#fde68a;}
     .ns{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.22);color:#6ee7b7;}
-
     .sz-badge{display:inline-flex;align-items:center;gap:6px;font-size:.71rem;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(16,185,129,.10);border:1px solid rgba(16,185,129,.22);color:#34d399;letter-spacing:.06em;text-transform:uppercase;margin-top:11px;}
     .sz-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399;}
-
     .neon-ln{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--ac),var(--a2),transparent);margin:22px 0;opacity:.4;}
 
-    /* ── Result ──────────────────────────────────────────────── */
     .result{display:none;}
     .result.on{display:block;animation:sup .4s ease;}
     @keyframes sup{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 
-    /* ── Video Player ────────────────────────────────────────── */
-    .player-wrap{
-      display:none;
-      margin-bottom:20px;
-      border-radius:var(--rl);
-      overflow:hidden;
-      background:#000;
-      aspect-ratio:16/9;
-      position:relative;
-      box-shadow:0 0 40px hsla(var(--ah),var(--as),50%,.2),0 0 0 1px hsla(var(--ah),var(--as),60%,.15);
-    }
+    .player-wrap{display:none;margin-bottom:20px;border-radius:var(--rl);overflow:hidden;background:#000;aspect-ratio:16/9;position:relative;box-shadow:0 0 40px hsla(var(--ah),var(--as),50%,.2),0 0 0 1px hsla(var(--ah),var(--as),60%,.15);}
     .player-wrap.on{display:block;}
-
-    .player-wrap iframe,
-    .player-wrap video {
-      width:100%; height:100%;
-      display:block;
-      border:none;
-    }
-
-    .player-close{
-      position:absolute;top:10px;right:10px;z-index:5;
-      width:32px;height:32px;border-radius:50%;
-      background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.2);
-      color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;
-      transition:var(--tr);font-size:.9rem;
-    }
+    .player-wrap iframe,.player-wrap video{width:100%;height:100%;display:block;border:none;}
+    .player-close{position:absolute;top:10px;right:10px;z-index:5;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.2);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--tr);font-size:.9rem;}
     .player-close:hover{background:rgba(239,68,68,.6);}
 
-    /* ── Thumbnail card ──────────────────────────────────────── */
     .rin{display:grid;grid-template-columns:200px 1fr;gap:22px;}
     .tw{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:16/9;background:rgba(255,255,255,.05);flex-shrink:0;}
     .tw img{width:100%;height:100%;object-fit:cover;display:block;}
@@ -266,7 +134,6 @@
     .play-btn-ov:hover{background:rgba(255,255,255,.3);transform:scale(1.1);}
     .tdur{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.82);padding:3px 8px;border-radius:5px;font-size:.7rem;font-weight:700;}
     .no-thumb{display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);font-size:2.5rem;border-radius:var(--r);aspect-ratio:16/9;}
-
     .vm{display:flex;flex-direction:column;gap:10px;}
     .pbadge{display:inline-flex;align-items:center;gap:5px;font-size:.67rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;width:fit-content;}
     .byt{background:rgba(255,0,0,.12);color:#fc5555;border:1px solid rgba(255,0,0,.22);}
@@ -277,9 +144,7 @@
     .vtitle{font-size:1.05rem;font-weight:700;line-height:1.35;}
     .vstats{display:flex;flex-wrap:wrap;gap:12px;}
     .vst{display:flex;align-items:center;gap:5px;font-size:.79rem;color:var(--t2);}
-    .fchip{display:inline-flex;align-items:center;gap:5px;font-size:.76rem;padding:3px 9px;border-radius:7px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.18);color:#6ee7b7;font-weight:600;}
 
-    /* ── Quality ─────────────────────────────────────────────── */
     .qlbl{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:9px;margin-top:12px;}
     .qg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
     .qb{padding:7px 15px;border-radius:8px;border:1px solid var(--gb);background:rgba(255,255,255,.04);color:var(--t2);font-size:.81rem;font-weight:700;cursor:pointer;transition:var(--tr);font-family:inherit;}
@@ -287,28 +152,20 @@
     .qb.on{background:linear-gradient(135deg,var(--ac),var(--a2));border-color:transparent;color:#fff;box-shadow:0 0 15px hsla(var(--ah),var(--as),50%,.4);}
     .qb.aud.on{background:linear-gradient(135deg,#059669,#10b981);box-shadow:0 0 15px rgba(16,185,129,.4);}
 
-    /* ── Progress ────────────────────────────────────────────── */
     .pw{margin-top:14px;display:none;}
     .pw.on{display:block;}
     .ph{display:flex;justify-content:space-between;font-size:.79rem;color:var(--t2);margin-bottom:7px;}
     .pb{height:7px;background:rgba(255,255,255,.05);border-radius:99px;overflow:hidden;}
     .pf{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--ac),var(--a3));width:0%;transition:width .3s ease;box-shadow:0 0 10px var(--ac);position:relative;}
     .pf::after{content:'';position:absolute;right:-1px;top:50%;transform:translateY(-50%);width:11px;height:11px;border-radius:50%;background:#fff;box-shadow:0 0 10px var(--ac),0 0 20px var(--ac);}
-
     .dacts{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
 
-    /* ── Instagram Profile UI ────────────────────────────────── */
     .ig-profile-card{margin-top:12px;}
     .ig-profile-header{display:flex;align-items:center;gap:14px;padding:18px;background:rgba(228,64,95,.06);border:1px solid rgba(228,64,95,.18);border-radius:var(--r);margin-bottom:14px;}
     .ig-av{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
     .ig-name{font-size:1.05rem;font-weight:800;}
     .ig-sub{font-size:.82rem;color:var(--t2);margin-top:3px;}
-    .ig-posts-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
-    .ig-post-slot{aspect-ratio:1;background:rgba(255,255,255,.04);border-radius:6px;border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;font-size:1.5rem;position:relative;overflow:hidden;cursor:pointer;transition:var(--tr);}
-    .ig-post-slot:hover{border-color:rgba(228,64,95,.4);transform:scale(1.02);}
-    .ig-post-slot img{width:100%;height:100%;object-fit:cover;}
 
-    /* ── Activity ────────────────────────────────────────────── */
     .af{display:flex;flex-direction:column;gap:7px;max-height:240px;overflow:hidden;}
     .ai{display:flex;align-items:center;gap:11px;padding:9px 13px;background:rgba(255,255,255,.03);border:1px solid var(--gb);border-radius:8px;font-size:.8rem;animation:sup .4s ease;}
     .ad{width:7px;height:7px;border-radius:50%;flex-shrink:0;animation:blink 2s ease-in-out infinite;}
@@ -322,7 +179,6 @@
     .lbadge{display:inline-flex;align-items:center;gap:5px;font-size:.67rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#fca5a5;}
     .lbadge::before{content:'';width:6px;height:6px;border-radius:50%;background:#ef4444;box-shadow:0 0 8px #ef4444;animation:blink 1.2s ease-in-out infinite;}
 
-    /* ── Recent ──────────────────────────────────────────────── */
     .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
     .st{font-size:.98rem;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;}
     .sico{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
@@ -337,7 +193,6 @@
     .emp{text-align:center;padding:36px 20px;color:var(--t3);font-size:.88rem;}
     .eic{font-size:2.4rem;margin-bottom:10px;opacity:.3;}
 
-    /* ── Platforms ───────────────────────────────────────────── */
     .pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
     .pc{background:rgba(255,255,255,.03);border:1px solid var(--gb);border-radius:var(--r);padding:16px 14px;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;transition:var(--tr);}
     .pc:hover{border-color:hsla(var(--ah),var(--as),60%,.25);background:hsla(var(--ah),var(--as),50%,.05);}
@@ -346,7 +201,6 @@
     .pmx{font-size:.7rem;color:var(--t3);}
     .pst{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ok);background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);padding:3px 9px;border-radius:20px;}
 
-    /* ── FAQ ─────────────────────────────────────────────────── */
     .fl{display:flex;flex-direction:column;gap:8px;}
     .fi{border:1px solid var(--gb);border-radius:var(--r);overflow:hidden;transition:var(--tr);}
     .fi.op{border-color:hsla(var(--ah),var(--as),60%,.25);}
@@ -358,7 +212,6 @@
     .fi.op .fa{max-height:300px;}
     .fai{padding:0 18px 14px;font-size:.84rem;color:var(--t2);line-height:1.65;}
 
-    /* ── Footer ──────────────────────────────────────────────── */
     footer{position:relative;z-index:1;border-top:1px solid var(--gb);padding:48px 36px 28px;background:rgba(3,7,18,.6);backdrop-filter:blur(20px);}
     .fg{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;max-width:960px;margin:0 auto 36px;}
     .fbp{font-size:.82rem;color:var(--t3);line-height:1.7;margin-top:12px;max-width:280px;}
@@ -372,29 +225,16 @@
     .cr{text-align:center;margin-top:20px;font-size:.72rem;color:var(--t3);letter-spacing:.08em;}
     .cr span{color:var(--ac);font-weight:800;}
 
-    /* ── Toast ───────────────────────────────────────────────── */
     .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(15,23,42,.92);border:1px solid var(--gb);border-radius:99px;padding:10px 22px;font-size:.84rem;font-weight:600;display:flex;align-items:center;gap:8px;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;z-index:1000;white-space:nowrap;backdrop-filter:blur(20px);}
     .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
     .tdot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);}
 
-    /* ── Responsive ──────────────────────────────────────────── */
-    @media(max-width:700px){
-      header{padding:14px 18px;}
-      .rin{grid-template-columns:1fr;}
-      .fg{grid-template-columns:1fr;gap:24px;}
-      .fb{flex-direction:column;align-items:flex-start;}
-      footer{padding:36px 18px 24px;}
-    }
-    @media(max-width:440px){
-      .hero{padding:40px 0 28px;}
-      .fg{grid-template-columns:1fr;}
-      .stats{grid-template-columns:repeat(2,1fr);gap:8px;}
-    }
+    @media(max-width:700px){header{padding:14px 18px;}.rin{grid-template-columns:1fr;}.fg{grid-template-columns:1fr;gap:24px;}.fb{flex-direction:column;align-items:flex-start;}footer{padding:36px 18px 24px;}}
+    @media(max-width:440px){.hero{padding:40px 0 28px;}.stats{grid-template-columns:repeat(2,1fr);gap:8px;}}
   </style>
 </head>
 <body>
 
-<!-- Loader -->
 <div id="loader">
   <div class="ld">
     <div class="ld-ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
@@ -403,35 +243,26 @@
   </div>
 </div>
 
-<!-- BG -->
 <div class="bg-g" aria-hidden="true"></div>
 <div class="bg-grid" aria-hidden="true"></div>
 <div class="orb o1" aria-hidden="true"></div>
 <div class="orb o2" aria-hidden="true"></div>
 <canvas id="bgc" aria-hidden="true"></canvas>
 
-<!-- ══════════════════════════════════════════════════════════
-     BIG VINAY BANNER
-══════════════════════════════════════════════════════════ -->
 <div class="vinay-banner" aria-label="Created by Vinay">
   <div class="vinay-top-line">PREMIUM VIDEO DOWNLOADER</div>
   <span class="vinay-name">VINAY</span>
   <div class="vinay-sub">
-    <span class="vdot"></span>
-    CREATED BY
-    <span class="vdot" style="animation-delay:.6s"></span>
-    LINK TO VIDEO
-    <span class="vdot" style="animation-delay:1.2s"></span>
+    <span class="vdot"></span>CREATED BY<span class="vdot" style="animation-delay:.6s"></span>LINK TO VIDEO<span class="vdot" style="animation-delay:1.2s"></span>
   </div>
   <div style="margin-top:10px;">
     <span class="vinay-badge">
       <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      v3.0 · Supports 1GB · 10+ Platforms
+      v3.1 · No Backend · 10+ Platforms
     </span>
   </div>
 </div>
 
-<!-- Header -->
 <header>
   <a href="#" class="logo" aria-label="LinkToVideo">
     <div class="logo-ic"><svg viewBox="0 0 24 24" fill="white" width="19" height="19"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
@@ -448,15 +279,12 @@
 
 <main>
 <div class="wrap">
-
-  <!-- Hero -->
   <section class="hero" aria-labelledby="htitle">
     <div class="eyebrow">Real Downloads · Video Preview · 10+ Platforms</div>
     <h1 class="ht" id="htitle">Download Any Video<br/><span>Play Before You Save.</span></h1>
-    <p class="hsub">Paste any link — YouTube, Instagram, Terabox, Google Drive — preview the video, pick quality, and download directly.</p>
+    <p class="hsub">Paste any link — YouTube, Instagram, TikTok, Terabox, Google Drive — preview and download directly.</p>
   </section>
 
-  <!-- Stats -->
   <div class="stats rv" aria-label="Stats">
     <div class="sb"><div class="sn" data-to="12.4" data-sf="M+">0</div><div class="sl">Downloads</div></div>
     <div class="sb"><div class="sn" data-to="10" data-sf="+">0</div><div class="sl">Platforms</div></div>
@@ -464,14 +292,10 @@
     <div class="sb"><div class="sn" data-to="4.8" data-sf="K+">0</div><div class="sl">Happy Users</div></div>
   </div>
 
-  <!-- Main Downloader -->
   <section class="card glow rv" aria-label="Video downloader">
-
-    <label class="ilbl" for="url-in">Paste Video URL (YouTube, Instagram, Terabox, Drive…)</label>
+    <label class="ilbl" for="url-in">Paste Video URL (YouTube, Instagram, TikTok, Terabox, Drive…)</label>
     <div class="irow">
-      <input type="url" id="url-in" class="ui"
-        placeholder="https://youtube.com/watch?v=...  |  instagram.com/reel/...  |  terabox.com/s/..."
-        autocomplete="off" spellcheck="false" aria-describedby="emsg"/>
+      <input type="url" id="url-in" class="ui" placeholder="https://youtube.com/watch?v=...  |  tiktok.com/@user/video/...  |  instagram.com/reel/..." autocomplete="off" spellcheck="false" aria-describedby="emsg"/>
       <button class="btn bic bg-btn" id="paste-btn" title="Paste from clipboard" aria-label="Paste">
         <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
       </button>
@@ -484,153 +308,102 @@
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span id="etx"></span>
     </div>
-    <div class="sz-badge">Supports up to 1 GB · YouTube · Instagram · Terabox · Drive · Dropbox · Vimeo</div>
-
+    <div class="sz-badge">Supports up to 1 GB · YouTube · Instagram · TikTok · Terabox · Drive · Dropbox</div>
     <div class="neon-ln"></div>
 
-    <!-- ── VIDEO PLAYER (shows when user clicks play) ─────── -->
     <div class="player-wrap" id="player-wrap">
-      <button class="player-close" id="player-close" aria-label="Close player" title="Close player">✕</button>
+      <button class="player-close" id="player-close" aria-label="Close player">✕</button>
       <div id="player-inner"></div>
     </div>
 
-    <!-- ── RESULT ─────────────────────────────────────────── -->
     <div class="result" id="result" aria-live="polite">
-
-      <!-- Instagram profile special UI -->
       <div id="ig-profile-ui" class="ig-profile-card" style="display:none"></div>
-
-      <!-- Regular video result -->
       <div id="video-result-ui">
         <div class="rin">
-          <!-- Thumbnail -->
-          <div id="thumb-col">
-            <!-- filled by JS -->
-          </div>
-
-          <!-- Meta -->
+          <div id="thumb-col"></div>
           <div class="vm">
             <span class="pbadge" id="v-badge">—</span>
             <p class="vtitle" id="v-title">—</p>
             <div class="vstats">
-              <span class="vst" id="v-author-wrap">
-                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <span id="v-author">—</span>
-              </span>
-              <span class="vst" id="v-dur-wrap">
-                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <span id="v-dur">—</span>
-              </span>
+              <span class="vst"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span id="v-author">—</span></span>
+              <span class="vst"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span id="v-dur">—</span></span>
             </div>
-
             <div id="v-notice"></div>
-
-            <!-- Quality -->
             <div class="qlbl">Select Quality / Format</div>
-            <div class="qg" id="qg" role="radiogroup" aria-label="Quality">
+            <div class="qg" id="qg" role="radiogroup">
               <button class="qb on" data-q="1080p" role="radio" aria-checked="true">1080p HD</button>
-              <button class="qb" data-q="720p"  role="radio" aria-checked="false">720p HD</button>
-              <button class="qb" data-q="480p"  role="radio" aria-checked="false">480p</button>
-              <button class="qb" data-q="360p"  role="radio" aria-checked="false">360p</button>
+              <button class="qb" data-q="720p" role="radio" aria-checked="false">720p HD</button>
+              <button class="qb" data-q="480p" role="radio" aria-checked="false">480p</button>
+              <button class="qb" data-q="360p" role="radio" aria-checked="false">360p</button>
               <button class="qb aud" data-q="audio" role="radio" aria-checked="false">
                 <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" style="display:inline-block;vertical-align:middle;margin-right:4px"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Audio Only
               </button>
             </div>
-
-            <!-- Progress -->
             <div class="pw" id="pw">
               <div class="ph"><span id="plbl">Preparing…</span><span id="ppct">0%</span></div>
               <div class="pb"><div class="pf" id="pf"></div></div>
             </div>
-
-            <!-- Actions -->
             <div class="dacts" id="dacts">
               <button class="btn bplay" id="play-btn" style="display:none" aria-label="Play preview">
-                <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                Play Preview
+                <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Play Preview
               </button>
               <button class="btn bok" id="dl-btn" aria-label="Download">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Download
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download
               </button>
               <button class="btn bg-btn" id="copy-btn" aria-label="Copy URL">
-                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                Copy URL
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy URL
               </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-
   </section>
 
-  <!-- Live Activity -->
   <section class="card rv" aria-labelledby="act-t">
     <div class="sh">
-      <h2 class="st" id="act-t">
-        <span class="sico" style="background:rgba(239,68,68,.10)"><svg width="13" height="13" fill="none" stroke="#fca5a5" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"/></svg></span>
-        Live Activity
-      </h2>
+      <h2 class="st" id="act-t"><span class="sico" style="background:rgba(239,68,68,.10)"><svg width="13" height="13" fill="none" stroke="#fca5a5" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"/></svg></span>Live Activity</h2>
       <span class="lbadge">LIVE</span>
     </div>
     <div class="af" id="af" aria-live="polite"></div>
   </section>
 
-  <!-- Recent Downloads -->
   <section class="card rv" aria-labelledby="rec-t">
     <div class="sh">
-      <h2 class="st" id="rec-t">
-        <span class="sico" style="background:hsla(var(--ah),var(--as),50%,.12)"><svg width="13" height="13" fill="none" stroke="#a5b4fc" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
-        Recent Downloads
-      </h2>
+      <h2 class="st" id="rec-t"><span class="sico" style="background:hsla(var(--ah),var(--as),50%,.12)"><svg width="13" height="13" fill="none" stroke="#a5b4fc" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>Recent Downloads</h2>
       <button class="btn bg-btn bsm" id="clear-btn">Clear All</button>
     </div>
     <div class="rl" id="rl"></div>
   </section>
 
-  <!-- Supported Platforms -->
   <section class="card rv" aria-labelledby="plt-t">
-    <div class="sh">
-      <h2 class="st" id="plt-t">
-        <span class="sico" style="background:rgba(6,182,212,.10)"><svg width="13" height="13" fill="none" stroke="#67e8f9" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
-        Supported Platforms
-      </h2>
-    </div>
+    <div class="sh"><h2 class="st" id="plt-t"><span class="sico" style="background:rgba(6,182,212,.10)"><svg width="13" height="13" fill="none" stroke="#67e8f9" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>Supported Platforms</h2></div>
     <div class="pg">
       <div class="pc"><div class="pic" style="background:rgba(255,0,0,.10)">📺</div><span class="pnm">YouTube</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
       <div class="pc"><div class="pic" style="background:rgba(228,64,95,.10)">📸</div><span class="pnm">Instagram</span><span class="pmx">Posts · Reels</span><span class="pst">Active</span></div>
+      <div class="pc"><div class="pic" style="background:rgba(0,0,0,.15)">🎵</div><span class="pnm">TikTok</span><span class="pmx">Videos · Audio</span><span class="pst">Active</span></div>
       <div class="pc"><div class="pic" style="background:rgba(30,215,97,.10)">📦</div><span class="pnm">Terabox</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
       <div class="pc"><div class="pic" style="background:rgba(6,182,212,.10)">☁️</div><span class="pnm">Google Drive</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
       <div class="pc"><div class="pic" style="background:rgba(0,104,255,.10)">🗂️</div><span class="pnm">Dropbox</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
       <div class="pc"><div class="pic" style="background:rgba(99,102,241,.10)">🎬</div><span class="pnm">Vimeo</span><span class="pmx">Up to 500MB</span><span class="pst">Active</span></div>
       <div class="pc"><div class="pic" style="background:rgba(245,158,11,.10)">☁️</div><span class="pnm">OneDrive</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
       <div class="pc"><div class="pic" style="background:rgba(29,161,242,.10)">🐦</div><span class="pnm">Twitter / X</span><span class="pmx">Videos</span><span class="pst">Active</span></div>
-      <div class="pc"><div class="pic" style="background:rgba(0,0,0,.15)">🎵</div><span class="pnm">TikTok</span><span class="pmx">Videos</span><span class="pst">Active</span></div>
       <div class="pc"><div class="pic" style="background:rgba(139,92,246,.10)">🎧</div><span class="pnm">SoundCloud</span><span class="pmx">Audio</span><span class="pst">Active</span></div>
     </div>
   </section>
 
-  <!-- FAQ -->
   <section class="card rv" aria-labelledby="faq-t">
-    <div class="sh">
-      <h2 class="st" id="faq-t">
-        <span class="sico" style="background:rgba(139,92,246,.12)"><svg width="13" height="13" fill="none" stroke="#c4b5fd" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
-        FAQ
-      </h2>
-    </div>
+    <div class="sh"><h2 class="st" id="faq-t"><span class="sico" style="background:rgba(139,92,246,.12)"><svg width="13" height="13" fill="none" stroke="#c4b5fd" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>FAQ</h2></div>
     <div class="fl" id="fl"></div>
   </section>
-
 </div>
 </main>
 
-<!-- Footer -->
 <footer>
   <div class="fg">
     <div class="fb-brand">
       <a href="#" class="logo"><div class="logo-ic"><svg viewBox="0 0 24 24" fill="white" width="17" height="17"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div><span class="logo-tx" style="font-size:1.1rem">LinkToVideo</span></a>
-      <p class="fbp">Premium video downloader by Vinay. Real downloads, video preview, 10+ platforms, up to 1GB.</p>
+      <p class="fbp">Premium video downloader by Vinay. Real downloads, video preview, 10+ platforms, up to 1GB. No backend server needed.</p>
     </div>
     <div class="fc"><h4>Product</h4><ul><li><a href="#">How it works</a></li><li><a href="#">Supported sites</a></li><li><a href="#">Quality options</a></li><li><a href="#">1GB Guide</a></li></ul></div>
     <div class="fc"><h4>Legal</h4><ul><li><a href="#">Terms of Service</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Copyright Policy</a></li><li><a href="#">DMCA</a></li></ul></div>
@@ -649,917 +422,661 @@
 <script>
 "use strict";
 /* ══════════════════════════════════════════════════════════════
-   LinkToVideo v3.0 — by VINAY
-   100% client-side · No backend required · Cloudflare ready
-   Uses Cobalt API (cobalt.tools) for video extraction
+   LinkToVideo v3.1 — by VINAY
+   100% client-side · No backend · Works on Cloudflare Pages
+
+   Engines used:
+   • YouTube   → Invidious API (open-source YT frontend, multiple instances)
+   • TikTok    → TikWM public API (no auth needed)
+   • Instagram → Cobalt community instances (no auth required)
+   • Twitter   → Cobalt community instances
+   • Vimeo     → oEmbed metadata + Cobalt community instances
+   • SoundCloud→ Cobalt community instances
+   • GDrive    → Direct URL conversion
+   • Dropbox   → Direct URL conversion
+   • Terabox   → Public proxy workers
 ══════════════════════════════════════════════════════════════ */
 
-/* ── External services (no backend needed) ──────────────── */
-const COBALT_API  = "https://api.cobalt.tools/";
-const NOEMBED_API = "https://noembed.com/embed";
+/* ─────────────────────────────────────────────────────────────
+   API ENDPOINTS — all free, no key required
+───────────────────────────────────────────────────────────── */
+
+/* Invidious: open-source YouTube API, multiple instances for fallback */
+const INVIDIOUS = [
+  "https://inv.nadeko.net",
+  "https://invidious.lunar.icu",
+  "https://iv.ggtyler.dev",
+  "https://invidious.privacydev.net",
+  "https://yt.drgnz.club",
+];
+
+/* Cobalt community instances — no auth required (unlike api.cobalt.tools) */
+const COBALT_COMMUNITY = [
+  "https://cobalt.api.timelessnesses.me",
+  "https://cobalt.esmbot.net",
+  "https://co.wuk.sh",
+  "https://cobalt.drgns.space",
+];
+
+/* noembed for Vimeo / YouTube metadata */
+const NOEMBED = "https://noembed.com/embed";
 
 const RKEY = "ltv2_rec", MAX_REC = 8;
 
-/* ── State ──────────────────────────────────────────────── */
-const S = { info: null, quality: "1080p", streamUrl: null, embedUrl: null };
+/* ─────────────────────────────────────────────────────────────
+   STATE & DOM
+───────────────────────────────────────────────────────────── */
+const S = { info: null, quality: "1080p", streamUrl: null };
 
-/* ── DOM shortcuts ──────────────────────────────────────── */
 const $ = id => document.getElementById(id);
 const $$ = sel => [...document.querySelectorAll(sel)];
 const D = {
-  loader:        $("loader"),
-  urlIn:         $("url-in"),
-  pasteBtn:      $("paste-btn"),
-  fetchBtn:      $("fetch-btn"),
-  fetchIco:      $("fetch-ico"),
-  fetchTx:       $("fetch-tx"),
-  emsg:          $("emsg"),
-  etx:           $("etx"),
-  result:        $("result"),
-  playerWrap:    $("player-wrap"),
-  playerInner:   $("player-inner"),
-  playerClose:   $("player-close"),
-  thumbCol:      $("thumb-col"),
-  vBadge:        $("v-badge"),
-  vTitle:        $("v-title"),
-  vAuthor:       $("v-author"),
-  vDur:          $("v-dur"),
-  vNotice:       $("v-notice"),
-  qg:            $("qg"),
-  pw:            $("pw"),
-  pf:            $("pf"),
-  plbl:          $("plbl"),
-  ppct:          $("ppct"),
-  dacts:         $("dacts"),
-  playBtn:       $("play-btn"),
-  dlBtn:         $("dl-btn"),
-  copyBtn:       $("copy-btn"),
-  igUI:          $("ig-profile-ui"),
-  videoResultUI: $("video-result-ui"),
-  af:            $("af"),
-  rl:            $("rl"),
-  clearBtn:      $("clear-btn"),
-  fl:            $("fl"),
-  toast:         $("toast"),
-  ttx:           $("ttx"),
-  cpick:         $("cpick"),
+  loader:$("loader"), urlIn:$("url-in"), pasteBtn:$("paste-btn"),
+  fetchBtn:$("fetch-btn"), fetchIco:$("fetch-ico"), fetchTx:$("fetch-tx"),
+  emsg:$("emsg"), etx:$("etx"), result:$("result"),
+  playerWrap:$("player-wrap"), playerInner:$("player-inner"), playerClose:$("player-close"),
+  thumbCol:$("thumb-col"), vBadge:$("v-badge"), vTitle:$("v-title"),
+  vAuthor:$("v-author"), vDur:$("v-dur"), vNotice:$("v-notice"),
+  qg:$("qg"), pw:$("pw"), pf:$("pf"), plbl:$("plbl"), ppct:$("ppct"),
+  dacts:$("dacts"), playBtn:$("play-btn"), dlBtn:$("dl-btn"), copyBtn:$("copy-btn"),
+  igUI:$("ig-profile-ui"), videoResultUI:$("video-result-ui"),
+  af:$("af"), rl:$("rl"), clearBtn:$("clear-btn"), fl:$("fl"),
+  toast:$("toast"), ttx:$("ttx"), cpick:$("cpick"),
 };
 
-const esc     = s => String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[m]);
-const delay   = ms => new Promise(r => setTimeout(r, ms));
-const rnd     = a => a[Math.floor(Math.random() * a.length)];
-const fmtDate = ts => new Date(ts).toLocaleDateString(undefined, { month:"short", day:"numeric", year:"numeric" });
+const esc     = s => String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
+const delay   = ms => new Promise(r=>setTimeout(r,ms));
+const rnd     = a => a[Math.floor(Math.random()*a.length)];
+const fmtDate = ts => new Date(ts).toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"});
+const fmtSecs = s => { s=Math.round(s||0); const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60; return h?`${h}:${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`:`${m}:${String(ss).padStart(2,'0')}`; };
 
-/* ── Toast ──────────────────────────────────────────────── */
-let tt;
-function toast(msg, ms = 2800) {
-  D.ttx.textContent = msg;
-  D.toast.classList.add("on");
-  clearTimeout(tt);
-  tt = setTimeout(() => D.toast.classList.remove("on"), ms);
-}
+const PL  = {youtube:"YouTube",instagram:"Instagram",terabox:"Terabox",gdrive:"Google Drive",dropbox:"Dropbox",vimeo:"Vimeo",onedrive:"OneDrive",soundcloud:"SoundCloud",twitter:"Twitter/X",tiktok:"TikTok",other:"Video"};
+const PC  = {youtube:"byt",instagram:"big",terabox:"btb",gdrive:"bcl",dropbox:"bcl",onedrive:"bcl",vimeo:"bvm",soundcloud:"bvm",twitter:"bcl",tiktok:"big",other:"bvm"};
+const PIC = {youtube:"📺",instagram:"📸",terabox:"📦",gdrive:"☁️",dropbox:"🗂️",vimeo:"🎬",onedrive:"☁️",soundcloud:"🎧",twitter:"🐦",tiktok:"🎵",other:"🎞️"};
+const pl  = n => PL[n]||"Video";
+const pc  = n => PC[n]||"bvm";
 
-/* ── Error ──────────────────────────────────────────────── */
-function showErr(msg) { D.etx.textContent = msg; D.emsg.classList.remove("h"); D.urlIn.classList.add("err"); }
-function clearErr()   { D.emsg.classList.add("h"); D.urlIn.classList.remove("err"); }
+/* ─────────────────────────────────────────────────────────────
+   TOAST & ERRORS
+───────────────────────────────────────────────────────────── */
+let _tt;
+function toast(msg,ms=2800){D.ttx.textContent=msg;D.toast.classList.add("on");clearTimeout(_tt);_tt=setTimeout(()=>D.toast.classList.remove("on"),ms);}
+function showErr(msg){D.etx.textContent=msg;D.emsg.classList.remove("h");D.urlIn.classList.add("err");}
+function clearErr(){D.emsg.classList.add("h");D.urlIn.classList.remove("err");}
+function isURL(s){try{const u=new URL(s);return u.protocol==="http:"||u.protocol==="https:";}catch{return false;}}
 
-/* ── Platform labels / badge classes ───────────────────── */
-const PL  = { youtube:"YouTube", instagram:"Instagram", terabox:"Terabox", gdrive:"Google Drive", dropbox:"Dropbox", vimeo:"Vimeo", onedrive:"OneDrive", soundcloud:"SoundCloud", twitter:"Twitter/X", tiktok:"TikTok", other:"Video" };
-const PC  = { youtube:"byt", instagram:"big", terabox:"btb", gdrive:"bcl", dropbox:"bcl", onedrive:"bcl", vimeo:"bvm", soundcloud:"bvm", twitter:"bcl", tiktok:"big", other:"bvm" };
-const PIC = { youtube:"📺", instagram:"📸", terabox:"📦", gdrive:"☁️", dropbox:"🗂️", vimeo:"🎬", onedrive:"☁️", soundcloud:"🎧", twitter:"🐦", tiktok:"🎵", other:"🎞️" };
-const pl  = n => PL[n]  || "Unknown";
-const pc  = n => PC[n]  || "bvm";
-
-/* ── isValidURL ─────────────────────────────────────────── */
-function isURL(s) { try { const u=new URL(s); return u.protocol==="http:"||u.protocol==="https:"; } catch { return false; } }
-
-/* ════════════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────────
    PLATFORM DETECTION
-════════════════════════════════════════════════════════════ */
-
+───────────────────────────────────────────────────────────── */
 function detectPlatform(url) {
   try {
-    const h = new URL(url).hostname.replace(/^www\./, "").toLowerCase();
-    if (h === "youtu.be" || h.includes("youtube.com"))       return "youtube";
-    if (h.includes("instagram.com"))                          return "instagram";
-    if (h.includes("tiktok.com"))                             return "tiktok";
-    if (h === "x.com" || h.includes("twitter.com"))          return "twitter";
-    if (h.includes("vimeo.com"))                              return "vimeo";
-    if (h.includes("soundcloud.com"))                         return "soundcloud";
-    if (h.includes("drive.google.com"))                       return "gdrive";
-    if (h.includes("dropbox.com"))                            return "dropbox";
-    if (h.includes("1drv.ms") || h.includes("onedrive.live.com") || h.includes("sharepoint.com")) return "onedrive";
-    if (h.includes("terabox") || h.includes("4funbox") || h.includes("momerybox") ||
-        h.includes("tibibox") || h.includes("teraboxapp") || h.includes("1024tera")) return "terabox";
+    const h = new URL(url).hostname.replace(/^www\./,"").toLowerCase();
+    if (h==="youtu.be"||h.includes("youtube.com"))     return "youtube";
+    if (h.includes("instagram.com"))                    return "instagram";
+    if (h.includes("tiktok.com"))                       return "tiktok";
+    if (h==="x.com"||h.includes("twitter.com"))        return "twitter";
+    if (h.includes("vimeo.com"))                        return "vimeo";
+    if (h.includes("soundcloud.com"))                   return "soundcloud";
+    if (h.includes("drive.google.com"))                 return "gdrive";
+    if (h.includes("dropbox.com"))                      return "dropbox";
+    if (h.includes("1drv.ms")||h.includes("onedrive.live.com")||h.includes("sharepoint.com")) return "onedrive";
+    if (h.includes("terabox")||h.includes("4funbox")||h.includes("momerybox")||h.includes("tibibox")||h.includes("teraboxapp")||h.includes("1024tera")) return "terabox";
     return "other";
   } catch { return "other"; }
 }
 
 function getYtId(url) {
   try {
-    const u = new URL(url);
-    if (u.hostname === "youtu.be") return u.pathname.slice(1).split("?")[0];
+    const u=new URL(url);
+    if (u.hostname==="youtu.be") return u.pathname.slice(1).split("?")[0];
     if (u.pathname.includes("/shorts/")) return u.pathname.split("/shorts/")[1].split("?")[0];
-    if (u.pathname.includes("/live/")) return u.pathname.split("/live/")[1].split("?")[0];
-    return u.searchParams.get("v") || null;
+    if (u.pathname.includes("/live/"))   return u.pathname.split("/live/")[1].split("?")[0];
+    return u.searchParams.get("v")||null;
   } catch { return null; }
 }
 
-/* ════════════════════════════════════════════════════════════
-   COBALT API — free public video extraction service
-════════════════════════════════════════════════════════════ */
+/* ─────────────────────────────────────────────────────────────
+   YOUTUBE via INVIDIOUS (open-source, no auth)
+───────────────────────────────────────────────────────────── */
+async function ivFetch(ytId, fields) {
+  const params = fields ? `?fields=${fields}` : "";
+  for (const inst of INVIDIOUS) {
+    try {
+      const r = await fetch(`${inst}/api/v1/videos/${ytId}${params}`, {signal:AbortSignal.timeout(9000)});
+      if (!r.ok) continue;
+      const d = await r.json();
+      if (d.error) continue;
+      return d;
+    } catch { continue; }
+  }
+  return null;
+}
 
-async function callCobalt(url, quality, audioOnly) {
-  const q = (quality === "audio") ? "144" : quality.replace("p", "");
-  const body = {
+async function ytGetStream(ytId, quality) {
+  const data = await ivFetch(ytId, "formatStreams,adaptiveFormats");
+  if (!data) throw new Error("Could not connect to YouTube API. Check your internet or try again shortly.");
+
+  if (quality === "audio") {
+    const audio = (data.adaptiveFormats||[]).filter(f=>f.type?.startsWith("audio/")).sort((a,b)=>(parseInt(b.bitrate)||0)-(parseInt(a.bitrate)||0));
+    if (audio[0]?.url) return audio[0].url;
+    throw new Error("Audio stream not available for this video.");
+  }
+
+  const targetH = parseInt(quality)||360;
+  const streams = (data.formatStreams||[]).filter(f=>f.url).sort((a,b)=>parseInt(b.quality)-parseInt(a.quality));
+  if (!streams.length) throw new Error("No download streams found for this video. It may be restricted.");
+
+  const match = streams.find(f=>parseInt(f.quality)<=targetH) || streams[streams.length-1];
+  if (!match?.url) throw new Error("Selected quality not available. Try a lower quality.");
+  return match.url;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TIKTOK via TikWM (free public API, no auth)
+───────────────────────────────────────────────────────────── */
+async function tikwmFetch(url) {
+  const endpoints = [
+    `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`,
+    `https://tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`,
+  ];
+  for (const ep of endpoints) {
+    try {
+      const r = await fetch(ep, {signal:AbortSignal.timeout(15000)});
+      if (!r.ok) continue;
+      const d = await r.json();
+      if (d.code===0 && d.data) return d.data;
+    } catch { continue; }
+  }
+  throw new Error("Could not fetch TikTok video. Make sure the video is public and the link is correct.");
+}
+
+/* ─────────────────────────────────────────────────────────────
+   COBALT COMMUNITY INSTANCES (Instagram, Twitter, Vimeo, SoundCloud…)
+   These do NOT require authentication unlike api.cobalt.tools
+───────────────────────────────────────────────────────────── */
+async function cobaltCommunity(url, quality, audioOnly) {
+  const q  = (quality==="audio") ? "144" : quality.replace("p","");
+  const body = JSON.stringify({
     url,
     videoQuality: q,
     audioFormat: "mp3",
     downloadMode: audioOnly ? "audio" : "auto",
     filenameStyle: "pretty",
-  };
+  });
 
-  let resp;
-  try {
-    resp = await fetch(COBALT_API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify(body),
-    });
-  } catch (e) {
-    throw new Error("Could not reach download service. Check your internet connection.");
+  let lastErr = "No download service available right now. Try again in a moment.";
+
+  for (const inst of COBALT_COMMUNITY) {
+    try {
+      const r = await fetch(`${inst}/`, {
+        method: "POST",
+        headers: {"Content-Type":"application/json","Accept":"application/json"},
+        body,
+        signal: AbortSignal.timeout(14000),
+      });
+
+      let d;
+      try { d = await r.json(); } catch { continue; }
+
+      if (d.status === "error") {
+        const code = d.error?.code || "";
+        // If auth error, this instance requires auth — try next
+        if (code.includes("auth") || code.includes("jwt")) { continue; }
+        lastErr = code.replace(/^error\./i,"").replace(/-/g," ");
+        lastErr = lastErr.charAt(0).toUpperCase()+lastErr.slice(1)+".";
+        continue;
+      }
+
+      if (["stream","redirect","tunnel","picker"].includes(d.status)) {
+        return d;
+      }
+    } catch (e) {
+      // Network / timeout — try next instance
+      continue;
+    }
   }
 
-  let data;
-  try {
-    data = await resp.json();
-  } catch {
-    throw new Error("Download service returned an unexpected response. Please try again.");
-  }
-
-  if (data.status === "error") {
-    const code = data?.error?.code || "";
-    const msg = code
-      ? code.replace(/^error\./i, "").replace(/-/g, " ")
-      : "Download service error. The content may be private or geo-restricted.";
-    throw new Error(msg.charAt(0).toUpperCase() + msg.slice(1) + ".");
-  }
-
-  if (!resp.ok) {
-    throw new Error(`Service error (${resp.status}). Please try again.`);
-  }
-
-  return data;
+  throw new Error(lastErr);
 }
 
-/* ════════════════════════════════════════════════════════════
-   CLOUD STORAGE URL HELPERS (no API needed)
-════════════════════════════════════════════════════════════ */
-
-function getGDriveInfo(url) {
+/* ─────────────────────────────────────────────────────────────
+   CLOUD STORAGE HELPERS (no API needed)
+───────────────────────────────────────────────────────────── */
+function gdrive_parse(url) {
   const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  if (!m) throw new Error("Could not extract Google Drive file ID. Make sure the link is a shareable file link.");
-  const fileId = m[1];
+  if (!m) throw new Error("Invalid Google Drive link. Use a file shareable link (drive.google.com/file/d/...).");
   return {
-    fileId,
-    directUrl: `https://drive.google.com/uc?export=download&id=${fileId}`,
-    thumb: `https://drive.google.com/thumbnail?id=${fileId}&sz=w320`,
+    fileId: m[1],
+    directUrl: `https://drive.google.com/uc?export=download&id=${m[1]}`,
+    thumb: `https://drive.google.com/thumbnail?id=${m[1]}&sz=w320`,
   };
 }
 
-function getDropboxDirectUrl(url) {
-  let u = url.trim();
-  u = u.replace(/[?&]dl=\d/g, "");
+function dropbox_url(url) {
+  let u = url.trim().replace(/[?&]dl=\d/g,"");
   u = u + (u.includes("?") ? "&dl=1" : "?dl=1");
-  u = u.replace("www.dropbox.com", "dl.dropboxusercontent.com");
-  return u;
+  return u.replace("www.dropbox.com","dl.dropboxusercontent.com");
 }
 
-function getOneDriveDirectUrl(url) {
+function onedrive_url(url) {
   if (url.includes("1drv.ms")) return url;
-  return url.replace(/(\?.*)?$/, "?download=1");
+  return url.replace(/(\?.*)?$/,"?download=1");
 }
 
-/* ════════════════════════════════════════════════════════════
-   GET VIDEO INFO
-════════════════════════════════════════════════════════════ */
-
+/* ─────────────────────────────────────────────────────────────
+   GET VIDEO INFO  (called when user clicks Fetch)
+───────────────────────────────────────────────────────────── */
 async function apiGetInfo(url) {
   const platform = detectPlatform(url);
 
-  /* ── Instagram — detect profile vs post ── */
+  /* Instagram — profile vs post detection */
   if (platform === "instagram") {
     try {
-      const u   = new URL(url);
-      const pts = u.pathname.replace(/\/$/, "").split("/").filter(Boolean);
-      const postTypes = ["p", "reel", "tv", "stories"];
-      if (pts.length === 1 && !postTypes.includes(pts[0])) {
-        return { isProfile: true, platform: "instagram", handle: pts[0], canDownload: false, canPreview: false };
+      const pts = new URL(url).pathname.replace(/\/$/,"").split("/").filter(Boolean);
+      if (pts.length===1 && !["p","reel","tv","stories"].includes(pts[0])) {
+        return {isProfile:true,platform:"instagram",handle:pts[0],canDownload:false,canPreview:false};
       }
-    } catch { /* continue */ }
+    } catch {}
   }
 
-  /* ── Google Drive ── */
+  /* Google Drive */
   if (platform === "gdrive") {
-    const { directUrl, thumb } = getGDriveInfo(url);
-    return {
-      title: "Google Drive File",
-      platform: "gdrive",
-      author: "Google Drive",
-      duration: "—",
-      thumb,
-      canDownload: true,
-      canPreview: false,
-      directUrl,
-      notice: "Large Google Drive files may show a virus-scan warning page — click 'Download anyway' to proceed.",
-    };
+    const {directUrl,thumb} = gdrive_parse(url);
+    return {title:"Google Drive File",platform:"gdrive",author:"Google Drive",duration:"—",thumb,canDownload:true,canPreview:false,directUrl,notice:"Large files may show a Google virus-scan warning — click 'Download anyway'."};
   }
 
-  /* ── Dropbox ── */
+  /* Dropbox */
   if (platform === "dropbox") {
-    return {
-      title: "Dropbox File",
-      platform: "dropbox",
-      author: "Dropbox",
-      duration: "—",
-      thumb: null,
-      canDownload: true,
-      canPreview: false,
-      directUrl: getDropboxDirectUrl(url),
-    };
+    return {title:"Dropbox File",platform:"dropbox",author:"Dropbox",duration:"—",thumb:null,canDownload:true,canPreview:false,directUrl:dropbox_url(url)};
   }
 
-  /* ── OneDrive ── */
+  /* OneDrive */
   if (platform === "onedrive") {
-    return {
-      title: "OneDrive File",
-      platform: "onedrive",
-      author: "OneDrive",
-      duration: "—",
-      thumb: null,
-      canDownload: true,
-      canPreview: false,
-      directUrl: getOneDriveDirectUrl(url),
-    };
+    return {title:"OneDrive File",platform:"onedrive",author:"OneDrive",duration:"—",thumb:null,canDownload:true,canPreview:false,directUrl:onedrive_url(url)};
   }
 
-  /* ── YouTube — metadata via noembed, embed for preview ── */
+  /* Terabox */
+  if (platform === "terabox") {
+    return {title:"Terabox File",platform:"terabox",author:"Terabox",duration:"—",thumb:null,canDownload:true,canPreview:false,notice:"Click Download to start. Public share links work best; private files may need Terabox login."};
+  }
+
+  /* YouTube — rich metadata from Invidious + embed for preview */
   if (platform === "youtube") {
     const ytId = getYtId(url);
+    if (!ytId) throw new Error("Invalid YouTube URL. Could not find a video ID.");
     const info = {
-      platform: "youtube",
-      canDownload: true,
-      canPreview: !!ytId,
-      title: "YouTube Video",
-      author: "",
-      duration: "—",
+      platform:"youtube",canDownload:true,canPreview:true,
+      title:"YouTube Video",author:"",duration:"—",
+      thumb:`https://img.youtube.com/vi/${ytId}/mqdefault.jpg`,
+      thumbFb:`https://img.youtube.com/vi/${ytId}/default.jpg`,
+      embedUrl:`https://www.youtube.com/embed/${ytId}?autoplay=1`,
     };
-    if (ytId) {
-      info.thumb    = `https://img.youtube.com/vi/${ytId}/mqdefault.jpg`;
-      info.thumbFb  = `https://img.youtube.com/vi/${ytId}/default.jpg`;
-      info.embedUrl = `https://www.youtube.com/embed/${ytId}?autoplay=1`;
+    const iv = await ivFetch(ytId,"title,author,lengthSeconds,videoThumbnails");
+    if (iv) {
+      info.title    = iv.title    || info.title;
+      info.author   = iv.author   || "";
+      info.duration = fmtSecs(iv.lengthSeconds);
+      const bestT   = (iv.videoThumbnails||[]).find(t=>t.quality==="high")||(iv.videoThumbnails||[])[0];
+      if (bestT?.url) info.thumb = bestT.url;
+    } else {
+      try { const r=await fetch(`${NOEMBED}?url=${encodeURIComponent(url)}`); const d=await r.json(); if(d.title)info.title=d.title; if(d.author_name)info.author=d.author_name; } catch {}
     }
-    try {
-      const r = await fetch(`${NOEMBED_API}?url=${encodeURIComponent(url)}`);
-      const d = await r.json();
-      if (d.title)       info.title  = d.title;
-      if (d.author_name) info.author = d.author_name;
-    } catch { /* noembed is optional enrichment */ }
     return info;
   }
 
-  /* ── Vimeo — metadata via noembed, embed for preview ── */
+  /* Vimeo — noembed + embed iframe */
   if (platform === "vimeo") {
-    const info = { platform: "vimeo", canDownload: true, canPreview: false, title: "Vimeo Video", author: "", duration: "—" };
+    const info = {platform:"vimeo",canDownload:true,canPreview:false,title:"Vimeo Video",author:"",duration:"—"};
     try {
-      const r = await fetch(`${NOEMBED_API}?url=${encodeURIComponent(url)}`);
-      const d = await r.json();
-      if (d.title)         info.title  = d.title;
-      if (d.author_name)   info.author = d.author_name;
-      if (d.thumbnail_url) info.thumb  = d.thumbnail_url;
-      const m = url.match(/vimeo\.com\/(\d+)/);
-      if (m) { info.embedUrl = `https://player.vimeo.com/video/${m[1]}?autoplay=1`; info.canPreview = true; }
-    } catch { /* noembed optional */ }
+      const r=await fetch(`${NOEMBED}?url=${encodeURIComponent(url)}`);
+      const d=await r.json();
+      if(d.title) info.title=d.title;
+      if(d.author_name) info.author=d.author_name;
+      if(d.thumbnail_url) info.thumb=d.thumbnail_url;
+      const m=url.match(/vimeo\.com\/(\d+)/);
+      if(m){info.embedUrl=`https://player.vimeo.com/video/${m[1]}?autoplay=1`;info.canPreview=true;}
+    } catch {}
     return info;
   }
 
-  /* ── Terabox ── */
-  if (platform === "terabox") {
+  /* TikTok — TikWM gives everything at once */
+  if (platform === "tiktok") {
+    const data = await tikwmFetch(url);
     return {
-      platform: "terabox",
-      title: "Terabox File",
-      author: "Terabox",
-      duration: "—",
-      thumb: null,
-      canDownload: true,
-      canPreview: false,
-      notice: "Click Download to fetch this Terabox file. Public/shared links work best; private files may require login on Terabox.",
+      platform:"tiktok",
+      title: data.title || "TikTok Video",
+      author: data.author?.nickname||"",
+      thumb: data.cover||null,
+      duration: fmtSecs(data.duration),
+      canDownload:true,
+      canPreview:true,
+      preloadedUrl: data.hdplay||data.play,
+      preloadedAudioUrl: data.music||data.music_info?.play||null,
+      preloadedFname: (data.title||"tiktok").replace(/[^a-z0-9 ]/gi,"_").slice(0,60)+".mp4",
     };
   }
 
-  /* ── All other platforms (Instagram, TikTok, Twitter, SoundCloud…) via Cobalt ── */
-  const cobalt = await callCobalt(url, "1080", false);
-
+  /* Instagram, Twitter, SoundCloud, others → Cobalt community */
+  const cobalt = await cobaltCommunity(url,"1080",false);
   const info = {
-    platform,
-    title:  `${PL[platform] || "Video"} Download`,
-    author: "",
-    thumb:  null,
-    canDownload: true,
-    canPreview:  false,
+    platform, title:`${pl(platform)} Download`,
+    author:"",thumb:null,canDownload:true,canPreview:false,
   };
-
-  if (cobalt.status === "stream" || cobalt.status === "redirect" || cobalt.status === "tunnel") {
-    info.preloadedUrl    = cobalt.url;
-    info.preloadedFname  = cobalt.filename;
-    info.canPreview      = (platform !== "soundcloud");
-  } else if (cobalt.status === "picker") {
+  if (["stream","redirect","tunnel"].includes(cobalt.status)) {
+    info.preloadedUrl   = cobalt.url;
+    info.preloadedFname = cobalt.filename;
+    info.canPreview     = (platform!=="soundcloud");
+  } else if (cobalt.status==="picker") {
     info.picker = cobalt.picker;
-    if (cobalt.picker?.[0]?.url && cobalt.picker[0].type === "photo") {
-      info.thumb = cobalt.picker[0].url;
-    }
+    const firstVid = cobalt.picker?.find(p=>p.type!=="photo");
+    if (firstVid) {info.preloadedUrl=firstVid.url;}
   }
-
   return info;
 }
 
-/* ════════════════════════════════════════════════════════════
-   DOWNLOAD
-════════════════════════════════════════════════════════════ */
-
+/* ─────────────────────────────────────────────────────────────
+   DOWNLOAD  (called when user clicks Download button)
+───────────────────────────────────────────────────────────── */
 async function apiDownload(url, quality) {
   const platform = detectPlatform(url);
-  const audioOnly = quality === "audio";
+  const audioOnly = quality==="audio";
 
-  /* Cloud storage — direct URL conversion, no API needed */
-  if (platform === "gdrive") {
-    const { directUrl } = getGDriveInfo(url);
-    return { status: "redirect", url: directUrl };
-  }
-  if (platform === "dropbox") {
-    return { status: "redirect", url: getDropboxDirectUrl(url) };
-  }
-  if (platform === "onedrive") {
-    return { status: "redirect", url: getOneDriveDirectUrl(url) };
-  }
+  /* Cloud storage — no API call needed */
+  if (platform==="gdrive")   { const {directUrl}=gdrive_parse(url); return {status:"redirect",url:directUrl}; }
+  if (platform==="dropbox")  { return {status:"redirect",url:dropbox_url(url)}; }
+  if (platform==="onedrive") { return {status:"redirect",url:onedrive_url(url)}; }
 
-  /* If info already preloaded a picker */
-  if (S.info?.picker) {
-    return { status: "picker", picker: S.info.picker };
-  }
+  /* Picker already loaded during info fetch */
+  if (S.info?.picker) return {status:"picker",picker:S.info.picker};
 
-  /* If info already has a direct URL */
-  if (S.info?.directUrl) {
-    return { status: "redirect", url: S.info.directUrl };
+  /* Direct URL already resolved */
+  if (S.info?.directUrl) return {status:"redirect",url:S.info.directUrl};
+
+  /* YouTube → Invidious stream */
+  if (platform === "youtube") {
+    const ytId = getYtId(url);
+    if (!ytId) throw new Error("Could not extract YouTube video ID.");
+    const streamUrl = await ytStream_quality(ytId, quality);
+    return {status:"stream", url:streamUrl};
   }
 
-  /* If info already fetched the stream (non-YT/Vimeo cobalt platforms at 1080p) */
-  if (S.info?.preloadedUrl && quality === "1080p") {
-    return { status: "stream", url: S.info.preloadedUrl, filename: S.info.preloadedFname };
+  /* TikTok → use preloaded or re-fetch */
+  if (platform === "tiktok") {
+    if (audioOnly && S.info?.preloadedAudioUrl) return {status:"stream",url:S.info.preloadedAudioUrl};
+    if (S.info?.preloadedUrl) return {status:"stream",url:S.info.preloadedUrl,filename:S.info.preloadedFname};
+    const data = await tikwmFetch(url);
+    return {status:"stream", url: audioOnly?(data.music||data.play):( data.hdplay||data.play)};
   }
 
-  /* Terabox — try known public proxy workers, fall back to direct open */
+  /* Preloaded stream (Instagram, Twitter etc from Cobalt during info) */
+  if (S.info?.preloadedUrl && quality==="1080p") {
+    return {status:"stream",url:S.info.preloadedUrl,filename:S.info.preloadedFname};
+  }
+
+  /* Terabox — public proxy attempt */
   if (platform === "terabox") {
     const proxies = [
       `https://terabox.udaymanthena.workers.dev/?url=${encodeURIComponent(url)}`,
       `https://teraboxdownloader.online/api?url=${encodeURIComponent(url)}`,
     ];
-    for (const proxy of proxies) {
+    for (const p of proxies) {
       try {
-        const r = await fetch(proxy, { headers: { Accept: "application/json" } });
-        if (r.ok) {
-          const d = await r.json();
-          const dlUrl = d.url || d.downloadLink || d.download_url || d.link;
-          if (dlUrl) return { status: "redirect", url: dlUrl };
-        }
-      } catch { /* try next proxy */ }
+        const r=await fetch(p,{headers:{Accept:"application/json"},signal:AbortSignal.timeout(18000)});
+        if(!r.ok) continue;
+        const d=await r.json();
+        const dlUrl=d.url||d.downloadLink||d.download_url||d.link;
+        if(dlUrl) return {status:"redirect",url:dlUrl};
+      } catch { continue; }
     }
-    /* All proxies failed — open Terabox directly */
-    return { status: "redirect", url: url };
+    return {status:"redirect",url}; // open Terabox itself as last resort
   }
 
-  /* YouTube, Vimeo, Instagram, TikTok, Twitter, SoundCloud → Cobalt */
-  return await callCobalt(url, quality, audioOnly);
+  /* Vimeo, Instagram, Twitter, SoundCloud → Cobalt community */
+  return await cobaltCommunity(url, quality, audioOnly);
 }
 
-/* ════════════════════════════════════════════════════════════
-   RENDER VIDEO INFO
-════════════════════════════════════════════════════════════ */
+/* helper — same as ytGetStream but returns url for download */
+async function ytStream_quality(ytId, quality) {
+  const data = await ivFetch(ytId,"formatStreams,adaptiveFormats");
+  if (!data) throw new Error("Could not connect to YouTube API. Check your connection and try again.");
 
+  if (quality==="audio") {
+    const audio=(data.adaptiveFormats||[]).filter(f=>f.type?.startsWith("audio/")).sort((a,b)=>(parseInt(b.bitrate)||0)-(parseInt(a.bitrate)||0));
+    if (audio[0]?.url) return audio[0].url;
+    throw new Error("No audio-only stream found. Try a video quality instead.");
+  }
+
+  const targetH=parseInt(quality)||360;
+  const streams=(data.formatStreams||[]).filter(f=>f.url).sort((a,b)=>parseInt(b.quality)-parseInt(a.quality));
+  if (!streams.length) throw new Error("No streams available. This video may be age-restricted or region-locked.");
+  const match=streams.find(f=>parseInt(f.quality)<=targetH)||streams[streams.length-1];
+  if (!match?.url) throw new Error("Quality not available. Try 720p or 480p.");
+  return match.url;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   RENDER RESULT
+───────────────────────────────────────────────────────────── */
 function renderThumb(info) {
   if (info.thumb) {
-    return `
-      <div class="tw">
-        <img src="${esc(info.thumb)}" alt="thumbnail" loading="lazy"
-             onerror="this.src='${info.thumbFb ? esc(info.thumbFb) : ""}'; this.onerror=null;">
-        <div class="tov">
-          <div class="play-btn-ov" id="thumb-play-btn" title="Play preview" role="button" tabindex="0" aria-label="Play video preview">
-            <svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          </div>
+    return `<div class="tw">
+      <img src="${esc(info.thumb)}" alt="thumbnail" loading="lazy" onerror="this.src='${info.thumbFb?esc(info.thumbFb):''}';this.onerror=null;">
+      <div class="tov">
+        <div class="play-btn-ov" id="thumb-play-btn" title="Play preview" role="button" tabindex="0" aria-label="Play preview">
+          <svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </div>
-        ${info.duration ? `<span class="tdur">${esc(info.duration)}</span>` : ""}
-      </div>`;
+      </div>
+      ${info.duration&&info.duration!=="—"?`<span class="tdur">${esc(info.duration)}</span>`:""}
+    </div>`;
   }
-  return `<div class="no-thumb">${PIC[info.platform] || "🎞️"}</div>`;
+  return `<div class="no-thumb">${PIC[info.platform]||"🎞️"}</div>`;
 }
 
 function renderResult(info) {
-  S.info = info;
-  S.streamUrl = null;
-  S.embedUrl  = info.embedUrl || null;
-
+  S.info=info; S.streamUrl=null;
   closePlayer();
 
   if (info.isProfile) {
-    D.videoResultUI.style.display = "none";
-    D.igUI.style.display = "block";
-    renderIGProfile(info);
+    D.videoResultUI.style.display="none";
+    D.igUI.style.display="block";
+    D.igUI.innerHTML=`
+      <div class="ig-profile-header"><div class="ig-av">👤</div><div><div class="ig-name">@${esc(info.handle)}</div><div class="ig-sub">Instagram Profile — paste individual posts or Reels below</div></div></div>
+      <div class="notice nw" style="margin-bottom:14px"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Paste an individual post/Reel URL like <em>instagram.com/reel/ABC123</em></span></div>
+      <div class="notice ns"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>Open a post by <strong>@${esc(info.handle)}</strong>, copy the URL, and paste it above.</span></div>`;
   } else {
-    D.igUI.style.display = "none";
-    D.videoResultUI.style.display = "block";
-
-    D.thumbCol.innerHTML = renderThumb(info);
-
-    const tbp = document.getElementById("thumb-play-btn");
-    if (tbp && info.canPreview) {
-      const go = () => handlePlay();
-      tbp.addEventListener("click", go);
-      tbp.addEventListener("keydown", e => { if (e.key==="Enter"||e.key===" ") go(); });
-    }
-
-    D.vBadge.textContent  = pl(info.platform);
-    D.vBadge.className    = "pbadge " + pc(info.platform);
-    D.vTitle.textContent  = info.title || "—";
-    D.vAuthor.textContent = info.author ? `by ${info.author}` : "—";
-    D.vDur.textContent    = info.duration || "—";
-
-    D.vNotice.innerHTML = info.notice && typeof info.notice === "string"
-      ? `<div class="notice ni" style="margin-top:8px"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>${esc(info.notice)}</span></div>`
-      : "";
-
-    D.playBtn.style.display = info.canPreview ? "" : "none";
-    D.dlBtn.disabled = !info.canDownload;
+    D.igUI.style.display="none";
+    D.videoResultUI.style.display="block";
+    D.thumbCol.innerHTML=renderThumb(info);
+    const tbp=document.getElementById("thumb-play-btn");
+    if (tbp&&info.canPreview) { const go=()=>handlePlay(); tbp.addEventListener("click",go); tbp.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")go();}); }
+    D.vBadge.textContent=pl(info.platform);
+    D.vBadge.className="pbadge "+pc(info.platform);
+    D.vTitle.textContent=info.title||"—";
+    D.vAuthor.textContent=info.author?`by ${info.author}`:"—";
+    D.vDur.textContent=info.duration||"—";
+    D.vNotice.innerHTML=info.notice?`<div class="notice ni" style="margin-top:8px"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>${esc(info.notice)}</span></div>`:"";
+    D.playBtn.style.display=info.canPreview?"":"none";
+    D.dlBtn.disabled=!info.canDownload;
   }
-
   D.pw.classList.remove("on");
   D.result.classList.add("on");
 }
 
-/* ── Instagram Profile UI ───────────────────────────────── */
-function renderIGProfile(info) {
-  D.igUI.innerHTML = `
-    <div class="ig-profile-header">
-      <div class="ig-av">👤</div>
-      <div>
-        <div class="ig-name">@${esc(info.handle)}</div>
-        <div class="ig-sub">Instagram Profile — Paste individual post or Reel links below to download</div>
-      </div>
-    </div>
-    <div class="notice nw" style="margin-bottom:14px">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <span><strong>Instagram Profile URLs</strong> — Instagram blocks direct profile scraping. To download, paste individual post or Reel URLs (e.g. <em>instagram.com/reel/ABC123</em>) into the main search bar above.</span>
-    </div>
-    <div class="notice ns">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-      <span>Tip: Go to <strong>@${esc(info.handle)}</strong>'s profile, open any post or Reel, copy the URL, and paste it here to download.</span>
-    </div>`;
-}
-
-/* ════════════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────────
    VIDEO PLAYER
-════════════════════════════════════════════════════════════ */
-
-function openPlayer(html) {
-  D.playerInner.innerHTML = html;
-  D.playerWrap.classList.add("on");
-  D.playerWrap.scrollIntoView({ behavior: "smooth", block: "center" });
-}
-
-function closePlayer() {
-  D.playerWrap.classList.remove("on");
-  D.playerInner.innerHTML = "";
-}
-
-D.playerClose.addEventListener("click", closePlayer);
+───────────────────────────────────────────────────────────── */
+function openPlayer(html){D.playerInner.innerHTML=html;D.playerWrap.classList.add("on");D.playerWrap.scrollIntoView({behavior:"smooth",block:"center"});}
+function closePlayer(){D.playerWrap.classList.remove("on");D.playerInner.innerHTML="";}
+D.playerClose.addEventListener("click",closePlayer);
 
 function handlePlay() {
-  const info = S.info;
+  const info=S.info;
   if (!info) return;
-
-  if (info.platform === "youtube" && info.embedUrl) {
-    openPlayer(`<iframe src="${esc(info.embedUrl)}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="${esc(info.title)}"></iframe>`);
-    return;
-  }
-
-  if (info.platform === "vimeo" && info.embedUrl) {
-    openPlayer(`<iframe src="${esc(info.embedUrl)}" frameborder="0" allow="autoplay; fullscreen" allowfullscreen title="${esc(info.title)}"></iframe>`);
-    return;
-  }
-
-  if (S.streamUrl) {
-    openPlayer(`
-      <video controls autoplay style="width:100%;height:100%;background:#000">
-        <source src="${esc(S.streamUrl)}">
-        Your browser does not support HTML5 video.
-      </video>`);
-    return;
-  }
-
+  if (info.platform==="youtube"&&info.embedUrl) { openPlayer(`<iframe src="${esc(info.embedUrl)}" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen title="${esc(info.title)}"></iframe>`); return; }
+  if (info.platform==="vimeo"&&info.embedUrl)   { openPlayer(`<iframe src="${esc(info.embedUrl)}" frameborder="0" allow="autoplay;fullscreen" allowfullscreen title="${esc(info.title)}"></iframe>`); return; }
+  if (S.streamUrl) { openPlayer(`<video controls autoplay style="width:100%;height:100%;background:#000"><source src="${esc(S.streamUrl)}">Your browser does not support HTML5 video.</video>`); return; }
+  if (info.preloadedUrl) { S.streamUrl=info.preloadedUrl; openPlayer(`<video controls autoplay style="width:100%;height:100%;background:#000"><source src="${esc(info.preloadedUrl)}">Your browser does not support HTML5 video.</video>`); return; }
   handleDownloadAndPlay();
 }
 
-/* ════════════════════════════════════════════════════════════
-   DOWNLOAD
-════════════════════════════════════════════════════════════ */
-
+/* ─────────────────────────────────────────────────────────────
+   DOWNLOAD HANDLER
+───────────────────────────────────────────────────────────── */
 async function animateProgress(phases) {
   D.pw.classList.add("on");
-  let pct = 0;
-  for (const [label, target] of phases) {
-    D.plbl.textContent = label;
-    await new Promise(res => {
-      const iv = setInterval(() => {
-        pct = Math.min(pct + Math.random() * 8 + 3, target);
-        D.pf.style.width  = pct + "%";
-        D.ppct.textContent = Math.round(pct) + "%";
-        if (pct >= target) { clearInterval(iv); res(); }
-      }, 120);
-    });
+  let pct=0;
+  for (const [label,target] of phases) {
+    D.plbl.textContent=label;
+    await new Promise(res=>{const iv=setInterval(()=>{pct=Math.min(pct+Math.random()*8+3,target);D.pf.style.width=pct+"%";D.ppct.textContent=Math.round(pct)+"%";if(pct>=target){clearInterval(iv);res();}},120);});
   }
 }
 
 async function handleDownloadAndPlay() {
-  const info = S.info;
-  if (!info || !info.canDownload) {
-    toast("This content cannot be downloaded.");
-    return;
-  }
+  const info=S.info;
+  if (!info||!info.canDownload){toast("This content cannot be downloaded.");return;}
 
-  D.dlBtn.disabled  = true;
-  D.playBtn.disabled = true;
-  D.pf.style.width  = "0%";
+  D.dlBtn.disabled=true; D.playBtn.disabled=true; D.pf.style.width="0%";
 
   try {
-    await animateProgress([
-      ["Connecting…",      20],
-      ["Fetching stream…", 55],
-      ["Processing…",      85],
-    ]);
+    await animateProgress([["Connecting…",20],["Fetching stream…",55],["Processing…",85]]);
+    const resp = await apiDownload(info.url||D.urlIn.value.trim(), S.quality);
 
-    const resp = await apiDownload(info.url || D.urlIn.value.trim(), S.quality);
+    D.pf.style.width="100%"; D.ppct.textContent="100%"; D.plbl.textContent="Ready!";
+    await delay(350); D.pw.classList.remove("on");
 
-    D.pf.style.width   = "100%";
-    D.ppct.textContent = "100%";
-    D.plbl.textContent = "Ready!";
-    await delay(350);
-    D.pw.classList.remove("on");
+    if (resp.status==="error"||resp.error) throw new Error(resp.error||"Download failed.");
 
-    if (resp.status === "error" || resp.error) {
-      throw new Error(resp.error?.context?.service || resp.error || "Download service returned an error.");
-    }
-
-    let dlUrl = null;
-
-    if (resp.status === "stream" || resp.status === "redirect" || resp.status === "tunnel") {
-      dlUrl = resp.url;
-    } else if (resp.status === "picker" && resp.picker?.length > 0) {
-      showPicker(resp.picker);
-      return;
-    } else if (resp.url) {
-      dlUrl = resp.url;
-    }
+    let dlUrl=null;
+    if (["stream","redirect","tunnel"].includes(resp.status)) { dlUrl=resp.url; }
+    else if (resp.status==="picker"&&resp.picker?.length>0) { showPicker(resp.picker); return; }
+    else if (resp.url) { dlUrl=resp.url; }
 
     if (!dlUrl) throw new Error("No download URL received. The content may be private or DRM-protected.");
 
-    S.streamUrl = dlUrl;
+    S.streamUrl=dlUrl;
+    const isAudio=S.quality==="audio";
+    const ext=isAudio?"mp3":"mp4";
+    const fname=resp.filename||((info.title||"video").replace(/[^a-z0-9 ]/gi,"_").slice(0,60)+"."+ext);
 
-    const isAudio = S.quality === "audio";
-    const ext     = isAudio ? "mp3" : "mp4";
-    const fname   = resp.filename
-      || ((info.title || "video").replace(/[^a-z0-9 ]/gi, "_").slice(0, 60) + "." + ext);
-
-    const a = document.createElement("a");
-    a.href     = dlUrl;
-    a.download = fname;
-    a.target   = "_blank";
-    a.rel      = "noopener noreferrer";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
+    const a=document.createElement("a");
+    a.href=dlUrl; a.download=fname; a.target="_blank"; a.rel="noopener noreferrer";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
     toast(`✓ Download started — ${fname}`);
 
-    D.playBtn.style.display = "";
-    D.playBtn.innerHTML = `<svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Play Downloaded`;
+    D.playBtn.style.display="";
+    D.playBtn.innerHTML=`<svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Play`;
 
-    addRecent({
-      platform: info.platform,
-      title:    info.title || "Video",
-      thumb:    info.thumb || info.thumbFb || null,
-      url:      info.url || D.urlIn.value.trim(),
-      quality:  S.quality,
-      duration: info.duration || "—",
-      savedAt:  Date.now(),
-    });
+    addRecent({platform:info.platform,title:info.title||"Video",thumb:info.thumb||null,url:info.url||D.urlIn.value.trim(),quality:S.quality,duration:info.duration||"—",savedAt:Date.now()});
 
-  } catch (e) {
+  } catch(e) {
     D.pw.classList.remove("on");
-    showErr(e.message || "Download failed. Please try again.");
+    showErr(e.message||"Download failed. Please try again.");
   } finally {
-    D.dlBtn.disabled   = false;
-    D.playBtn.disabled = false;
+    D.dlBtn.disabled=false; D.playBtn.disabled=false;
   }
 }
 
-/* ── Picker (Instagram multi-image / multi-video) ───────── */
 function showPicker(items) {
-  const html = items.map((it, i) => `
-    <a href="${esc(it.url)}" target="_blank" rel="noopener" download
-       class="dl-link" style="display:flex;align-items:center;justify-content:space-between;padding:11px 15px;background:rgba(255,255,255,.04);border:1px solid var(--gb);border-radius:10px;text-decoration:none;color:var(--t1);font-weight:600;font-size:.86rem;margin-bottom:8px;transition:var(--tr);">
-      ${it.type === "photo" ? "🖼️" : "🎬"} Item ${i+1} — ${it.type || "file"}
-      <span style="font-size:.72rem;color:var(--t3)">Download ↗</span>
-    </a>`).join("");
-
-  D.vNotice.innerHTML = `
-    <div class="notice ni" style="margin-top:10px;flex-direction:column;align-items:flex-start;gap:10px">
-      <strong>Multiple items found — click each to download:</strong>
-      <div style="width:100%">${html}</div>
-    </div>`;
+  const html=items.map((it,i)=>`<a href="${esc(it.url)}" target="_blank" rel="noopener" download style="display:flex;align-items:center;justify-content:space-between;padding:11px 15px;background:rgba(255,255,255,.04);border:1px solid var(--gb);border-radius:10px;text-decoration:none;color:var(--t1);font-weight:600;font-size:.86rem;margin-bottom:8px;">${it.type==="photo"?"🖼️":"🎬"} Item ${i+1} — ${it.type||"file"}<span style="font-size:.72rem;color:var(--t3)">Download ↗</span></a>`).join("");
+  D.vNotice.innerHTML=`<div class="notice ni" style="margin-top:10px;flex-direction:column;align-items:flex-start;gap:10px"><strong>Multiple items found — click each to download:</strong><div style="width:100%">${html}</div></div>`;
   toast("Multiple items found — pick below");
 }
 
-/* ════════════════════════════════════════════════════════════
-   FETCH VIDEO INFO
-════════════════════════════════════════════════════════════ */
-
-function setLoading(on) {
-  D.fetchBtn.disabled = on;
-  D.fetchTx.textContent = on ? "Fetching…" : "Fetch";
-  D.fetchIco.style.display = on ? "none" : "";
-  const sp = D.fetchBtn.querySelector(".spin");
-  if (on && !sp) { const s = document.createElement("div"); s.className = "spin"; D.fetchBtn.prepend(s); }
-  if (!on && sp) sp.remove();
-}
+/* ─────────────────────────────────────────────────────────────
+   FETCH HANDLER
+───────────────────────────────────────────────────────────── */
+function setLoading(on){D.fetchBtn.disabled=on;D.fetchTx.textContent=on?"Fetching…":"Fetch";D.fetchIco.style.display=on?"none":"";const sp=D.fetchBtn.querySelector(".spin");if(on&&!sp){const s=document.createElement("div");s.className="spin";D.fetchBtn.prepend(s);}if(!on&&sp)sp.remove();}
 
 async function handleFetch() {
-  const url = D.urlIn.value.trim();
+  const url=D.urlIn.value.trim();
   clearErr();
-  if (!url)      { showErr("Please paste a video URL first."); D.urlIn.focus(); return; }
-  if (!isURL(url)) { showErr("Not a valid URL — must start with https://"); D.urlIn.classList.add("err"); return; }
-
-  setLoading(true);
-  D.result.classList.remove("on");
-  closePlayer();
-
+  if (!url){showErr("Please paste a video URL first.");D.urlIn.focus();return;}
+  if (!isURL(url)){showErr("Not a valid URL — must start with https://");D.urlIn.classList.add("err");return;}
+  setLoading(true); D.result.classList.remove("on"); closePlayer();
   try {
-    const info = await apiGetInfo(url);
-    info.url = url;
+    const info=await apiGetInfo(url);
+    info.url=url;
     renderResult(info);
-  } catch (e) {
-    showErr(e.message || "Could not fetch video info. Check the URL and try again.");
-  } finally {
-    setLoading(false);
-  }
+  } catch(e) {
+    showErr(e.message||"Could not fetch video info. Check the URL and try again.");
+  } finally { setLoading(false); }
 }
 
-/* ── Paste ──────────────────────────────────────────────── */
-async function handlePaste() {
-  try {
-    if (navigator.clipboard?.readText) {
-      const t = await navigator.clipboard.readText();
-      if (t) { D.urlIn.value = t; clearErr(); toast("Pasted!"); D.urlIn.focus(); }
-    } else { D.urlIn.focus(); toast("Press Ctrl+V to paste"); }
-  } catch { D.urlIn.focus(); toast("Paste manually with Ctrl+V"); }
-}
+async function handlePaste(){try{if(navigator.clipboard?.readText){const t=await navigator.clipboard.readText();if(t){D.urlIn.value=t;clearErr();toast("Pasted!");D.urlIn.focus();}}else{D.urlIn.focus();toast("Press Ctrl+V to paste");}}catch{D.urlIn.focus();toast("Paste manually with Ctrl+V");}}
+async function handleCopy(){const url=S.info?.url||D.urlIn.value;if(!url)return;try{await navigator.clipboard.writeText(url);toast("URL copied!");}catch{toast("Copy manually from the address bar.");}}
 
-/* ── Copy URL ───────────────────────────────────────────── */
-async function handleCopy() {
-  const url = S.info?.url || D.urlIn.value;
-  if (!url) return;
-  try { await navigator.clipboard.writeText(url); toast("URL copied!"); }
-  catch { toast("Copy manually from the address bar."); }
-}
+function initQuality(){$$(".qb").forEach(b=>{b.addEventListener("click",()=>{$$(".qb").forEach(x=>{x.classList.remove("on");x.setAttribute("aria-checked","false");});b.classList.add("on");b.setAttribute("aria-checked","true");S.quality=b.dataset.q;S.streamUrl=null;});});}
 
-/* ── Quality buttons ────────────────────────────────────── */
-function initQuality() {
-  $$(".qb").forEach(b => {
-    b.addEventListener("click", () => {
-      $$(".qb").forEach(x => { x.classList.remove("on"); x.setAttribute("aria-checked","false"); });
-      b.classList.add("on"); b.setAttribute("aria-checked","true");
-      S.quality   = b.dataset.q;
-      S.streamUrl = null;
-    });
-  });
-}
-
-/* ════════════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────────
    RECENT DOWNLOADS
-════════════════════════════════════════════════════════════ */
-
-function loadRec() { try { return JSON.parse(localStorage.getItem(RKEY)||"[]"); } catch { return []; } }
-function saveRec(l) { localStorage.setItem(RKEY, JSON.stringify(l.slice(0, MAX_REC))); }
-
-function addRecent(v) {
-  const l = loadRec();
-  const i = l.findIndex(r => r.url === v.url);
-  if (i !== -1) l.splice(i, 1);
-  l.unshift(v);
-  saveRec(l);
-  renderRecent();
+───────────────────────────────────────────────────────────── */
+function loadRec(){try{return JSON.parse(localStorage.getItem(RKEY)||"[]");}catch{return[];}}
+function saveRec(l){localStorage.setItem(RKEY,JSON.stringify(l.slice(0,MAX_REC)));}
+function addRecent(v){const l=loadRec();const i=l.findIndex(r=>r.url===v.url);if(i!==-1)l.splice(i,1);l.unshift(v);saveRec(l);renderRecent();}
+function renderRecent(){
+  const l=loadRec();
+  if(!l.length){D.rl.innerHTML=`<div class="emp"><div class="eic">⏳</div><p>No recent downloads yet.<br/>Paste a URL above to get started.</p></div>`;return;}
+  D.rl.innerHTML=l.map(r=>`<div class="ri" data-url="${encodeURIComponent(r.url)}" role="button" tabindex="0" aria-label="${esc(r.title)}">${r.thumb?`<img class="rth" src="${esc(r.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'"/>`:`<div class="rth" style="display:flex;align-items:center;justify-content:center;font-size:1.2rem">${PIC[r.platform]||"🎞️"}</div>`}<div class="rif"><div class="rtx">${esc(r.title)}</div><div class="rmx">${pl(r.platform)} · ${r.quality||"—"} · ${fmtDate(r.savedAt)}</div></div><span class="rbg ${pc(r.platform)}">${r.duration||"—"}</span></div>`).join("");
+  $$(".ri").forEach(el=>{const go=()=>{D.urlIn.value=decodeURIComponent(el.dataset.url);clearErr();window.scrollTo({top:0,behavior:"smooth"});};el.addEventListener("click",go);el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")go();});});
 }
 
-function renderRecent() {
-  const l = loadRec();
-  if (!l.length) {
-    D.rl.innerHTML = `<div class="emp"><div class="eic">⏳</div><p>No recent downloads yet.<br/>Paste a URL above to get started.</p></div>`;
-    return;
-  }
-  D.rl.innerHTML = l.map(r => `
-    <div class="ri" data-url="${encodeURIComponent(r.url)}" role="button" tabindex="0" aria-label="${esc(r.title)}">
-      ${r.thumb ? `<img class="rth" src="${esc(r.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'"/>` : `<div class="rth" style="display:flex;align-items:center;justify-content:center;font-size:1.2rem">${PIC[r.platform]||"🎞️"}</div>`}
-      <div class="rif">
-        <div class="rtx">${esc(r.title)}</div>
-        <div class="rmx">${pl(r.platform)} · ${r.quality||"—"} · ${fmtDate(r.savedAt)}</div>
-      </div>
-      <span class="rbg ${pc(r.platform)}">${r.duration||"—"}</span>
-    </div>`).join("");
-
-  $$(".ri").forEach(el => {
-    const go = () => { D.urlIn.value = decodeURIComponent(el.dataset.url); clearErr(); window.scrollTo({top:0,behavior:"smooth"}); };
-    el.addEventListener("click", go);
-    el.addEventListener("keydown", e => { if (e.key==="Enter"||e.key===" ") go(); });
-  });
-}
-
-/* ════════════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────────
    FAQ
-════════════════════════════════════════════════════════════ */
-
-const FAQS = [
-  { q:"How does the download work directly on this website?", a:"LinkToVideo uses the Cobalt API — a free, open-source video extraction service — to fetch the real video stream URL from each platform. Your browser then downloads the video file directly. No third-party redirect sites involved." },
-  { q:"Can I preview the video before downloading?", a:"Yes! For YouTube and Vimeo, the video player loads right on this page before you download. For Instagram, TikTok, Twitter and other platforms, clicking Download fetches the stream and starts the file download immediately." },
-  { q:"How do I download Instagram posts and Reels?", a:"Paste the URL of an individual post (instagram.com/p/...) or Reel (instagram.com/reel/...) — not a profile page. The downloader fetches the actual video and starts the download directly." },
-  { q:"What about Instagram profile downloads?", a:"Instagram actively blocks profile scraping. When you paste a profile URL, the tool guides you to copy individual post/Reel URLs from that profile instead." },
-  { q:"Does it support Google Drive and Dropbox?", a:"Yes. For Google Drive, paste the shareable file link (drive.google.com/file/d/...). For Dropbox, paste any shared link. Both are converted to direct download URLs automatically — no API calls needed." },
-  { q:"Which qualities are available?", a:"360p, 480p, 720p HD, 1080p HD, and Audio-Only (MP3). The actual quality available depends on what the original uploader provided on their platform." },
-  { q:"Is my data private?", a:"Yes. No video URLs or personal data are stored on any server. Your recent downloads are saved only in your own browser's localStorage — nothing is shared or uploaded." },
+───────────────────────────────────────────────────────────── */
+const FAQS=[
+  {q:"How does the download work without a backend server?",a:"LinkToVideo uses free, open-source public APIs. YouTube downloads go through Invidious (open-source YouTube frontend). TikTok uses the TikWM public API. Instagram and Twitter use community Cobalt instances. Google Drive and Dropbox links are converted to direct download URLs. No backend server of your own is needed."},
+  {q:"Can I preview the video before downloading?",a:"Yes! YouTube and Vimeo play directly in an embedded player before you download. TikTok and Instagram videos can be previewed via an HTML5 player once fetched. For cloud storage files, click Download to start directly."},
+  {q:"How do I download Instagram Reels?",a:"Paste the URL of an individual post (instagram.com/p/...) or Reel (instagram.com/reel/...) — not a profile page. Profile URLs will show a helpful guide instead."},
+  {q:"Does it support TikTok videos without watermark?",a:"Yes! TikWM provides HD TikTok downloads without watermark when available. Select the quality you need and click Download."},
+  {q:"Why does YouTube download sometimes take longer?",a:"YouTube downloads use the Invidious API which tries multiple servers. If one is slow, it automatically tries the next. This usually completes within 10-15 seconds."},
+  {q:"Which qualities are available?",a:"360p, 480p, 720p HD, 1080p HD, and Audio-Only (MP3). Available quality depends on what the original uploader provided. YouTube typically has all qualities; other platforms may vary."},
+  {q:"Is my data private?",a:"Yes. No URLs or personal data are sent to any server we control. APIs used are third-party public services. Your recent downloads are stored only in your own browser's localStorage."},
 ];
-
-function renderFAQ() {
-  D.fl.innerHTML = FAQS.map((f, i) => `
-    <div class="fi">
-      <div class="fq" role="button" tabindex="0" aria-expanded="false" aria-controls="fa-${i}">
-        <span>${esc(f.q)}</span>
-        <div class="fa2" aria-hidden="true"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-      </div>
-      <div class="fa" id="fa-${i}" role="region">
-        <div class="fai">${esc(f.a)}</div>
-      </div>
-    </div>`).join("");
-
-  $$(".fi").forEach(it => {
-    const q = it.querySelector(".fq");
-    const tog = () => {
-      const op = it.classList.contains("op");
-      $$(".fi").forEach(x => { x.classList.remove("op"); x.querySelector(".fq").setAttribute("aria-expanded","false"); });
-      if (!op) { it.classList.add("op"); q.setAttribute("aria-expanded","true"); }
-    };
-    q.addEventListener("click", tog);
-    q.addEventListener("keydown", e => { if (e.key==="Enter"||e.key===" ") { e.preventDefault(); tog(); }});
-  });
+function renderFAQ(){
+  D.fl.innerHTML=FAQS.map((f,i)=>`<div class="fi"><div class="fq" role="button" tabindex="0" aria-expanded="false" aria-controls="fa-${i}"><span>${esc(f.q)}</span><div class="fa2" aria-hidden="true"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div><div class="fa" id="fa-${i}" role="region"><div class="fai">${esc(f.a)}</div></div></div>`).join("");
+  $$(".fi").forEach(it=>{const q=it.querySelector(".fq");const tog=()=>{const op=it.classList.contains("op");$$(".fi").forEach(x=>{x.classList.remove("op");x.querySelector(".fq").setAttribute("aria-expanded","false");});if(!op){it.classList.add("op");q.setAttribute("aria-expanded","true");}};q.addEventListener("click",tog);q.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();tog();}});});
 }
 
-/* ════════════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────────
    LIVE ACTIVITY
-════════════════════════════════════════════════════════════ */
-
-const ACTS = [
-  { c:"ad-y", msgs:["<strong>Arjun</strong> from Delhi downloaded a YouTube video","<strong>Ravi</strong> from Mumbai grabbed 1080p YouTube","<strong>Priya</strong> from Bangalore fetched YouTube audio"] },
-  { c:"ad-i", msgs:["<strong>Sana</strong> from Pakistan saved an Instagram Reel","<strong>Mia</strong> from Brazil downloaded an Instagram post"] },
-  { c:"ad-t", msgs:["<strong>Ali</strong> from Lahore fetched a Terabox file (980MB)","<strong>Jose</strong> from Philippines downloaded from Terabox"] },
-  { c:"ad-c", msgs:["<strong>Emma</strong> from Canada downloaded a Google Drive video","<strong>Jake</strong> from UK fetched from Dropbox"] },
+───────────────────────────────────────────────────────────── */
+const ACTS=[
+  {c:"ad-y",msgs:["<strong>Arjun</strong> from Delhi downloaded a YouTube video","<strong>Ravi</strong> from Mumbai grabbed 1080p YouTube","<strong>Priya</strong> from Bangalore fetched YouTube audio"]},
+  {c:"ad-i",msgs:["<strong>Sana</strong> from Pakistan saved an Instagram Reel","<strong>Mia</strong> from Brazil downloaded an Instagram post"]},
+  {c:"ad-t",msgs:["<strong>Rahul</strong> from Hyderabad downloaded a TikTok video","<strong>Jose</strong> from Philippines saved a TikTok clip"]},
+  {c:"ad-c",msgs:["<strong>Emma</strong> from Canada downloaded a Google Drive video","<strong>Jake</strong> from UK fetched from Dropbox"]},
 ];
+function addAct(){const a=rnd(ACTS),m=rnd(a.msgs),mins=Math.floor(Math.random()*4);const el=document.createElement("div");el.className="ai";el.innerHTML=`<div class="ad ${a.c}"></div><div class="at">${m}</div><div class="atm">${mins===0?"Just now":mins+"m ago"}</div>`;D.af.prepend(el);const its=D.af.querySelectorAll(".ai");if(its.length>5)its[its.length-1].remove();}
+function initActivity(){for(let i=0;i<3;i++)addAct();const tick=()=>{addAct();setTimeout(tick,4000+Math.random()*3000);};setTimeout(tick,4200);}
 
-function addAct() {
-  const a = rnd(ACTS), m = rnd(a.msgs), mins = Math.floor(Math.random() * 4);
-  const el = document.createElement("div");
-  el.className = "ai";
-  el.innerHTML = `<div class="ad ${a.c}"></div><div class="at">${m}</div><div class="atm">${mins===0?"Just now":mins+"m ago"}</div>`;
-  D.af.prepend(el);
-  const its = D.af.querySelectorAll(".ai");
-  if (its.length > 5) its[its.length-1].remove();
-}
+/* ─────────────────────────────────────────────────────────────
+   COUNTERS / REVEAL / COLOR / CANVAS
+───────────────────────────────────────────────────────────── */
+let counted=false;
+function animateCounters(){if(counted)return;counted=true;$$(".sn[data-to]").forEach(el=>{const to=parseFloat(el.dataset.to),sf=el.dataset.sf||"";const dur=1800,start=performance.now();const step=now=>{const p=Math.min((now-start)/dur,1),e=1-Math.pow(1-p,3),v=to*e;el.textContent=(v<10?v.toFixed(1):Math.round(v))+sf;if(p<1)requestAnimationFrame(step);};requestAnimationFrame(step);});}
+function initReveal(){const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");if(e.target.classList.contains("stats"))animateCounters();obs.unobserve(e.target);}});},{threshold:.12});$$(".rv").forEach(el=>obs.observe(el));}
+function hexToHSL(hex){let r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let h,s,l=(mx+mn)/2;if(mx===mn){h=s=0;}else{const d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);switch(mx){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;case b:h=(r-g)/d+4;break;}h/=6;}return[Math.round(h*360),Math.round(s*100),Math.round(l*100)];}
+function applyColor(hex){const[h,s,l]=hexToHSL(hex),R=document.documentElement;R.style.setProperty("--ah",h);R.style.setProperty("--as",s+"%");R.style.setProperty("--al",l+"%");R.style.setProperty("--ac",`hsl(${h},${s}%,${l}%)`);R.style.setProperty("--a2",`hsl(${(h+30)%360},${Math.min(s+5,100)}%,${Math.min(l+5,85)}%)`);}
+D.cpick.addEventListener("input",()=>applyColor(D.cpick.value));
+function initCanvas(){const cv=$("bgc"),ctx=cv.getContext("2d");let W,H,P;const resize=()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;};const make=()=>{const n=Math.min(Math.floor(W*H/20000),60);P=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:Math.random()*1.7+.4,a:Math.random()*.4+.1}));};const draw=()=>{ctx.clearRect(0,0,W,H);P.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(160,160,255,${p.a})`;ctx.fill();p.x=(p.x+p.vx+W)%W;p.y=(p.y+p.vy+H)%H;});for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){const a=P[i],b=P[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(99,102,241,${.12*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke();}}requestAnimationFrame(draw);};resize();make();draw();addEventListener("resize",()=>{resize();make();});}
 
-function initActivity() {
-  for (let i=0;i<3;i++) addAct();
-  const tick = () => { addAct(); setTimeout(tick, 4000 + Math.random()*3000); };
-  setTimeout(tick, 4200);
-}
+/* ─────────────────────────────────────────────────────────────
+   WIRE UP EVENTS + BOOT
+───────────────────────────────────────────────────────────── */
+D.fetchBtn.addEventListener("click",handleFetch);
+D.urlIn.addEventListener("keydown",e=>{if(e.key==="Enter")handleFetch();});
+D.urlIn.addEventListener("input",()=>{if(D.urlIn.classList.contains("err"))clearErr();});
+D.pasteBtn.addEventListener("click",handlePaste);
+D.dlBtn.addEventListener("click",handleDownloadAndPlay);
+D.playBtn.addEventListener("click",handlePlay);
+D.copyBtn.addEventListener("click",handleCopy);
+D.clearBtn.addEventListener("click",()=>{localStorage.removeItem(RKEY);renderRecent();toast("Cleared.");});
+D.urlIn.addEventListener("dragover",e=>e.preventDefault());
+D.urlIn.addEventListener("drop",e=>{e.preventDefault();const t=e.dataTransfer.getData("text");if(t){D.urlIn.value=t;clearErr();}});
 
-/* ════════════════════════════════════════════════════════════
-   ANIMATED COUNTERS
-════════════════════════════════════════════════════════════ */
-
-let counted = false;
-function animateCounters() {
-  if (counted) return; counted = true;
-  $$(".sn[data-to]").forEach(el => {
-    const to = parseFloat(el.dataset.to), sf = el.dataset.sf || "";
-    const dur = 1800, start = performance.now();
-    const step = now => {
-      const p = Math.min((now-start)/dur, 1), e = 1-Math.pow(1-p,3), v = to*e;
-      el.textContent = (v<10 ? v.toFixed(1) : Math.round(v)) + sf;
-      if (p<1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  });
-}
-
-/* ════════════════════════════════════════════════════════════
-   SCROLL REVEAL
-════════════════════════════════════════════════════════════ */
-
-function initReveal() {
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add("in");
-        if (e.target.classList.contains("stats")) animateCounters();
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: .12 });
-  $$(".rv").forEach(el => obs.observe(el));
-}
-
-/* ════════════════════════════════════════════════════════════
-   COLOR PICKER
-════════════════════════════════════════════════════════════ */
-
-function hexToHSL(hex) {
-  let r=parseInt(hex.slice(1,3),16)/255, g=parseInt(hex.slice(3,5),16)/255, b=parseInt(hex.slice(5,7),16)/255;
-  const mx=Math.max(r,g,b), mn=Math.min(r,g,b); let h,s,l=(mx+mn)/2;
-  if(mx===mn){h=s=0;}else{const d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);switch(mx){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;case b:h=(r-g)/d+4;break;}h/=6;}
-  return[Math.round(h*360),Math.round(s*100),Math.round(l*100)];
-}
-
-function applyColor(hex) {
-  const [h,s,l] = hexToHSL(hex), R = document.documentElement;
-  R.style.setProperty("--ah", h);
-  R.style.setProperty("--as", s+"%");
-  R.style.setProperty("--al", l+"%");
-  R.style.setProperty("--ac", `hsl(${h},${s}%,${l}%)`);
-  R.style.setProperty("--a2", `hsl(${(h+30)%360},${Math.min(s+5,100)}%,${Math.min(l+5,85)}%)`);
-}
-
-D.cpick.addEventListener("input", () => applyColor(D.cpick.value));
-
-/* ════════════════════════════════════════════════════════════
-   PARTICLE CANVAS
-════════════════════════════════════════════════════════════ */
-
-function initCanvas() {
-  const cv = $("bgc"), ctx = cv.getContext("2d");
-  let W, H, P;
-  const resize = () => { W = cv.width = innerWidth; H = cv.height = innerHeight; };
-  const make   = () => { const n=Math.min(Math.floor(W*H/20000),60); P=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:Math.random()*1.7+.4,a:Math.random()*.4+.1})); };
-  const draw   = () => {
-    ctx.clearRect(0,0,W,H);
-    P.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(160,160,255,${p.a})`;ctx.fill();p.x=(p.x+p.vx+W)%W;p.y=(p.y+p.vy+H)%H;});
-    for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){const a=P[i],b=P[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(99,102,241,${.12*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke();}}
-    requestAnimationFrame(draw);
-  };
-  resize(); make(); draw();
-  addEventListener("resize",()=>{resize();make();});
-}
-
-/* ════════════════════════════════════════════════════════════
-   EVENT WIRING
-════════════════════════════════════════════════════════════ */
-
-D.fetchBtn.addEventListener("click",  handleFetch);
-D.urlIn.addEventListener("keydown",   e => { if (e.key==="Enter") handleFetch(); });
-D.urlIn.addEventListener("input",     () => { if (D.urlIn.classList.contains("err")) clearErr(); });
-D.pasteBtn.addEventListener("click",  handlePaste);
-D.dlBtn.addEventListener("click",     handleDownloadAndPlay);
-D.playBtn.addEventListener("click",   handlePlay);
-D.copyBtn.addEventListener("click",   handleCopy);
-D.clearBtn.addEventListener("click",  () => { localStorage.removeItem(RKEY); renderRecent(); toast("Cleared."); });
-D.urlIn.addEventListener("dragover",  e => e.preventDefault());
-D.urlIn.addEventListener("drop",      e => { e.preventDefault(); const t=e.dataTransfer.getData("text"); if(t){D.urlIn.value=t;clearErr();} });
-
-/* ════════════════════════════════════════════════════════════
-   BOOT
-════════════════════════════════════════════════════════════ */
-
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => D.loader.classList.add("off"), 1600);
-  initCanvas();
-  initQuality();
-  initActivity();
-  initReveal();
-  renderRecent();
-  renderFAQ();
+document.addEventListener("DOMContentLoaded",()=>{
+  setTimeout(()=>D.loader.classList.add("off"),1600);
+  initCanvas(); initQuality(); initActivity(); initReveal(); renderRecent(); renderFAQ();
 });
 </script>
 </body>
