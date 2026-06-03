@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMI Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131c;
+    --border: #1e1e2e;
+    --accent: #00e5a0;
+    --accent2: #7c3aed;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --danger: #ff4757;
+    --gold: #ffd700;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .badge {
+    display: inline-block;
+    background: rgba(0,229,160,0.1);
+    border: 1px solid rgba(0,229,160,0.3);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  h1 span {
+    background: linear-gradient(135deg, var(--accent), #00bfff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+  }
+
+  /* Main layout */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 720px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  /* Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.5;
+  }
+
+  .card-title {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 28px;
+  }
+
+  /* Input group */
+  .input-group {
+    margin-bottom: 28px;
+  }
+
+  .input-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .input-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    background: rgba(0,229,160,0.08);
+    padding: 4px 10px;
+    border-radius: 6px;
+    min-width: 90px;
+    text-align: center;
+  }
+
+  .range-wrapper {
+    position: relative;
+    margin-bottom: 8px;
+  }
+
+  input[type=range] {
+    width: 100%;
+    height: 4px;
+    -webkit-appearance: none;
+    background: var(--border);
+    border-radius: 100px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px rgba(0,229,160,0.6);
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+
+  input[type=range]::-webkit-slider-thumb:hover {
+    transform: scale(1.3);
+  }
+
+  .range-limits {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Number input */
+  .number-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-top: 8px;
+  }
+
+  .number-input:focus {
+    border-color: var(--accent);
+  }
+
+  /* Results */
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .result-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-item.primary {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(0,229,160,0.08), rgba(0,191,255,0.06));
+    border-color: rgba(0,229,160,0.2);
+  }
+
+  .result-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 8px;
+  }
+
+  .result-value {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .result-item.primary .result-value {
+    font-size: 40px;
+    background: linear-gradient(135deg, var(--accent), #00bfff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .result-item:not(.primary) .result-value {
+    font-size: 22px;
+  }
+
+  /* Chart */
+  .chart-section {
+    grid-column: 1 / -1;
+  }
+
+  canvas {
+    width: 100%;
+    height: 260px;
+    display: block;
+  }
+
+  /* Donut chart */
+  .donut-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .donut-canvas {
+    width: 160px !important;
+    height: 160px !important;
+    flex-shrink: 0;
+  }
+
+  .legend {
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .legend-text { flex: 1; }
+  .legend-name { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .legend-val { font-size: 14px; font-weight: 700; }
+
+  /* Calculate button */
+  .calc-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--accent), #00bfff);
+    color: #000;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: opacity 0.2s, transform 0.15s;
+    margin-top: 8px;
+  }
+
+  .calc-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .calc-btn:active { transform: translateY(0); }
+
+  /* Amortization */
+  .amort-section {
+    grid-column: 1 / -1;
+  }
+
+  .amort-table-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    max-height: 280px;
+    overflow-y: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+
+  thead th {
+    background: rgba(0,229,160,0.06);
+    padding: 12px 16px;
+    text-align: right;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 10px;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  thead th:first-child { text-align: center; }
+
+  tbody td {
+    padding: 10px 16px;
+    text-align: right;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    transition: background 0.15s;
+  }
+
+  tbody td:first-child { text-align: center; color: var(--muted); }
+
+  tbody tr:hover td { background: rgba(0,229,160,0.04); }
+
+  .interest-cell { color: var(--danger); }
+  .principal-cell { color: var(--accent); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 100px; }
+
+  /* Animate in */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card { animation: fadeUp 0.5s ease both; }
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.2s; }
+
+  .highlight-bar {
+    height: 3px;
+    border-radius: 100px;
+    background: linear-gradient(90deg, var(--accent), #00bfff);
+    margin-bottom: 28px;
+    width: 40px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="badge">Free Tool</div>
+    <h1>EMI <span>Calculator</span></h1>
+    <p class="subtitle">// Loan · Interest · Repayment</p>
+  </header>
+
+  <div class="grid">
+
+    <!-- Input Card -->
+    <div class="card">
+      <p class="card-title">Loan Details</p>
+      <div class="highlight-bar"></div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <span>Loan Amount</span>
+          <span class="input-value" id="amtDisplay">₹5,00,000</span>
+        </div>
+        <div class="range-wrapper">
+          <input type="range" id="loanAmt" min="10000" max="10000000" step="10000" value="500000" oninput="syncInputs('loanAmt','loanAmtNum','amtDisplay','₹',true)">
+        </div>
+        <div class="range-limits"><span>₹10K</span><span>₹1 Cr</span></div>
+        <input type="number" class="number-input" id="loanAmtNum" value="500000" placeholder="Enter amount" oninput="syncFromNum('loanAmtNum','loanAmt','amtDisplay','₹',true)">
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <span>Interest Rate (p.a.)</span>
+          <span class="input-value" id="rateDisplay">8.5%</span>
+        </div>
+        <div class="range-wrapper">
+          <input type="range" id="rate" min="1" max="30" step="0.1" value="8.5" oninput="syncInputs('rate','rateNum','rateDisplay','',false,'%')">
+        </div>
+        <div class="range-limits"><span>1%</span><span>30%</span></div>
+        <input type="number" class="number-input" id="rateNum" value="8.5" placeholder="Enter rate" step="0.1" oninput="syncFromNum('rateNum','rate','rateDisplay','',false,'%')">
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <span>Loan Tenure</span>
+          <span class="input-value" id="tenureDisplay">60 mo</span>
+        </div>
+        <div class="range-wrapper">
+          <input type="range" id="tenure" min="1" max="360" step="1" value="60" oninput="syncInputs('tenure','tenureNum','tenureDisplay','','mo')">
+        </div>
+        <div class="range-limits"><span>1 mo</span><span>360 mo</span></div>
+        <input type="number" class="number-input" id="tenureNum" value="60" placeholder="Months" oninput="syncFromNum('tenureNum','tenure','tenureDisplay','','mo')">
+      </div>
+
+      <button class="calc-btn" onclick="calculate()">Calculate EMI →</button>
+    </div>
+
+    <!-- Results Card -->
+    <div class="card">
+      <p class="card-title">Results</p>
+      <div class="highlight-bar"></div>
+
+      <div class="result-grid">
+        <div class="result-item primary">
+          <div class="result-label">Monthly EMI</div>
+          <div class="result-value" id="emiVal">₹10,224</div>
+        </div>
+        <div class="result-item">
+          <div class="result-label">Total Interest</div>
+          <div class="result-value" id="intVal" style="color:#ff6b6b">₹1,13,440</div>
+        </div>
+        <div class="result-item">
+          <div class="result-label">Total Repayment</div>
+          <div class="result-value" id="totalVal" style="color:#ffd700">₹6,13,440</div>
+        </div>
+      </div>
+
+      <!-- Donut -->
+      <div class="donut-wrapper">
+        <canvas class="donut-canvas" id="donut"></canvas>
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:var(--accent)"></div>
+            <div class="legend-text">
+              <div class="legend-name">Principal</div>
+              <div class="legend-val" id="pctPrincipal">81.5%</div>
+            </div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:var(--danger)"></div>
+            <div class="legend-text">
+              <div class="legend-name">Interest</div>
+              <div class="legend-val" id="pctInterest">18.5%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="card chart-section">
+      <p class="card-title">Year-wise Breakdown</p>
+      <div class="highlight-bar"></div>
+      <canvas id="barChart" height="240"></canvas>
+    </div>
+
+    <!-- Amortization -->
+    <div class="card amort-section">
+      <p class="card-title">Amortization Schedule</p>
+      <div class="highlight-bar"></div>
+      <div class="amort-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>EMI</th>
+              <th>Principal</th>
+              <th>Interest</th>
+              <th>Balance</th>
+            </tr>
+          </thead>
+          <tbody id="amortBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+  let donutChart, barChartObj;
+
+  function fmt(n) {
+    return '₹' + Math.round(n).toLocaleString('en-IN');
+  }
+
+  function syncInputs(rangeId, numId, displayId, pre, lakhs, suf='') {
+    const val = parseFloat(document.getElementById(rangeId).value);
+    document.getElementById(numId).value = val;
+    const disp = lakhs ? (val >= 100000 ? (val/100000).toFixed(1)+' L' : (val/1000).toFixed(0)+'K') : val;
+    document.getElementById(displayId).textContent = pre + disp + suf;
+    calculate();
+  }
+
+  function syncFromNum(numId, rangeId, displayId, pre, lakhs, suf='') {
+    let val = parseFloat(document.getElementById(numId).value) || 0;
+    const range = document.getElementById(rangeId);
+    val = Math.min(Math.max(val, parseFloat(range.min)), parseFloat(range.max));
+    range.value = val;
+    const disp = lakhs ? (val >= 100000 ? (val/100000).toFixed(1)+' L' : (val/1000).toFixed(0)+'K') : val;
+    document.getElementById(displayId).textContent = pre + disp + suf;
+    calculate();
+  }
+
+  function calculate() {
+    const P = parseFloat(document.getElementById('loanAmt').value);
+    const annualRate = parseFloat(document.getElementById('rate').value);
+    const n = parseInt(document.getElementById('tenure').value);
+
+    const r = annualRate / 12 / 100;
+    let emi;
+    if (r === 0) {
+      emi = P / n;
+    } else {
+      emi = P * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1);
+    }
+
+    const total = emi * n;
+    const interest = total - P;
+
+    document.getElementById('emiVal').textContent = fmt(emi);
+    document.getElementById('intVal').textContent = fmt(interest);
+    document.getElementById('totalVal').textContent = fmt(total);
+
+    const pctP = (P / total * 100).toFixed(1);
+    const pctI = (interest / total * 100).toFixed(1);
+    document.getElementById('pctPrincipal').textContent = pctP + '%';
+    document.getElementById('pctInterest').textContent = pctI + '%';
+
+    drawDonut(P, interest);
+    drawBarChart(P, r, emi, n);
+    drawAmortization(P, r, emi, n);
+  }
+
+  function drawDonut(principal, interest) {
+    const ctx = document.getElementById('donut').getContext('2d');
+    if (donutChart) donutChart.destroy();
+    donutChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: [principal, interest],
+          backgroundColor: ['#00e5a0', '#ff4757'],
+          borderWidth: 0,
+          hoverOffset: 8
+        }]
+      },
+      options: {
+        responsive: false,
+        cutout: '72%',
+        plugins: { legend: { display: false }, tooltip: {
+          callbacks: {
+            label: ctx => ' ' + fmt(ctx.raw)
+          }
+        }},
+        animation: { duration: 600, easing: 'easeInOutQuart' }
+      }
+    });
+  }
+
+  function drawBarChart(P, r, emi, n) {
+    const ctx = document.getElementById('barChart').getContext('2d');
+    if (barChartObj) barChartObj.destroy();
+
+    const years = Math.ceil(n / 12);
+    const labels = [], principals = [], interests = [];
+    let balance = P;
+
+    for (let y = 1; y <= years; y++) {
+      let monthsInYear = (y === years && n % 12 !== 0) ? (n % 12) : 12;
+      let yPrincipal = 0, yInterest = 0;
+      for (let m = 0; m < monthsInYear; m++) {
+        if (balance <= 0) break;
+        const intPart = balance * r;
+        const prinPart = emi - intPart;
+        yInterest += intPart;
+        yPrincipal += Math.min(prinPart, balance);
+        balance -= prinPart;
+      }
+      labels.push('Y' + y);
+      principals.push(Math.round(yPrincipal));
+      interests.push(Math.round(yInterest));
+    }
+
+    barChartObj = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          { label: 'Principal', data: principals, backgroundColor: 'rgba(0,229,160,0.7)', borderRadius: 6, borderSkipped: false },
+          { label: 'Interest', data: interests, backgroundColor: 'rgba(255,71,87,0.6)', borderRadius: 6, borderSkipped: false }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index' },
+        plugins: {
+          legend: { labels: { color: '#6b6b80', font: { family: 'DM Mono', size: 11 }, boxWidth: 10, boxHeight: 10 }},
+          tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + fmt(ctx.raw) }}
+        },
+        scales: {
+          x: { stacked: true, ticks: { color: '#6b6b80', font: { family: 'DM Mono', size: 11 }}, grid: { display: false }},
+          y: { stacked: true, ticks: { color: '#6b6b80', font: { family: 'DM Mono', size: 10 }, callback: v => '₹'+(v/1000)+'K' }, grid: { color: 'rgba(255,255,255,0.04)' }}
+        },
+        animation: { duration: 600, easing: 'easeInOutQuart' }
+      }
+    });
+  }
+
+  function drawAmortization(P, r, emi, n) {
+    const tbody = document.getElementById('amortBody');
+    tbody.innerHTML = '';
+    let balance = P;
+    for (let m = 1; m <= n; m++) {
+      const intPart = balance * r;
+      const prinPart = emi - intPart;
+      balance = Math.max(balance - prinPart, 0);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${m}</td>
+        <td>${fmt(emi)}</td>
+        <td class="principal-cell">${fmt(prinPart)}</td>
+        <td class="interest-cell">${fmt(intPart)}</td>
+        <td>${fmt(balance)}</td>
+      `;
+      tbody.appendChild(tr);
+      if (balance <= 0) break;
+    }
+  }
+
+  // Init
+  calculate();
+</script>
+</body>
+</html>
