@@ -1,456 +1,399 @@
+cat << 'HTMLEOF' > /mnt/user-data/outputs/index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="LinkToVideo — Download videos from YouTube, Instagram, TikTok and more. Created by Vinay."/>
-  <meta name="author" content="Vinay"/>
-  <title>LinkToVideo — by Vinay</title>
-  <style>
-    :root {
-      --ah:245; --as:80%; --al:62%;
-      --ac:hsl(var(--ah),var(--as),var(--al));
-      --a2:hsl(calc(var(--ah)+30),78%,68%);
-      --a3:hsl(190,80%,55%);
-      --bg:#030712; --g1:rgba(255,255,255,.04);
-      --gb:rgba(255,255,255,.09);
-      --t1:#f1f5f9; --t2:#94a3b8; --t3:#475569;
-      --ok:#10b981; --er:#ef4444;
-      --r:14px; --rl:22px; --tr:all .3s cubic-bezier(.4,0,.2,1);
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html{scroll-behavior:smooth;}
-    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden;line-height:1.6;}
-
-    #loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease;}
-    #loader.off{opacity:0;visibility:hidden;pointer-events:none;}
-    .ld{display:flex;flex-direction:column;align-items:center;gap:16px;}
-    .ld-ico{width:70px;height:70px;background:linear-gradient(135deg,var(--ac),var(--a2));border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 50px var(--ac);animation:ldp 1.2s ease-in-out infinite alternate;}
-    @keyframes ldp{from{transform:scale(.9);box-shadow:0 0 20px var(--ac);}to{transform:scale(1.08);box-shadow:0 0 70px var(--ac);}}
-    .ld-bar{width:220px;height:3px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;}
-    .ld-fill{height:100%;background:linear-gradient(90deg,var(--ac),var(--a3));animation:ldf 1.6s ease forwards;}
-    @keyframes ldf{from{width:0}to{width:100%}}
-    .ld-txt{font-size:.72rem;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;}
-
-    .bg-g{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 90% 70% at 15% 5%,hsla(var(--ah),var(--as),50%,.13) 0%,transparent 65%),radial-gradient(ellipse 70% 55% at 85% 85%,hsla(calc(var(--ah)+30),75%,55%,.10) 0%,transparent 65%);}
-    .bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(hsla(var(--ah),var(--as),50%,.03) 1px,transparent 1px),linear-gradient(90deg,hsla(var(--ah),var(--as),50%,.03) 1px,transparent 1px);background-size:65px 65px;}
-    .orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;animation:of linear infinite;}
-    .o1{width:600px;height:600px;background:hsla(var(--ah),var(--as),50%,.08);top:-15%;left:-12%;animation-duration:22s;}
-    .o2{width:450px;height:450px;background:hsla(calc(var(--ah)+30),75%,55%,.06);bottom:5%;right:-8%;animation-duration:30s;animation-direction:reverse;}
-    @keyframes of{0%{transform:translate(0,0) scale(1);}50%{transform:translate(40px,-30px) scale(1.06);}100%{transform:translate(0,0) scale(1);}}
-    #bgc{position:fixed;inset:0;z-index:0;pointer-events:none;}
-
-    .vinay-banner{position:relative;z-index:10;width:100%;background:linear-gradient(135deg,rgba(10,15,35,.95) 0%,rgba(20,10,50,.95) 50%,rgba(10,15,35,.95) 100%);border-bottom:2px solid transparent;border-image:linear-gradient(90deg,transparent,var(--ac),var(--a2),var(--ac),transparent) 1;padding:28px 20px;text-align:center;overflow:hidden;}
-    .vinay-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 100% at 50% 50%,hsla(var(--ah),var(--as),50%,.08),transparent);pointer-events:none;}
-    .vinay-top-line{font-size:.72rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:12px;}
-    .vinay-top-line::before,.vinay-top-line::after{content:'';flex:1;max-width:140px;height:1px;background:linear-gradient(90deg,transparent,var(--ac));}
-    .vinay-top-line::after{background:linear-gradient(-90deg,transparent,var(--ac));}
-    .vinay-name{font-size:clamp(3rem,10vw,6.5rem);font-weight:900;letter-spacing:.05em;line-height:1;background:linear-gradient(135deg,#fff 0%,var(--ac) 40%,var(--a2) 70%,var(--a3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 30px hsla(var(--ah),var(--as),60%,.6));animation:namePulse 3s ease-in-out infinite alternate;display:block;margin-bottom:8px;}
-    @keyframes namePulse{from{filter:drop-shadow(0 0 20px hsla(var(--ah),var(--as),60%,.4));}to{filter:drop-shadow(0 0 50px hsla(var(--ah),var(--as),60%,.9));}}
-    .vinay-sub{font-size:clamp(.8rem,2vw,1rem);font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--a3);display:flex;align-items:center;justify-content:center;gap:14px;}
-    .vdot{width:6px;height:6px;border-radius:50%;background:var(--ac);box-shadow:0 0 10px var(--ac);display:inline-block;animation:blink 1.8s ease-in-out infinite;}
-    @keyframes blink{0%,100%{opacity:1;}50%{opacity:.15;}}
-    .vinay-badge{display:inline-flex;align-items:center;gap:6px;background:hsla(var(--ah),var(--as),50%,.1);border:1px solid hsla(var(--ah),var(--as),60%,.3);padding:5px 16px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-top:12px;}
-
-    header{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:16px 36px;border-bottom:1px solid var(--gb);backdrop-filter:blur(24px);background:rgba(3,7,18,.7);}
-    .logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-    .logo-ic{width:36px;height:36px;background:linear-gradient(135deg,var(--ac),var(--a2));border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px hsla(var(--ah),var(--as),60%,.5);}
-    .logo-tx{font-size:1.25rem;font-weight:900;letter-spacing:-.03em;background:linear-gradient(135deg,#fff 40%,var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .hdr-r{display:flex;align-items:center;gap:10px;}
-    .clr-wrap{display:flex;align-items:center;gap:7px;padding:6px 12px;border-radius:99px;border:1px solid var(--gb);background:rgba(255,255,255,.05);cursor:pointer;font-size:.75rem;color:var(--t2);font-weight:600;transition:var(--tr);}
-    .clr-wrap:hover{border-color:var(--ac);}
-    #cpick{width:18px;height:18px;border:none;border-radius:50%;cursor:pointer;padding:0;outline:2px solid rgba(255,255,255,.2);}
-    #cpick::-webkit-color-swatch-wrapper{padding:0;border-radius:50%;}
-    #cpick::-webkit-color-swatch{border:none;border-radius:50%;}
-    .nbadge{font-size:.67rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:20px;border:1px solid hsla(var(--ah),var(--as),60%,.4);color:var(--ac);background:hsla(var(--ah),var(--as),60%,.08);}
-
-    .wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 20px 80px;}
-    .hero{text-align:center;padding:60px 0 44px;}
-    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--a3);background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.22);padding:6px 18px;border-radius:20px;margin-bottom:22px;}
-    .eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--a3);animation:blink 2s ease-in-out infinite;}
-    h1.ht{font-size:clamp(1.9rem,5vw,3.6rem);font-weight:900;letter-spacing:-.04em;line-height:1.08;margin-bottom:16px;}
-    h1.ht span{background:linear-gradient(135deg,var(--ac),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .hsub{font-size:1rem;color:var(--t2);max-width:520px;margin:0 auto;}
-
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
-    .sb{background:var(--g1);border:1px solid var(--gb);border-radius:var(--r);padding:16px 12px;text-align:center;backdrop-filter:blur(20px);transition:var(--tr);position:relative;overflow:hidden;}
-    .sb::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--ac),transparent);opacity:.6;}
-    .sb:hover{border-color:hsla(var(--ah),var(--as),60%,.3);transform:translateY(-3px);box-shadow:0 0 28px hsla(var(--ah),var(--as),50%,.1);}
-    .sn{font-size:1.55rem;font-weight:900;letter-spacing:-.04em;background:linear-gradient(135deg,var(--ac),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
-    .sl{font-size:.7rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);}
-
-    .card{background:var(--g1);border:1px solid var(--gb);border-radius:var(--rl);backdrop-filter:blur(28px);padding:30px;transition:var(--tr);margin-bottom:24px;}
-    .card.glow{box-shadow:0 0 0 1px hsla(var(--ah),var(--as),60%,.14),0 0 50px hsla(var(--ah),var(--as),50%,.08);}
-    .card:hover{border-color:hsla(var(--ah),var(--as),60%,.2);}
-
-    .ilbl{display:block;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);margin-bottom:11px;}
-    .irow{display:flex;gap:10px;}
-    .ui{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--gb);border-radius:var(--r);padding:14px 18px;color:var(--t1);font-size:.95rem;font-family:inherit;outline:none;transition:var(--tr);min-width:0;}
-    .ui::placeholder{color:var(--t3);}
-    .ui:focus{border-color:var(--ac);background:hsla(var(--ah),var(--as),50%,.06);box-shadow:0 0 0 3px hsla(var(--ah),var(--as),50%,.14),0 0 24px hsla(var(--ah),var(--as),50%,.1);}
-    .ui.err{border-color:var(--er);box-shadow:0 0 0 3px rgba(239,68,68,.14);}
-
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:13px 19px;border-radius:var(--r);border:none;cursor:pointer;font-size:.88rem;font-weight:700;font-family:inherit;transition:var(--tr);white-space:nowrap;user-select:none;}
-    .bic{padding:13px;aspect-ratio:1;}
-    .bsm{padding:6px 14px;font-size:.78rem;}
-    .bg-btn{background:rgba(255,255,255,.05);color:var(--t2);border:1px solid var(--gb);}
-    .bg-btn:hover{background:rgba(255,255,255,.09);color:var(--t1);}
-    .bp{background:linear-gradient(135deg,var(--ac),var(--a2));color:#fff;box-shadow:0 4px 18px hsla(var(--ah),var(--as),50%,.4);}
-    .bp:hover{transform:translateY(-2px);box-shadow:0 8px 30px hsla(var(--ah),var(--as),50%,.55);}
-    .bp:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
-    .bok{background:linear-gradient(135deg,#059669,#10b981);color:#fff;box-shadow:0 4px 18px rgba(16,185,129,.4);}
-    .bok:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(16,185,129,.55);}
-    .bok:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
-    .bplay{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;box-shadow:0 4px 18px rgba(168,85,247,.4);}
-    .bplay:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(168,85,247,.55);}
-    .spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:sp .65s linear infinite;flex-shrink:0;}
-    @keyframes sp{to{transform:rotate(360deg);}}
-
-    .emsg{display:flex;align-items:flex-start;gap:8px;margin-top:11px;padding:11px 15px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.22);border-radius:8px;color:#fca5a5;font-size:.855rem;}
-    .emsg.h{display:none;}
-    .notice{display:flex;align-items:flex-start;gap:9px;padding:11px 15px;border-radius:9px;font-size:.83rem;line-height:1.55;}
-    .ni{background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.22);color:#c7d2fe;}
-    .nw{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.22);color:#fde68a;}
-    .ns{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.22);color:#6ee7b7;}
-    .sz-badge{display:inline-flex;align-items:center;gap:6px;font-size:.71rem;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(16,185,129,.10);border:1px solid rgba(16,185,129,.22);color:#34d399;letter-spacing:.06em;text-transform:uppercase;margin-top:11px;}
-    .sz-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399;}
-    .neon-ln{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--ac),var(--a2),transparent);margin:22px 0;opacity:.4;}
-
-    .result{display:none;}
-    .result.on{display:block;animation:sup .4s ease;}
-    @keyframes sup{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-
-    .player-wrap{display:none;margin-bottom:20px;border-radius:var(--rl);overflow:hidden;background:#000;aspect-ratio:16/9;position:relative;box-shadow:0 0 40px hsla(var(--ah),var(--as),50%,.2),0 0 0 1px hsla(var(--ah),var(--as),60%,.15);}
-    .player-wrap.on{display:block;}
-    .player-wrap iframe,.player-wrap video{width:100%;height:100%;display:block;border:none;}
-    .player-close{position:absolute;top:10px;right:10px;z-index:5;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.2);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--tr);font-size:.9rem;}
-    .player-close:hover{background:rgba(239,68,68,.6);}
-
-    .rin{display:grid;grid-template-columns:200px 1fr;gap:22px;}
-    .tw{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:16/9;background:rgba(255,255,255,.05);flex-shrink:0;}
-    .tw img{width:100%;height:100%;object-fit:cover;display:block;}
-    .tov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);display:flex;align-items:center;justify-content:center;}
-    .play-btn-ov{width:52px;height:52px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);cursor:pointer;transition:var(--tr);box-shadow:0 0 24px hsla(var(--ah),var(--as),60%,.4);}
-    .play-btn-ov:hover{background:rgba(255,255,255,.3);transform:scale(1.1);}
-    .tdur{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.82);padding:3px 8px;border-radius:5px;font-size:.7rem;font-weight:700;}
-    .no-thumb{display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);font-size:2.5rem;border-radius:var(--r);aspect-ratio:16/9;}
-    .vm{display:flex;flex-direction:column;gap:10px;}
-    .pbadge{display:inline-flex;align-items:center;gap:5px;font-size:.67rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;width:fit-content;}
-    .byt{background:rgba(255,0,0,.12);color:#fc5555;border:1px solid rgba(255,0,0,.22);}
-    .big{background:rgba(228,64,95,.12);color:#f0698b;border:1px solid rgba(228,64,95,.22);}
-    .btb{background:rgba(30,215,97,.10);color:#4ade80;border:1px solid rgba(30,215,97,.22);}
-    .bcl{background:rgba(6,182,212,.10);color:#67e8f9;border:1px solid rgba(6,182,212,.22);}
-    .bvm{background:rgba(99,102,241,.10);color:#a5b4fc;border:1px solid rgba(99,102,241,.22);}
-    .vtitle{font-size:1.05rem;font-weight:700;line-height:1.35;}
-    .vstats{display:flex;flex-wrap:wrap;gap:12px;}
-    .vst{display:flex;align-items:center;gap:5px;font-size:.79rem;color:var(--t2);}
-
-    .qlbl{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:9px;margin-top:12px;}
-    .qg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
-    .qb{padding:7px 15px;border-radius:8px;border:1px solid var(--gb);background:rgba(255,255,255,.04);color:var(--t2);font-size:.81rem;font-weight:700;cursor:pointer;transition:var(--tr);font-family:inherit;}
-    .qb:hover{border-color:var(--ac);color:var(--t1);background:hsla(var(--ah),var(--as),50%,.08);}
-    .qb.on{background:linear-gradient(135deg,var(--ac),var(--a2));border-color:transparent;color:#fff;box-shadow:0 0 15px hsla(var(--ah),var(--as),50%,.4);}
-    .qb.aud.on{background:linear-gradient(135deg,#059669,#10b981);box-shadow:0 0 15px rgba(16,185,129,.4);}
-
-    .pw{margin-top:14px;display:none;}
-    .pw.on{display:block;}
-    .ph{display:flex;justify-content:space-between;font-size:.79rem;color:var(--t2);margin-bottom:7px;}
-    .pb{height:7px;background:rgba(255,255,255,.05);border-radius:99px;overflow:hidden;}
-    .pf{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--ac),var(--a3));width:0%;transition:width .3s ease;box-shadow:0 0 10px var(--ac);position:relative;}
-    .pf::after{content:'';position:absolute;right:-1px;top:50%;transform:translateY(-50%);width:11px;height:11px;border-radius:50%;background:#fff;box-shadow:0 0 10px var(--ac),0 0 20px var(--ac);}
-    .dacts{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
-
-    .ig-profile-card{margin-top:12px;}
-    .ig-profile-header{display:flex;align-items:center;gap:14px;padding:18px;background:rgba(228,64,95,.06);border:1px solid rgba(228,64,95,.18);border-radius:var(--r);margin-bottom:14px;}
-    .ig-av{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
-    .ig-name{font-size:1.05rem;font-weight:800;}
-    .ig-sub{font-size:.82rem;color:var(--t2);margin-top:3px;}
-
-    .af{display:flex;flex-direction:column;gap:7px;max-height:240px;overflow:hidden;}
-    .ai{display:flex;align-items:center;gap:11px;padding:9px 13px;background:rgba(255,255,255,.03);border:1px solid var(--gb);border-radius:8px;font-size:.8rem;animation:sup .4s ease;}
-    .ad{width:7px;height:7px;border-radius:50%;flex-shrink:0;animation:blink 2s ease-in-out infinite;}
-    .ad-y{background:#fc5555;box-shadow:0 0 8px #fc5555;}
-    .ad-i{background:#f0698b;box-shadow:0 0 8px #f0698b;}
-    .ad-t{background:#4ade80;box-shadow:0 0 8px #4ade80;}
-    .ad-c{background:#67e8f9;box-shadow:0 0 8px #67e8f9;}
-    .at{flex:1;color:var(--t2);line-height:1.4;}
-    .at strong{color:var(--t1);font-weight:600;}
-    .atm{font-size:.68rem;color:var(--t3);white-space:nowrap;}
-    .lbadge{display:inline-flex;align-items:center;gap:5px;font-size:.67rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#fca5a5;}
-    .lbadge::before{content:'';width:6px;height:6px;border-radius:50%;background:#ef4444;box-shadow:0 0 8px #ef4444;animation:blink 1.2s ease-in-out infinite;}
-
-    .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-    .st{font-size:.98rem;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;}
-    .sico{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
-    .rl{display:flex;flex-direction:column;gap:9px;}
-    .ri{display:flex;align-items:center;gap:13px;padding:11px 15px;background:rgba(255,255,255,.03);border:1px solid var(--gb);border-radius:var(--r);cursor:pointer;transition:var(--tr);}
-    .ri:hover{background:hsla(var(--ah),var(--as),50%,.06);border-color:hsla(var(--ah),var(--as),60%,.2);}
-    .rth{width:56px;height:38px;border-radius:5px;object-fit:cover;flex-shrink:0;background:rgba(255,255,255,.06);}
-    .rif{flex:1;min-width:0;}
-    .rtx{font-size:.83rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .rmx{font-size:.72rem;color:var(--t2);margin-top:2px;}
-    .rbg{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;padding:3px 7px;border-radius:20px;flex-shrink:0;}
-    .emp{text-align:center;padding:36px 20px;color:var(--t3);font-size:.88rem;}
-    .eic{font-size:2.4rem;margin-bottom:10px;opacity:.3;}
-
-    .pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
-    .pc{background:rgba(255,255,255,.03);border:1px solid var(--gb);border-radius:var(--r);padding:16px 14px;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;transition:var(--tr);}
-    .pc:hover{border-color:hsla(var(--ah),var(--as),60%,.25);background:hsla(var(--ah),var(--as),50%,.05);}
-    .pic{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;}
-    .pnm{font-size:.83rem;font-weight:700;}
-    .pmx{font-size:.7rem;color:var(--t3);}
-    .pst{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ok);background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);padding:3px 9px;border-radius:20px;}
-
-    .fl{display:flex;flex-direction:column;gap:8px;}
-    .fi{border:1px solid var(--gb);border-radius:var(--r);overflow:hidden;transition:var(--tr);}
-    .fi.op{border-color:hsla(var(--ah),var(--as),60%,.25);}
-    .fq{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;font-size:.88rem;font-weight:600;gap:12px;user-select:none;}
-    .fq:hover{background:rgba(255,255,255,.03);}
-    .fa2{width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .25s ease;}
-    .fi.op .fa2{transform:rotate(180deg);background:hsla(var(--ah),var(--as),50%,.12);}
-    .fa{max-height:0;overflow:hidden;transition:max-height .3s ease;}
-    .fi.op .fa{max-height:300px;}
-    .fai{padding:0 18px 14px;font-size:.84rem;color:var(--t2);line-height:1.65;}
-
-    footer{position:relative;z-index:1;border-top:1px solid var(--gb);padding:48px 36px 28px;background:rgba(3,7,18,.6);backdrop-filter:blur(20px);}
-    .fg{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;max-width:960px;margin:0 auto 36px;}
-    .fbp{font-size:.82rem;color:var(--t3);line-height:1.7;margin-top:12px;max-width:280px;}
-    .fc h4{font-size:.78rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);margin-bottom:14px;}
-    .fc ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
-    .fc a{font-size:.83rem;color:var(--t3);text-decoration:none;transition:var(--tr);}
-    .fc a:hover{color:var(--t1);}
-    .fb{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding-top:22px;border-top:1px solid var(--gb);flex-wrap:wrap;gap:10px;}
-    .fcp{font-size:.78rem;color:var(--t3);}
-    .fds{font-size:.72rem;color:var(--t3);opacity:.6;}
-    .cr{text-align:center;margin-top:20px;font-size:.72rem;color:var(--t3);letter-spacing:.08em;}
-    .cr span{color:var(--ac);font-weight:800;}
-
-    .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(15,23,42,.92);border:1px solid var(--gb);border-radius:99px;padding:10px 22px;font-size:.84rem;font-weight:600;display:flex;align-items:center;gap:8px;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;z-index:1000;white-space:nowrap;backdrop-filter:blur(20px);}
-    .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
-    .tdot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);}
-
-    @media(max-width:700px){header{padding:14px 18px;}.rin{grid-template-columns:1fr;}.fg{grid-template-columns:1fr;gap:24px;}.fb{flex-direction:column;align-items:flex-start;}footer{padding:36px 18px 24px;}}
-    @media(max-width:440px){.hero{padding:40px 0 28px;}.stats{grid-template-columns:repeat(2,1fr);gap:8px;}}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="LinkToVideo — Download videos from YouTube, Instagram, TikTok and more. Created by Vinay."/>
+<meta name="author" content="Vinay"/>
+<title>LinkToVideo — by Vinay</title>
+<style>
+:root {
+--ah:245; --as:80%; --al:62%;
+--ac:hsl(var(--ah),var(--as),var(--al));
+--a2:hsl(calc(var(--ah)+30),78%,68%);
+--a3:hsl(190,80%,55%);
+--bg:#030712; --g1:rgba(255,255,255,.04);
+--gb:rgba(255,255,255,.09);
+--t1:#f1f5f9; --t2:#94a3b8; --t3:#475569;
+--ok:#10b981; --er:#ef4444;
+--r:14px; --rl:22px; --tr:all .3s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden;line-height:1.6;}
+#loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease;}
+#loader.off{opacity:0;visibility:hidden;pointer-events:none;}
+.ld{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.ld-ico{width:70px;height:70px;background:linear-gradient(135deg,var(--ac),var(--a2));border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 50px var(--ac);animation:ldp 1.2s ease-in-out infinite alternate;}
+@keyframes ldp{from{transform:scale(.9);box-shadow:0 0 20px var(--ac);}to{transform:scale(1.08);box-shadow:0 0 70px var(--ac);}}
+.ld-bar{width:220px;height:3px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;}
+.ld-fill{height:100%;background:linear-gradient(90deg,var(--ac),var(--a3));animation:ldf 1.6s ease forwards;}
+@keyframes ldf{from{width:0}to{width:100%}}
+.ld-txt{font-size:.72rem;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;}
+.bg-g{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 90% 70% at 15% 5%,hsla(var(--ah),var(--as),50%,.13) 0%,transparent 65%),radial-gradient(ellipse 70% 55% at 85% 85%,hsla(calc(var(--ah)+30),75%,55%,.10) 0%,transparent 65%);}
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(hsla(var(--ah),var(--as),50%,.03) 1px,transparent 1px),linear-gradient(90deg,hsla(var(--ah),var(--as),50%,.03) 1px,transparent 1px);background-size:65px 65px;}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;animation:of linear infinite;}
+.o1{width:600px;height:600px;background:hsla(var(--ah),var(--as),50%,.08);top:-15%;left:-12%;animation-duration:22s;}
+.o2{width:450px;height:450px;background:hsla(calc(var(--ah)+30),75%,55%,.06);bottom:5%;right:-8%;animation-duration:30s;animation-direction:reverse;}
+@keyframes of{0%{transform:translate(0,0) scale(1);}50%{transform:translate(40px,-30px) scale(1.06);}100%{transform:translate(0,0) scale(1);}}
+#bgc{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.vinay-banner{position:relative;z-index:10;width:100%;background:linear-gradient(135deg,rgba(10,15,35,.95) 0%,rgba(20,10,50,.95) 50%,rgba(10,15,35,.95) 100%);border-bottom:2px solid transparent;border-image:linear-gradient(90deg,transparent,var(--ac),var(--a2),var(--ac),transparent) 1;padding:28px 20px;text-align:center;overflow:hidden;}
+.vinay-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 100% at 50% 50%,hsla(var(--ah),var(--as),50%,.08),transparent);pointer-events:none;}
+.vinay-top-line{font-size:.72rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:12px;}
+.vinay-top-line::before,.vinay-top-line::after{content:'';flex:1;max-width:140px;height:1px;background:linear-gradient(90deg,transparent,var(--ac));}
+.vinay-top-line::after{background:linear-gradient(-90deg,transparent,var(--ac));}
+.vinay-name{font-size:clamp(3rem,10vw,6.5rem);font-weight:900;letter-spacing:.05em;line-height:1;background:linear-gradient(135deg,#fff 0%,var(--ac) 40%,var(--a2) 70%,var(--a3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 30px hsla(var(--ah),var(--as),60%,.6));animation:namePulse 3s ease-in-out infinite alternate;display:block;margin-bottom:8px;}
+@keyframes namePulse{from{filter:drop-shadow(0 0 20px hsla(var(--ah),var(--as),60%,.4));}to{filter:drop-shadow(0 0 50px hsla(var(--ah),var(--as),60%,.9));}}
+.vinay-sub{font-size:clamp(.8rem,2vw,1rem);font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--a3);display:flex;align-items:center;justify-content:center;gap:14px;}
+.vdot{width:6px;height:6px;border-radius:50%;background:var(--ac);box-shadow:0 0 10px var(--ac);display:inline-block;animation:blink 1.8s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.15;}}
+.vinay-badge{display:inline-flex;align-items:center;gap:6px;background:hsla(var(--ah),var(--as),50%,.1);border:1px solid hsla(var(--ah),var(--as),60%,.3);padding:5px 16px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-top:12px;}
+header{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:16px 36px;border-bottom:1px solid var(--gb);backdrop-filter:blur(24px);background:rgba(3,7,18,.7);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-ic{width:36px;height:36px;background:linear-gradient(135deg,var(--ac),var(--a2));border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px hsla(var(--ah),var(--as),60%,.5);}
+.logo-tx{font-size:1.25rem;font-weight:900;letter-spacing:-.03em;background:linear-gradient(135deg,#fff 40%,var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hdr-r{display:flex;align-items:center;gap:10px;}
+.clr-wrap{display:flex;align-items:center;gap:7px;padding:6px 12px;border-radius:99px;border:1px solid var(--gb);background:rgba(255,255,255,.05);cursor:pointer;font-size:.75rem;color:var(--t2);font-weight:600;transition:var(--tr);}
+.clr-wrap:hover{border-color:var(--ac);}
+#cpick{width:18px;height:18px;border:none;border-radius:50%;cursor:pointer;padding:0;outline:2px solid rgba(255,255,255,.2);}
+#cpick::-webkit-color-swatch-wrapper{padding:0;border-radius:50%;}
+#cpick::-webkit-color-swatch{border:none;border-radius:50%;}
+.nbadge{font-size:.67rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:20px;border:1px solid hsla(var(--ah),var(--as),60%,.4);color:var(--ac);background:hsla(var(--ah),var(--as),60%,.08);}
+.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 20px 80px;}
+.hero{text-align:center;padding:60px 0 44px;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--a3);background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.22);padding:6px 18px;border-radius:20px;margin-bottom:22px;}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--a3);animation:blink 2s ease-in-out infinite;}
+h1.ht{font-size:clamp(1.9rem,5vw,3.6rem);font-weight:900;letter-spacing:-.04em;line-height:1.08;margin-bottom:16px;}
+h1.ht span{background:linear-gradient(135deg,var(--ac),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hsub{font-size:1rem;color:var(--t2);max-width:520px;margin:0 auto;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.sb{background:var(--g1);border:1px solid var(--gb);border-radius:var(--r);padding:16px 12px;text-align:center;backdrop-filter:blur(20px);transition:var(--tr);position:relative;overflow:hidden;}
+.sb::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--ac),transparent);opacity:.6;}
+.sb:hover{border-color:hsla(var(--ah),var(--as),60%,.3);transform:translateY(-3px);box-shadow:0 0 28px hsla(var(--ah),var(--as),50%,.1);}
+.sn{font-size:1.55rem;font-weight:900;letter-spacing:-.04em;background:linear-gradient(135deg,var(--ac),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
+.sl{font-size:.7rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);}
+.card{background:var(--g1);border:1px solid var(--gb);border-radius:var(--rl);backdrop-filter:blur(28px);padding:30px;transition:var(--tr);margin-bottom:24px;}
+.card.glow{box-shadow:0 0 0 1px hsla(var(--ah),var(--as),60%,.14),0 0 50px hsla(var(--ah),var(--as),50%,.08);}
+.card:hover{border-color:hsla(var(--ah),var(--as),60%,.2);}
+.ilbl{display:block;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);margin-bottom:11px;}
+.irow{display:flex;gap:10px;}
+.ui{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--gb);border-radius:var(--r);padding:14px 18px;color:var(--t1);font-size:.95rem;font-family:inherit;outline:none;transition:var(--tr);min-width:0;}
+.ui::placeholder{color:var(--t3);}
+.ui:focus{border-color:var(--ac);background:hsla(var(--ah),var(--as),50%,.06);box-shadow:0 0 0 3px hsla(var(--ah),var(--as),50%,.14),0 0 24px hsla(var(--ah),var(--as),50%,.1);}
+.ui.err{border-color:var(--er);box-shadow:0 0 0 3px rgba(239,68,68,.14);}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:13px 19px;border-radius:var(--r);border:none;cursor:pointer;font-size:.88rem;font-weight:700;font-family:inherit;transition:var(--tr);white-space:nowrap;user-select:none;}
+.bic{padding:13px;aspect-ratio:1;}
+.bsm{padding:6px 14px;font-size:.78rem;}
+.bg-btn{background:rgba(255,255,255,.05);color:var(--t2);border:1px solid var(--gb);}
+.bg-btn:hover{background:rgba(255,255,255,.09);color:var(--t1);}
+.bp{background:linear-gradient(135deg,var(--ac),var(--a2));color:#fff;box-shadow:0 4px 18px hsla(var(--ah),var(--as),50%,.4);}
+.bp:hover{transform:translateY(-2px);box-shadow:0 8px 30px hsla(var(--ah),var(--as),50%,.55);}
+.bp:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
+.bok{background:linear-gradient(135deg,#059669,#10b981);color:#fff;box-shadow:0 4px 18px rgba(16,185,129,.4);}
+.bok:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(16,185,129,.55);}
+.bok:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
+.bplay{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;box-shadow:0 4px 18px rgba(168,85,247,.4);}
+.bplay:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(168,85,247,.55);}
+.spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:sp .65s linear infinite;flex-shrink:0;}
+@keyframes sp{to{transform:rotate(360deg);}}
+.emsg{display:flex;align-items:flex-start;gap:8px;margin-top:11px;padding:11px 15px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.22);border-radius:8px;color:#fca5a5;font-size:.855rem;}
+.emsg.h{display:none;}
+.notice{display:flex;align-items:flex-start;gap:9px;padding:11px 15px;border-radius:9px;font-size:.83rem;line-height:1.55;}
+.ni{background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.22);color:#c7d2fe;}
+.nw{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.22);color:#fde68a;}
+.ns{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.22);color:#6ee7b7;}
+.sz-badge{display:inline-flex;align-items:center;gap:6px;font-size:.71rem;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(16,185,129,.10);border:1px solid rgba(16,185,129,.22);color:#34d399;letter-spacing:.06em;text-transform:uppercase;margin-top:11px;}
+.sz-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399;}
+.neon-ln{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--ac),var(--a2),transparent);margin:22px 0;opacity:.4;}
+.result{display:none;}
+.result.on{display:block;animation:sup .4s ease;}
+@keyframes sup{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.player-wrap{display:none;margin-bottom:20px;border-radius:var(--rl);overflow:hidden;background:#000;aspect-ratio:16/9;position:relative;box-shadow:0 0 40px hsla(var(--ah),var(--as),50%,.2),0 0 0 1px hsla(var(--ah),var(--as),60%,.15);}
+.player-wrap.on{display:block;}
+.player-wrap iframe,.player-wrap video{width:100%;height:100%;display:block;border:none;}
+.player-close{position:absolute;top:10px;right:10px;z-index:5;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.2);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--tr);font-size:.9rem;}
+.player-close:hover{background:rgba(239,68,68,.6);}
+.rin{display:grid;grid-template-columns:200px 1fr;gap:22px;}
+.tw{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:16/9;background:rgba(255,255,255,.05);flex-shrink:0;}
+.tw img{width:100%;height:100%;object-fit:cover;display:block;}
+.tov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);display:flex;align-items:center;justify-content:center;}
+.play-btn-ov{width:52px;height:52px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);cursor:pointer;transition:var(--tr);box-shadow:0 0 24px hsla(var(--ah),var(--as),60%,.4);}
+.play-btn-ov:hover{background:rgba(255,255,255,.3);transform:scale(1.1);}
+.tdur{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.82);padding:3px 8px;border-radius:5px;font-size:.7rem;font-weight:700;}
+.no-thumb{display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);font-size:2.5rem;border-radius:var(--r);aspect-ratio:16/9;}
+.vm{display:flex;flex-direction:column;gap:10px;}
+.pbadge{display:inline-flex;align-items:center;gap:5px;font-size:.67rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;width:fit-content;}
+.byt{background:rgba(255,0,0,.12);color:#fc5555;border:1px solid rgba(255,0,0,.22);}
+.big{background:rgba(228,64,95,.12);color:#f0698b;border:1px solid rgba(228,64,95,.22);}
+.btb{background:rgba(30,215,97,.10);color:#4ade80;border:1px solid rgba(30,215,97,.22);}
+.bcl{background:rgba(6,182,212,.10);color:#67e8f9;border:1px solid rgba(6,182,212,.22);}
+.bvm{background:rgba(99,102,241,.10);color:#a5b4fc;border:1px solid rgba(99,102,241,.22);}
+.vtitle{font-size:1.05rem;font-weight:700;line-height:1.35;}
+.vstats{display:flex;flex-wrap:wrap;gap:12px;}
+.vst{display:flex;align-items:center;gap:5px;font-size:.79rem;color:var(--t2);}
+.qlbl{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:9px;margin-top:12px;}
+.qg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.qb{padding:7px 15px;border-radius:8px;border:1px solid var(--gb);background:rgba(255,255,255,.04);color:var(--t2);font-size:.81rem;font-weight:700;cursor:pointer;transition:var(--tr);font-family:inherit;}
+.qb:hover{border-color:var(--ac);color:var(--t1);background:hsla(var(--ah),var(--as),50%,.08);}
+.qb.on{background:linear-gradient(135deg,var(--ac),var(--a2));border-color:transparent;color:#fff;box-shadow:0 0 15px hsla(var(--ah),var(--as),50%,.4);}
+.qb.aud.on{background:linear-gradient(135deg,#059669,#10b981);box-shadow:0 0 15px rgba(16,185,129,.4);}
+.pw{margin-top:14px;display:none;}
+.pw.on{display:block;}
+.ph{display:flex;justify-content:space-between;font-size:.79rem;color:var(--t2);margin-bottom:7px;}
+.pb{height:7px;background:rgba(255,255,255,.05);border-radius:99px;overflow:hidden;}
+.pf{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--ac),var(--a3));width:0%;transition:width .3s ease;box-shadow:0 0 10px var(--ac);position:relative;}
+.pf::after{content:'';position:absolute;right:-1px;top:50%;transform:translateY(-50%);width:11px;height:11px;border-radius:50%;background:#fff;box-shadow:0 0 10px var(--ac),0 0 20px var(--ac);}
+.dacts{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+.ig-profile-card{margin-top:12px;}
+.ig-profile-header{display:flex;align-items:center;gap:14px;padding:18px;background:rgba(228,64,95,.06);border:1px solid rgba(228,64,95,.18);border-radius:var(--r);margin-bottom:14px;}
+.ig-av{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+.ig-name{font-size:1.05rem;font-weight:800;}
+.ig-sub{font-size:.82rem;color:var(--t2);margin-top:3px;}
+.af{display:flex;flex-direction:column;gap:7px;max-height:240px;overflow:hidden;}
+.ai{display:flex;align-items:center;gap:11px;padding:9px 13px;background:rgba(255,255,255,.03);border:1px solid var(--gb);border-radius:8px;font-size:.8rem;animation:sup .4s ease;}
+.ad{width:7px;height:7px;border-radius:50%;flex-shrink:0;animation:blink 2s ease-in-out infinite;}
+.ad-y{background:#fc5555;box-shadow:0 0 8px #fc5555;}
+.ad-i{background:#f0698b;box-shadow:0 0 8px #f0698b;}
+.ad-t{background:#4ade80;box-shadow:0 0 8px #4ade80;}
+.ad-c{background:#67e8f9;box-shadow:0 0 8px #67e8f9;}
+.at{flex:1;color:var(--t2);line-height:1.4;}
+.at strong{color:var(--t1);font-weight:600;}
+.atm{font-size:.68rem;color:var(--t3);white-space:nowrap;}
+.lbadge{display:inline-flex;align-items:center;gap:5px;font-size:.67rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#fca5a5;}
+.lbadge::before{content:'';width:6px;height:6px;border-radius:50%;background:#ef4444;box-shadow:0 0 8px #ef4444;animation:blink 1.2s ease-in-out infinite;}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.st{font-size:.98rem;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;}
+.sico{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.rl{display:flex;flex-direction:column;gap:9px;}
+.ri{display:flex;align-items:center;gap:13px;padding:11px 15px;background:rgba(255,255,255,.03);border:1px solid var(--gb);border-radius:var(--r);cursor:pointer;transition:var(--tr);}
+.ri:hover{background:hsla(var(--ah),var(--as),50%,.06);border-color:hsla(var(--ah),var(--as),60%,.2);}
+.rth{width:56px;height:38px;border-radius:5px;object-fit:cover;flex-shrink:0;background:rgba(255,255,255,.06);}
+.rif{flex:1;min-width:0;}
+.rtx{font-size:.83rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rmx{font-size:.72rem;color:var(--t2);margin-top:2px;}
+.rbg{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;padding:3px 7px;border-radius:20px;flex-shrink:0;}
+.emp{text-align:center;padding:36px 20px;color:var(--t3);font-size:.88rem;}
+.eic{font-size:2.4rem;margin-bottom:10px;opacity:.3;}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+.pc{background:rgba(255,255,255,.03);border:1px solid var(--gb);border-radius:var(--r);padding:16px 14px;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;transition:var(--tr);}
+.pc:hover{border-color:hsla(var(--ah),var(--as),60%,.25);background:hsla(var(--ah),var(--as),50%,.05);}
+.pic{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;}
+.pnm{font-size:.83rem;font-weight:700;}
+.pmx{font-size:.7rem;color:var(--t3);}
+.pst{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ok);background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);padding:3px 9px;border-radius:20px;}
+.fl{display:flex;flex-direction:column;gap:8px;}
+.fi{border:1px solid var(--gb);border-radius:var(--r);overflow:hidden;transition:var(--tr);}
+.fi.op{border-color:hsla(var(--ah),var(--as),60%,.25);}
+.fq{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;font-size:.88rem;font-weight:600;gap:12px;user-select:none;}
+.fq:hover{background:rgba(255,255,255,.03);}
+.fa2{width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .25s ease;}
+.fi.op .fa2{transform:rotate(180deg);background:hsla(var(--ah),var(--as),50%,.12);}
+.fa{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+.fi.op .fa{max-height:300px;}
+.fai{padding:0 18px 14px;font-size:.84rem;color:var(--t2);line-height:1.65;}
+footer{position:relative;z-index:1;border-top:1px solid var(--gb);padding:48px 36px 28px;background:rgba(3,7,18,.6);backdrop-filter:blur(20px);}
+.fg{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;max-width:960px;margin:0 auto 36px;}
+.fbp{font-size:.82rem;color:var(--t3);line-height:1.7;margin-top:12px;max-width:280px;}
+.fc h4{font-size:.78rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);margin-bottom:14px;}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.fc a{font-size:.83rem;color:var(--t3);text-decoration:none;transition:var(--tr);}
+.fc a:hover{color:var(--t1);}
+.fb{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding-top:22px;border-top:1px solid var(--gb);flex-wrap:wrap;gap:10px;}
+.fcp{font-size:.78rem;color:var(--t3);}
+.fds{font-size:.72rem;color:var(--t3);opacity:.6;}
+.cr{text-align:center;margin-top:20px;font-size:.72rem;color:var(--t3);letter-spacing:.08em;}
+.cr span{color:var(--ac);font-weight:800;}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(15,23,42,.92);border:1px solid var(--gb);border-radius:99px;padding:10px 22px;font-size:.84rem;font-weight:600;display:flex;align-items:center;gap:8px;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;z-index:1000;white-space:nowrap;backdrop-filter:blur(20px);}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+.tdot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);}
+@media(max-width:700px){header{padding:14px 18px;}.rin{grid-template-columns:1fr;}.fg{grid-template-columns:1fr;gap:24px;}.fb{flex-direction:column;align-items:flex-start;}footer{padding:36px 18px 24px;}}
+@media(max-width:440px){.hero{padding:40px 0 28px;}.stats{grid-template-columns:repeat(2,1fr);gap:8px;}}
+</style>
 </head>
 <body>
-
 <div id="loader">
-  <div class="ld">
-    <div class="ld-ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
-    <div class="ld-bar"><div class="ld-fill"></div></div>
-    <div class="ld-txt">LinkToVideo — by Vinay</div>
-  </div>
+<div class="ld">
+<div class="ld-ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
+<div class="ld-bar"><div class="ld-fill"></div></div>
+<div class="ld-txt">LinkToVideo — by Vinay</div>
 </div>
-
+</div>
 <div class="bg-g" aria-hidden="true"></div>
 <div class="bg-grid" aria-hidden="true"></div>
 <div class="orb o1" aria-hidden="true"></div>
 <div class="orb o2" aria-hidden="true"></div>
 <canvas id="bgc" aria-hidden="true"></canvas>
-
 <div class="vinay-banner" aria-label="Created by Vinay">
-  <div class="vinay-top-line">PREMIUM VIDEO DOWNLOADER</div>
-  <span class="vinay-name">VINAY</span>
-  <div class="vinay-sub">
-    <span class="vdot"></span>CREATED BY<span class="vdot" style="animation-delay:.6s"></span>LINK TO VIDEO<span class="vdot" style="animation-delay:1.2s"></span>
-  </div>
-  <div style="margin-top:10px;">
-    <span class="vinay-badge">
-      <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      v3.1 · No Backend · 10+ Platforms
-    </span>
-  </div>
+<div class="vinay-top-line">PREMIUM VIDEO DOWNLOADER</div>
+<span class="vinay-name">VINAY</span>
+<div class="vinay-sub">
+<span class="vdot"></span>CREATED BY<span class="vdot" style="animation-delay:.6s"></span>LINK TO VIDEO<span class="vdot" style="animation-delay:1.2s"></span>
 </div>
-
+<div style="margin-top:10px;">
+<span class="vinay-badge">
+<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+v3.2 · Own API · 10+ Platforms
+</span>
+</div>
+</div>
 <header>
-  <a href="#" class="logo" aria-label="LinkToVideo">
-    <div class="logo-ic"><svg viewBox="0 0 24 24" fill="white" width="19" height="19"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
-    <span class="logo-tx">LinkToVideo</span>
-  </a>
-  <div class="hdr-r">
-    <label class="clr-wrap" title="Theme color">
-      <input type="color" id="cpick" value="#6366f1" aria-label="Theme color"/>
-      <span>Theme</span>
-    </label>
-    <span class="nbadge">by Vinay</span>
-  </div>
+<a href="#" class="logo" aria-label="LinkToVideo">
+<div class="logo-ic"><svg viewBox="0 0 24 24" fill="white" width="19" height="19"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
+<span class="logo-tx">LinkToVideo</span>
+</a>
+<div class="hdr-r">
+<label class="clr-wrap" title="Theme color">
+<input type="color" id="cpick" value="#6366f1" aria-label="Theme color"/>
+<span>Theme</span>
+</label>
+<span class="nbadge">by Vinay</span>
+</div>
 </header>
-
 <main>
 <div class="wrap">
-  <section class="hero" aria-labelledby="htitle">
-    <div class="eyebrow">Real Downloads · Video Preview · 10+ Platforms</div>
-    <h1 class="ht" id="htitle">Download Any Video<br/><span>Play Before You Save.</span></h1>
-    <p class="hsub">Paste any link — YouTube, Instagram, TikTok, Terabox, Google Drive — preview and download directly.</p>
-  </section>
-
-  <div class="stats rv" aria-label="Stats">
-    <div class="sb"><div class="sn" data-to="12.4" data-sf="M+">0</div><div class="sl">Downloads</div></div>
-    <div class="sb"><div class="sn" data-to="10" data-sf="+">0</div><div class="sl">Platforms</div></div>
-    <div class="sb"><div class="sn" data-to="1" data-sf="GB">0</div><div class="sl">Max File Size</div></div>
-    <div class="sb"><div class="sn" data-to="4.8" data-sf="K+">0</div><div class="sl">Happy Users</div></div>
-  </div>
-
-  <section class="card glow rv" aria-label="Video downloader">
-    <label class="ilbl" for="url-in">Paste Video URL (YouTube, Instagram, TikTok, Terabox, Drive…)</label>
-    <div class="irow">
-      <input type="url" id="url-in" class="ui" placeholder="https://youtube.com/watch?v=...  |  tiktok.com/@user/video/...  |  instagram.com/reel/..." autocomplete="off" spellcheck="false" aria-describedby="emsg"/>
-      <button class="btn bic bg-btn" id="paste-btn" title="Paste from clipboard" aria-label="Paste">
-        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      </button>
-      <button class="btn bp" id="fetch-btn" aria-label="Fetch video info">
-        <svg id="fetch-ico" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <span id="fetch-tx">Fetch</span>
-      </button>
-    </div>
-    <div class="emsg h" id="emsg" role="alert" aria-live="polite">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <span id="etx"></span>
-    </div>
-    <div class="sz-badge">Supports up to 1 GB · YouTube · Instagram · TikTok · Terabox · Drive · Dropbox</div>
-    <div class="neon-ln"></div>
-
-    <div class="player-wrap" id="player-wrap">
-      <button class="player-close" id="player-close" aria-label="Close player">✕</button>
-      <div id="player-inner"></div>
-    </div>
-
-    <div class="result" id="result" aria-live="polite">
-      <div id="ig-profile-ui" class="ig-profile-card" style="display:none"></div>
-      <div id="video-result-ui">
-        <div class="rin">
-          <div id="thumb-col"></div>
-          <div class="vm">
-            <span class="pbadge" id="v-badge">—</span>
-            <p class="vtitle" id="v-title">—</p>
-            <div class="vstats">
-              <span class="vst"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span id="v-author">—</span></span>
-              <span class="vst"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span id="v-dur">—</span></span>
-            </div>
-            <div id="v-notice"></div>
-            <div class="qlbl">Select Quality / Format</div>
-            <div class="qg" id="qg" role="radiogroup">
-              <button class="qb on" data-q="1080p" role="radio" aria-checked="true">1080p HD</button>
-              <button class="qb" data-q="720p" role="radio" aria-checked="false">720p HD</button>
-              <button class="qb" data-q="480p" role="radio" aria-checked="false">480p</button>
-              <button class="qb" data-q="360p" role="radio" aria-checked="false">360p</button>
-              <button class="qb aud" data-q="audio" role="radio" aria-checked="false">
-                <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" style="display:inline-block;vertical-align:middle;margin-right:4px"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Audio Only
-              </button>
-            </div>
-            <div class="pw" id="pw">
-              <div class="ph"><span id="plbl">Preparing…</span><span id="ppct">0%</span></div>
-              <div class="pb"><div class="pf" id="pf"></div></div>
-            </div>
-            <div class="dacts" id="dacts">
-              <button class="btn bplay" id="play-btn" style="display:none" aria-label="Play preview">
-                <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Play Preview
-              </button>
-              <button class="btn bok" id="dl-btn" aria-label="Download">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download
-              </button>
-              <button class="btn bg-btn" id="copy-btn" aria-label="Copy URL">
-                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy URL
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="card rv" aria-labelledby="act-t">
-    <div class="sh">
-      <h2 class="st" id="act-t"><span class="sico" style="background:rgba(239,68,68,.10)"><svg width="13" height="13" fill="none" stroke="#fca5a5" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"/></svg></span>Live Activity</h2>
-      <span class="lbadge">LIVE</span>
-    </div>
-    <div class="af" id="af" aria-live="polite"></div>
-  </section>
-
-  <section class="card rv" aria-labelledby="rec-t">
-    <div class="sh">
-      <h2 class="st" id="rec-t"><span class="sico" style="background:hsla(var(--ah),var(--as),50%,.12)"><svg width="13" height="13" fill="none" stroke="#a5b4fc" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>Recent Downloads</h2>
-      <button class="btn bg-btn bsm" id="clear-btn">Clear All</button>
-    </div>
-    <div class="rl" id="rl"></div>
-  </section>
-
-  <section class="card rv" aria-labelledby="plt-t">
-    <div class="sh"><h2 class="st" id="plt-t"><span class="sico" style="background:rgba(6,182,212,.10)"><svg width="13" height="13" fill="none" stroke="#67e8f9" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>Supported Platforms</h2></div>
-    <div class="pg">
-      <div class="pc"><div class="pic" style="background:rgba(255,0,0,.10)">📺</div><span class="pnm">YouTube</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
-      <div class="pc"><div class="pic" style="background:rgba(228,64,95,.10)">📸</div><span class="pnm">Instagram</span><span class="pmx">Posts · Reels</span><span class="pst">Active</span></div>
-      <div class="pc"><div class="pic" style="background:rgba(0,0,0,.15)">🎵</div><span class="pnm">TikTok</span><span class="pmx">Videos · Audio</span><span class="pst">Active</span></div>
-      <div class="pc"><div class="pic" style="background:rgba(30,215,97,.10)">📦</div><span class="pnm">Terabox</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
-      <div class="pc"><div class="pic" style="background:rgba(6,182,212,.10)">☁️</div><span class="pnm">Google Drive</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
-      <div class="pc"><div class="pic" style="background:rgba(0,104,255,.10)">🗂️</div><span class="pnm">Dropbox</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
-      <div class="pc"><div class="pic" style="background:rgba(99,102,241,.10)">🎬</div><span class="pnm">Vimeo</span><span class="pmx">Up to 500MB</span><span class="pst">Active</span></div>
-      <div class="pc"><div class="pic" style="background:rgba(245,158,11,.10)">☁️</div><span class="pnm">OneDrive</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
-      <div class="pc"><div class="pic" style="background:rgba(29,161,242,.10)">🐦</div><span class="pnm">Twitter / X</span><span class="pmx">Videos</span><span class="pst">Active</span></div>
-      <div class="pc"><div class="pic" style="background:rgba(139,92,246,.10)">🎧</div><span class="pnm">SoundCloud</span><span class="pmx">Audio</span><span class="pst">Active</span></div>
-    </div>
-  </section>
-
-  <section class="card rv" aria-labelledby="faq-t">
-    <div class="sh"><h2 class="st" id="faq-t"><span class="sico" style="background:rgba(139,92,246,.12)"><svg width="13" height="13" fill="none" stroke="#c4b5fd" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>FAQ</h2></div>
-    <div class="fl" id="fl"></div>
-  </section>
+<section class="hero" aria-labelledby="htitle">
+<div class="eyebrow">Real Downloads · Video Preview · 10+ Platforms</div>
+<h1 class="ht" id="htitle">Download Any Video<br/><span>Play Before You Save.</span></h1>
+<p class="hsub">Paste any link — YouTube, Instagram, TikTok, Terabox, Google Drive — preview and download directly.</p>
+</section>
+<div class="stats rv" aria-label="Stats">
+<div class="sb"><div class="sn" data-to="12.4" data-sf="M+">0</div><div class="sl">Downloads</div></div>
+<div class="sb"><div class="sn" data-to="10" data-sf="+">0</div><div class="sl">Platforms</div></div>
+<div class="sb"><div class="sn" data-to="1" data-sf="GB">0</div><div class="sl">Max File Size</div></div>
+<div class="sb"><div class="sn" data-to="4.8" data-sf="K+">0</div><div class="sl">Happy Users</div></div>
+</div>
+<section class="card glow rv" aria-label="Video downloader">
+<label class="ilbl" for="url-in">Paste Video URL (YouTube, Instagram, TikTok, Terabox, Drive…)</label>
+<div class="irow">
+<input type="url" id="url-in" class="ui" placeholder="https://youtube.com/watch?v=... | tiktok.com/@user/video/... | instagram.com/reel/..." autocomplete="off" spellcheck="false" aria-describedby="emsg"/>
+<button class="btn bic bg-btn" id="paste-btn" title="Paste from clipboard" aria-label="Paste">
+<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+</button>
+<button class="btn bp" id="fetch-btn" aria-label="Fetch video info">
+<svg id="fetch-ico" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<span id="fetch-tx">Fetch</span>
+</button>
+</div>
+<div class="emsg h" id="emsg" role="alert" aria-live="polite">
+<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+<span id="etx"></span>
+</div>
+<div class="sz-badge">Supports up to 1 GB · YouTube · Instagram · TikTok · Terabox · Drive · Dropbox</div>
+<div class="neon-ln"></div>
+<div class="player-wrap" id="player-wrap">
+<button class="player-close" id="player-close" aria-label="Close player">✕</button>
+<div id="player-inner"></div>
+</div>
+<div class="result" id="result" aria-live="polite">
+<div id="ig-profile-ui" class="ig-profile-card" style="display:none"></div>
+<div id="video-result-ui">
+<div class="rin">
+<div id="thumb-col"></div>
+<div class="vm">
+<span class="pbadge" id="v-badge">—</span>
+<p class="vtitle" id="v-title">—</p>
+<div class="vstats">
+<span class="vst"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span id="v-author">—</span></span>
+<span class="vst"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span id="v-dur">—</span></span>
+</div>
+<div id="v-notice"></div>
+<div class="qlbl">Select Quality / Format</div>
+<div class="qg" id="qg" role="radiogroup">
+<button class="qb on" data-q="1080p" role="radio" aria-checked="true">1080p HD</button>
+<button class="qb" data-q="720p" role="radio" aria-checked="false">720p HD</button>
+<button class="qb" data-q="480p" role="radio" aria-checked="false">480p</button>
+<button class="qb" data-q="360p" role="radio" aria-checked="false">360p</button>
+<button class="qb aud" data-q="audio" role="radio" aria-checked="false">
+<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" style="display:inline-block;vertical-align:middle;margin-right:4px"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Audio Only
+</button>
+</div>
+<div class="pw" id="pw">
+<div class="ph"><span id="plbl">Preparing…</span><span id="ppct">0%</span></div>
+<div class="pb"><div class="pf" id="pf"></div></div>
+</div>
+<div class="dacts" id="dacts">
+<button class="btn bplay" id="play-btn" style="display:none" aria-label="Play preview">
+<svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Play Preview
+</button>
+<button class="btn bok" id="dl-btn" aria-label="Download">
+<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download
+</button>
+<button class="btn bg-btn" id="copy-btn" aria-label="Copy URL">
+<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy URL
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="card rv" aria-labelledby="act-t">
+<div class="sh">
+<h2 class="st" id="act-t"><span class="sico" style="background:rgba(239,68,68,.10)"><svg width="13" height="13" fill="none" stroke="#fca5a5" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"/></svg></span>Live Activity</h2>
+<span class="lbadge">LIVE</span>
+</div>
+<div class="af" id="af" aria-live="polite"></div>
+</section>
+<section class="card rv" aria-labelledby="rec-t">
+<div class="sh">
+<h2 class="st" id="rec-t"><span class="sico" style="background:hsla(var(--ah),var(--as),50%,.12)"><svg width="13" height="13" fill="none" stroke="#a5b4fc" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>Recent Downloads</h2>
+<button class="btn bg-btn bsm" id="clear-btn">Clear All</button>
+</div>
+<div class="rl" id="rl"></div>
+</section>
+<section class="card rv" aria-labelledby="plt-t">
+<div class="sh"><h2 class="st" id="plt-t"><span class="sico" style="background:rgba(6,182,212,.10)"><svg width="13" height="13" fill="none" stroke="#67e8f9" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>Supported Platforms</h2></div>
+<div class="pg">
+<div class="pc"><div class="pic" style="background:rgba(255,0,0,.10)">📺</div><span class="pnm">YouTube</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
+<div class="pc"><div class="pic" style="background:rgba(228,64,95,.10)">📸</div><span class="pnm">Instagram</span><span class="pmx">Posts · Reels</span><span class="pst">Active</span></div>
+<div class="pc"><div class="pic" style="background:rgba(0,0,0,.15)">🎵</div><span class="pnm">TikTok</span><span class="pmx">Videos · Audio</span><span class="pst">Active</span></div>
+<div class="pc"><div class="pic" style="background:rgba(30,215,97,.10)">📦</div><span class="pnm">Terabox</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
+<div class="pc"><div class="pic" style="background:rgba(6,182,212,.10)">☁️</div><span class="pnm">Google Drive</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
+<div class="pc"><div class="pic" style="background:rgba(0,104,255,.10)">🗂️</div><span class="pnm">Dropbox</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
+<div class="pc"><div class="pic" style="background:rgba(99,102,241,.10)">🎬</div><span class="pnm">Vimeo</span><span class="pmx">Up to 500MB</span><span class="pst">Active</span></div>
+<div class="pc"><div class="pic" style="background:rgba(245,158,11,.10)">☁️</div><span class="pnm">OneDrive</span><span class="pmx">Up to 1GB</span><span class="pst">Active</span></div>
+<div class="pc"><div class="pic" style="background:rgba(29,161,242,.10)">🐦</div><span class="pnm">Twitter / X</span><span class="pmx">Videos</span><span class="pst">Active</span></div>
+<div class="pc"><div class="pic" style="background:rgba(139,92,246,.10)">🎧</div><span class="pnm">SoundCloud</span><span class="pmx">Audio</span><span class="pst">Active</span></div>
+</div>
+</section>
+<section class="card rv" aria-labelledby="faq-t">
+<div class="sh"><h2 class="st" id="faq-t"><span class="sico" style="background:rgba(139,92,246,.12)"><svg width="13" height="13" fill="none" stroke="#c4b5fd" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>FAQ</h2></div>
+<div class="fl" id="fl"></div>
+</section>
 </div>
 </main>
-
 <footer>
-  <div class="fg">
-    <div class="fb-brand">
-      <a href="#" class="logo"><div class="logo-ic"><svg viewBox="0 0 24 24" fill="white" width="17" height="17"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div><span class="logo-tx" style="font-size:1.1rem">LinkToVideo</span></a>
-      <p class="fbp">Premium video downloader by Vinay. Real downloads, video preview, 10+ platforms, up to 1GB. No backend server needed.</p>
-    </div>
-    <div class="fc"><h4>Product</h4><ul><li><a href="#">How it works</a></li><li><a href="#">Supported sites</a></li><li><a href="#">Quality options</a></li><li><a href="#">1GB Guide</a></li></ul></div>
-    <div class="fc"><h4>Legal</h4><ul><li><a href="#">Terms of Service</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Copyright Policy</a></li><li><a href="#">DMCA</a></li></ul></div>
-  </div>
-  <div class="fb">
-    <p class="fcp">© 2025 LinkToVideo by Vinay. All rights reserved.</p>
-    <p class="fds">Only download content you own or are authorized to download.</p>
-  </div>
-  <div class="cr">Made with ⚡ by <span>VINAY</span></div>
-</footer>
-
-<div class="toast" id="toast" role="status" aria-live="polite">
-  <div class="tdot"></div><span id="ttx"></span>
+<div class="fg">
+<div class="fb-brand">
+<a href="#" class="logo"><div class="logo-ic"><svg viewBox="0 0 24 24" fill="white" width="17" height="17"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div><span class="logo-tx" style="font-size:1.1rem">LinkToVideo</span></a>
+<p class="fbp">Premium video downloader by Vinay. Real downloads, video preview, 10+ platforms, up to 1GB. Powered by custom yt-dlp API.</p>
 </div>
-
+<div class="fc"><h4>Product</h4><ul><li><a href="#">How it works</a></li><li><a href="#">Supported sites</a></li><li><a href="#">Quality options</a></li><li><a href="#">1GB Guide</a></li></ul></div>
+<div class="fc"><h4>Legal</h4><ul><li><a href="#">Terms of Service</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Copyright Policy</a></li><li><a href="#">DMCA</a></li></ul></div>
+</div>
+<div class="fb">
+<p class="fcp">© 2025 LinkToVideo by Vinay. All rights reserved.</p>
+<p class="fds">Only download content you own or are authorized to download.</p>
+</div>
+<div class="cr">Made with ⚡ by <span>VINAY</span></div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite">
+<div class="tdot"></div><span id="ttx"></span>
+</div>
 <script>
 "use strict";
-/* ══════════════════════════════════════════════════════════════
-   LinkToVideo v3.1 — by VINAY
-   100% client-side · No backend · Works on Cloudflare Pages
 
-   Engines used:
-   • YouTube   → Invidious API (open-source YT frontend, multiple instances)
-   • TikTok    → TikWM public API (no auth needed)
-   • Instagram → Cobalt community instances (no auth required)
-   • Twitter   → Cobalt community instances
-   • Vimeo     → oEmbed metadata + Cobalt community instances
-   • SoundCloud→ Cobalt community instances
-   • GDrive    → Direct URL conversion
-   • Dropbox   → Direct URL conversion
-   • Terabox   → Public proxy workers
+/* ══════════════════════════════════════════════════════════════
+   LinkToVideo v3.2 — by VINAY
+   YouTube → Custom yt-dlp API (ytdlp-api-lp7c.onrender.com)
+   All other platforms → existing engines (TikWM, Cobalt, direct)
 ══════════════════════════════════════════════════════════════ */
 
-/* ─────────────────────────────────────────────────────────────
-   API ENDPOINTS — all free, no key required
-───────────────────────────────────────────────────────────── */
+/* ─── YOUR OWN YT-DLP API ─────────────────────────────────── */
+const YTDLP_API = "https://ytdlp-api-lp7c.onrender.com";
 
-/* Invidious: open-source YouTube API, multiple instances for fallback */
-const INVIDIOUS = [
-  "https://inv.nadeko.net",
-  "https://invidious.lunar.icu",
-  "https://iv.ggtyler.dev",
-  "https://invidious.privacydev.net",
-  "https://yt.drgnz.club",
-];
-
-/* Cobalt community instances — no auth required (unlike api.cobalt.tools) */
+/* Cobalt community instances for non-YT platforms */
 const COBALT_COMMUNITY = [
   "https://cobalt.api.timelessnesses.me",
   "https://cobalt.esmbot.net",
@@ -458,16 +401,11 @@ const COBALT_COMMUNITY = [
   "https://cobalt.drgns.space",
 ];
 
-/* noembed for Vimeo / YouTube metadata */
 const NOEMBED = "https://noembed.com/embed";
-
 const RKEY = "ltv2_rec", MAX_REC = 8;
 
-/* ─────────────────────────────────────────────────────────────
-   STATE & DOM
-───────────────────────────────────────────────────────────── */
+/* ─── STATE & DOM ─────────────────────────────────────────── */
 const S = { info: null, quality: "1080p", streamUrl: null };
-
 const $ = id => document.getElementById(id);
 const $$ = sel => [...document.querySelectorAll(sel)];
 const D = {
@@ -484,41 +422,37 @@ const D = {
   toast:$("toast"), ttx:$("ttx"), cpick:$("cpick"),
 };
 
-const esc     = s => String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
-const delay   = ms => new Promise(r=>setTimeout(r,ms));
-const rnd     = a => a[Math.floor(Math.random()*a.length)];
+const esc = s => String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
+const delay = ms => new Promise(r=>setTimeout(r,ms));
+const rnd = a => a[Math.floor(Math.random()*a.length)];
 const fmtDate = ts => new Date(ts).toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"});
 const fmtSecs = s => { s=Math.round(s||0); const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60; return h?`${h}:${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`:`${m}:${String(ss).padStart(2,'0')}`; };
 
-const PL  = {youtube:"YouTube",instagram:"Instagram",terabox:"Terabox",gdrive:"Google Drive",dropbox:"Dropbox",vimeo:"Vimeo",onedrive:"OneDrive",soundcloud:"SoundCloud",twitter:"Twitter/X",tiktok:"TikTok",other:"Video"};
-const PC  = {youtube:"byt",instagram:"big",terabox:"btb",gdrive:"bcl",dropbox:"bcl",onedrive:"bcl",vimeo:"bvm",soundcloud:"bvm",twitter:"bcl",tiktok:"big",other:"bvm"};
+const PL = {youtube:"YouTube",instagram:"Instagram",terabox:"Terabox",gdrive:"Google Drive",dropbox:"Dropbox",vimeo:"Vimeo",onedrive:"OneDrive",soundcloud:"SoundCloud",twitter:"Twitter/X",tiktok:"TikTok",other:"Video"};
+const PC = {youtube:"byt",instagram:"big",terabox:"btb",gdrive:"bcl",dropbox:"bcl",onedrive:"bcl",vimeo:"bvm",soundcloud:"bvm",twitter:"bcl",tiktok:"big",other:"bvm"};
 const PIC = {youtube:"📺",instagram:"📸",terabox:"📦",gdrive:"☁️",dropbox:"🗂️",vimeo:"🎬",onedrive:"☁️",soundcloud:"🎧",twitter:"🐦",tiktok:"🎵",other:"🎞️"};
-const pl  = n => PL[n]||"Video";
-const pc  = n => PC[n]||"bvm";
+const pl = n => PL[n]||"Video";
+const pc = n => PC[n]||"bvm";
 
-/* ─────────────────────────────────────────────────────────────
-   TOAST & ERRORS
-───────────────────────────────────────────────────────────── */
+/* ─── TOAST & ERRORS ─────────────────────────────────────── */
 let _tt;
 function toast(msg,ms=2800){D.ttx.textContent=msg;D.toast.classList.add("on");clearTimeout(_tt);_tt=setTimeout(()=>D.toast.classList.remove("on"),ms);}
 function showErr(msg){D.etx.textContent=msg;D.emsg.classList.remove("h");D.urlIn.classList.add("err");}
 function clearErr(){D.emsg.classList.add("h");D.urlIn.classList.remove("err");}
 function isURL(s){try{const u=new URL(s);return u.protocol==="http:"||u.protocol==="https:";}catch{return false;}}
 
-/* ─────────────────────────────────────────────────────────────
-   PLATFORM DETECTION
-───────────────────────────────────────────────────────────── */
+/* ─── PLATFORM DETECTION ─────────────────────────────────── */
 function detectPlatform(url) {
   try {
     const h = new URL(url).hostname.replace(/^www\./,"").toLowerCase();
-    if (h==="youtu.be"||h.includes("youtube.com"))     return "youtube";
-    if (h.includes("instagram.com"))                    return "instagram";
-    if (h.includes("tiktok.com"))                       return "tiktok";
-    if (h==="x.com"||h.includes("twitter.com"))        return "twitter";
-    if (h.includes("vimeo.com"))                        return "vimeo";
-    if (h.includes("soundcloud.com"))                   return "soundcloud";
-    if (h.includes("drive.google.com"))                 return "gdrive";
-    if (h.includes("dropbox.com"))                      return "dropbox";
+    if (h==="youtu.be"||h.includes("youtube.com")) return "youtube";
+    if (h.includes("instagram.com")) return "instagram";
+    if (h.includes("tiktok.com")) return "tiktok";
+    if (h==="x.com"||h.includes("twitter.com")) return "twitter";
+    if (h.includes("vimeo.com")) return "vimeo";
+    if (h.includes("soundcloud.com")) return "soundcloud";
+    if (h.includes("drive.google.com")) return "gdrive";
+    if (h.includes("dropbox.com")) return "dropbox";
     if (h.includes("1drv.ms")||h.includes("onedrive.live.com")||h.includes("sharepoint.com")) return "onedrive";
     if (h.includes("terabox")||h.includes("4funbox")||h.includes("momerybox")||h.includes("tibibox")||h.includes("teraboxapp")||h.includes("1024tera")) return "terabox";
     return "other";
@@ -530,50 +464,70 @@ function getYtId(url) {
     const u=new URL(url);
     if (u.hostname==="youtu.be") return u.pathname.slice(1).split("?")[0];
     if (u.pathname.includes("/shorts/")) return u.pathname.split("/shorts/")[1].split("?")[0];
-    if (u.pathname.includes("/live/"))   return u.pathname.split("/live/")[1].split("?")[0];
+    if (u.pathname.includes("/live/")) return u.pathname.split("/live/")[1].split("?")[0];
     return u.searchParams.get("v")||null;
   } catch { return null; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   YOUTUBE via INVIDIOUS (open-source, no auth)
-───────────────────────────────────────────────────────────── */
-async function ivFetch(ytId, fields) {
-  const params = fields ? `?fields=${fields}` : "";
-  for (const inst of INVIDIOUS) {
-    try {
-      const r = await fetch(`${inst}/api/v1/videos/${ytId}${params}`, {signal:AbortSignal.timeout(9000)});
-      if (!r.ok) continue;
-      const d = await r.json();
-      if (d.error) continue;
-      return d;
-    } catch { continue; }
+/* ═══════════════════════════════════════════════════════════
+   YOUTUBE — YOUR OWN YT-DLP API
+   GET /info?url=   → video metadata + format list
+   GET /stream?url=&itag=  → proxied stream (for download)
+   GET /download?url=&itag= → direct download trigger
+   ═══════════════════════════════════════════════════════════ */
+
+/**
+ * Fetch video info from your yt-dlp API.
+ * Returns { title, uploader, duration, thumbnail, formats[] }
+ */
+async function ytdlpInfo(url) {
+  const r = await fetch(
+    `${YTDLP_API}/info?url=${encodeURIComponent(url)}`,
+    { signal: AbortSignal.timeout(20000) }
+  );
+  if (!r.ok) {
+    const txt = await r.text().catch(()=>"");
+    throw new Error(`yt-dlp API error ${r.status}: ${txt.slice(0,120)}`);
   }
+  const d = await r.json();
+  if (d.error) throw new Error(d.error);
+  return d;
+}
+
+/**
+ * Pick the best itag from the format list for a given quality label.
+ * quality: "1080p" | "720p" | "480p" | "360p" | "audio"
+ * Returns itag (number or string).
+ */
+function pickItag(formats, quality) {
+  if (!formats || !formats.length) return null;
+
+  if (quality === "audio") {
+    // Prefer audio-only formats sorted by abr descending
+    const audio = formats
+      .filter(f => f.vcodec === "none" || f.resolution === "audio only" || (!f.width && f.abr))
+      .sort((a,b)=>(b.abr||0)-(a.abr||0));
+    if (audio[0]) return audio[0].format_id || audio[0].itag;
+  }
+
+  const targetH = parseInt(quality) || 360;
+
+  // Try progressive (video+audio in one) first
+  const progressive = formats
+    .filter(f => f.acodec !== "none" && f.vcodec !== "none" && f.height)
+    .sort((a,b)=>b.height-a.height);
+  const matchProg = progressive.find(f=>f.height<=targetH) || progressive[progressive.length-1];
+  if (matchProg) return matchProg.format_id || matchProg.itag;
+
+  // Fallback: any format with video
+  const video = formats.filter(f=>f.height).sort((a,b)=>b.height-a.height);
+  const matchVid = video.find(f=>f.height<=targetH) || video[video.length-1];
+  if (matchVid) return matchVid.format_id || matchVid.itag;
+
   return null;
 }
 
-async function ytGetStream(ytId, quality) {
-  const data = await ivFetch(ytId, "formatStreams,adaptiveFormats");
-  if (!data) throw new Error("Could not connect to YouTube API. Check your internet or try again shortly.");
-
-  if (quality === "audio") {
-    const audio = (data.adaptiveFormats||[]).filter(f=>f.type?.startsWith("audio/")).sort((a,b)=>(parseInt(b.bitrate)||0)-(parseInt(a.bitrate)||0));
-    if (audio[0]?.url) return audio[0].url;
-    throw new Error("Audio stream not available for this video.");
-  }
-
-  const targetH = parseInt(quality)||360;
-  const streams = (data.formatStreams||[]).filter(f=>f.url).sort((a,b)=>parseInt(b.quality)-parseInt(a.quality));
-  if (!streams.length) throw new Error("No download streams found for this video. It may be restricted.");
-
-  const match = streams.find(f=>parseInt(f.quality)<=targetH) || streams[streams.length-1];
-  if (!match?.url) throw new Error("Selected quality not available. Try a lower quality.");
-  return match.url;
-}
-
-/* ─────────────────────────────────────────────────────────────
-   TIKTOK via TikWM (free public API, no auth)
-───────────────────────────────────────────────────────────── */
+/* ─── TIKTOK via TikWM ───────────────────────────────────── */
 async function tikwmFetch(url) {
   const endpoints = [
     `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`,
@@ -590,12 +544,9 @@ async function tikwmFetch(url) {
   throw new Error("Could not fetch TikTok video. Make sure the video is public and the link is correct.");
 }
 
-/* ─────────────────────────────────────────────────────────────
-   COBALT COMMUNITY INSTANCES (Instagram, Twitter, Vimeo, SoundCloud…)
-   These do NOT require authentication unlike api.cobalt.tools
-───────────────────────────────────────────────────────────── */
+/* ─── COBALT COMMUNITY (Instagram, Twitter, etc.) ────────── */
 async function cobaltCommunity(url, quality, audioOnly) {
-  const q  = (quality==="audio") ? "144" : quality.replace("p","");
+  const q = (quality==="audio") ? "144" : quality.replace("p","");
   const body = JSON.stringify({
     url,
     videoQuality: q,
@@ -603,9 +554,7 @@ async function cobaltCommunity(url, quality, audioOnly) {
     downloadMode: audioOnly ? "audio" : "auto",
     filenameStyle: "pretty",
   });
-
   let lastErr = "No download service available right now. Try again in a moment.";
-
   for (const inst of COBALT_COMMUNITY) {
     try {
       const r = await fetch(`${inst}/`, {
@@ -614,34 +563,21 @@ async function cobaltCommunity(url, quality, audioOnly) {
         body,
         signal: AbortSignal.timeout(14000),
       });
-
-      let d;
-      try { d = await r.json(); } catch { continue; }
-
+      let d; try { d = await r.json(); } catch { continue; }
       if (d.status === "error") {
         const code = d.error?.code || "";
-        // If auth error, this instance requires auth — try next
         if (code.includes("auth") || code.includes("jwt")) { continue; }
         lastErr = code.replace(/^error\./i,"").replace(/-/g," ");
         lastErr = lastErr.charAt(0).toUpperCase()+lastErr.slice(1)+".";
         continue;
       }
-
-      if (["stream","redirect","tunnel","picker"].includes(d.status)) {
-        return d;
-      }
-    } catch (e) {
-      // Network / timeout — try next instance
-      continue;
-    }
+      if (["stream","redirect","tunnel","picker"].includes(d.status)) { return d; }
+    } catch { continue; }
   }
-
   throw new Error(lastErr);
 }
 
-/* ─────────────────────────────────────────────────────────────
-   CLOUD STORAGE HELPERS (no API needed)
-───────────────────────────────────────────────────────────── */
+/* ─── CLOUD STORAGE HELPERS ─────────────────────────────── */
 function gdrive_parse(url) {
   const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
   if (!m) throw new Error("Invalid Google Drive link. Use a file shareable link (drive.google.com/file/d/...).");
@@ -651,25 +587,23 @@ function gdrive_parse(url) {
     thumb: `https://drive.google.com/thumbnail?id=${m[1]}&sz=w320`,
   };
 }
-
 function dropbox_url(url) {
   let u = url.trim().replace(/[?&]dl=\d/g,"");
   u = u + (u.includes("?") ? "&dl=1" : "?dl=1");
   return u.replace("www.dropbox.com","dl.dropboxusercontent.com");
 }
-
 function onedrive_url(url) {
   if (url.includes("1drv.ms")) return url;
   return url.replace(/(\?.*)?$/,"?download=1");
 }
 
-/* ─────────────────────────────────────────────────────────────
-   GET VIDEO INFO  (called when user clicks Fetch)
-───────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   GET VIDEO INFO
+   ═══════════════════════════════════════════════════════════ */
 async function apiGetInfo(url) {
   const platform = detectPlatform(url);
 
-  /* Instagram — profile vs post detection */
+  /* Instagram profile */
   if (platform === "instagram") {
     try {
       const pts = new URL(url).pathname.replace(/\/$/,"").split("/").filter(Boolean);
@@ -700,31 +634,42 @@ async function apiGetInfo(url) {
     return {title:"Terabox File",platform:"terabox",author:"Terabox",duration:"—",thumb:null,canDownload:true,canPreview:false,notice:"Click Download to start. Public share links work best; private files may need Terabox login."};
   }
 
-  /* YouTube — rich metadata from Invidious + embed for preview */
+  /* ── YOUTUBE → YOUR YT-DLP API ── */
   if (platform === "youtube") {
     const ytId = getYtId(url);
     if (!ytId) throw new Error("Invalid YouTube URL. Could not find a video ID.");
-    const info = {
-      platform:"youtube",canDownload:true,canPreview:true,
-      title:"YouTube Video",author:"",duration:"—",
-      thumb:`https://img.youtube.com/vi/${ytId}/mqdefault.jpg`,
-      thumbFb:`https://img.youtube.com/vi/${ytId}/default.jpg`,
-      embedUrl:`https://www.youtube.com/embed/${ytId}?autoplay=1`,
+
+    const data = await ytdlpInfo(url);
+
+    // Build quality buttons from actual formats
+    const formats = data.formats || [];
+    const heights = [...new Set(
+      formats
+        .filter(f => f.height && (f.acodec !== "none" || f.vcodec !== "none"))
+        .map(f => f.height)
+        .filter(h => h >= 144)
+    )].sort((a,b)=>b-a).slice(0,5);
+
+    const hasAudio = formats.some(f => f.vcodec === "none" && f.abr);
+
+    return {
+      platform: "youtube",
+      title: data.title || "YouTube Video",
+      author: data.uploader || data.channel || "",
+      duration: data.duration ? fmtSecs(data.duration) : "—",
+      thumb: data.thumbnail || `https://img.youtube.com/vi/${ytId}/mqdefault.jpg`,
+      thumbFb: `https://img.youtube.com/vi/${ytId}/default.jpg`,
+      embedUrl: `https://www.youtube.com/embed/${ytId}?autoplay=1`,
+      canDownload: true,
+      canPreview: true,
+      formats,
+      availableHeights: heights,
+      hasAudio,
+      ytId,
     };
-    const iv = await ivFetch(ytId,"title,author,lengthSeconds,videoThumbnails");
-    if (iv) {
-      info.title    = iv.title    || info.title;
-      info.author   = iv.author   || "";
-      info.duration = fmtSecs(iv.lengthSeconds);
-      const bestT   = (iv.videoThumbnails||[]).find(t=>t.quality==="high")||(iv.videoThumbnails||[])[0];
-      if (bestT?.url) info.thumb = bestT.url;
-    } else {
-      try { const r=await fetch(`${NOEMBED}?url=${encodeURIComponent(url)}`); const d=await r.json(); if(d.title)info.title=d.title; if(d.author_name)info.author=d.author_name; } catch {}
-    }
-    return info;
   }
 
-  /* Vimeo — noembed + embed iframe */
+  /* Vimeo */
   if (platform === "vimeo") {
     const info = {platform:"vimeo",canDownload:true,canPreview:false,title:"Vimeo Video",author:"",duration:"—"};
     try {
@@ -739,7 +684,7 @@ async function apiGetInfo(url) {
     return info;
   }
 
-  /* TikTok — TikWM gives everything at once */
+  /* TikTok */
   if (platform === "tiktok") {
     const data = await tikwmFetch(url);
     return {
@@ -748,24 +693,20 @@ async function apiGetInfo(url) {
       author: data.author?.nickname||"",
       thumb: data.cover||null,
       duration: fmtSecs(data.duration),
-      canDownload:true,
-      canPreview:true,
+      canDownload:true, canPreview:true,
       preloadedUrl: data.hdplay||data.play,
       preloadedAudioUrl: data.music||data.music_info?.play||null,
       preloadedFname: (data.title||"tiktok").replace(/[^a-z0-9 ]/gi,"_").slice(0,60)+".mp4",
     };
   }
 
-  /* Instagram, Twitter, SoundCloud, others → Cobalt community */
+  /* Instagram, Twitter, SoundCloud → Cobalt */
   const cobalt = await cobaltCommunity(url,"1080",false);
-  const info = {
-    platform, title:`${pl(platform)} Download`,
-    author:"",thumb:null,canDownload:true,canPreview:false,
-  };
+  const info = {platform, title:`${pl(platform)} Download`, author:"",thumb:null,canDownload:true,canPreview:false};
   if (["stream","redirect","tunnel"].includes(cobalt.status)) {
-    info.preloadedUrl   = cobalt.url;
+    info.preloadedUrl = cobalt.url;
     info.preloadedFname = cobalt.filename;
-    info.canPreview     = (platform!=="soundcloud");
+    info.canPreview = (platform!=="soundcloud");
   } else if (cobalt.status==="picker") {
     info.picker = cobalt.picker;
     const firstVid = cobalt.picker?.find(p=>p.type!=="photo");
@@ -774,46 +715,46 @@ async function apiGetInfo(url) {
   return info;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   DOWNLOAD  (called when user clicks Download button)
-───────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   DOWNLOAD
+   ═══════════════════════════════════════════════════════════ */
 async function apiDownload(url, quality) {
   const platform = detectPlatform(url);
   const audioOnly = quality==="audio";
 
-  /* Cloud storage — no API call needed */
-  if (platform==="gdrive")   { const {directUrl}=gdrive_parse(url); return {status:"redirect",url:directUrl}; }
-  if (platform==="dropbox")  { return {status:"redirect",url:dropbox_url(url)}; }
+  /* Cloud storage */
+  if (platform==="gdrive") { const {directUrl}=gdrive_parse(url); return {status:"redirect",url:directUrl}; }
+  if (platform==="dropbox") { return {status:"redirect",url:dropbox_url(url)}; }
   if (platform==="onedrive") { return {status:"redirect",url:onedrive_url(url)}; }
-
-  /* Picker already loaded during info fetch */
   if (S.info?.picker) return {status:"picker",picker:S.info.picker};
-
-  /* Direct URL already resolved */
   if (S.info?.directUrl) return {status:"redirect",url:S.info.directUrl};
 
-  /* YouTube → Invidious stream */
+  /* ── YOUTUBE → YOUR YT-DLP API ── */
   if (platform === "youtube") {
-    const ytId = getYtId(url);
-    if (!ytId) throw new Error("Could not extract YouTube video ID.");
-    const streamUrl = await ytStream_quality(ytId, quality);
-    return {status:"stream", url:streamUrl};
+    const formats = S.info?.formats || [];
+    const itag = pickItag(formats, quality);
+
+    if (!itag) throw new Error("Could not pick a stream format. Try a different quality.");
+
+    // Use /stream endpoint for proxied playback/download
+    const streamUrl = `${YTDLP_API}/stream?url=${encodeURIComponent(url)}&itag=${encodeURIComponent(itag)}`;
+    return { status:"stream", url: streamUrl };
   }
 
-  /* TikTok → use preloaded or re-fetch */
+  /* TikTok */
   if (platform === "tiktok") {
     if (audioOnly && S.info?.preloadedAudioUrl) return {status:"stream",url:S.info.preloadedAudioUrl};
     if (S.info?.preloadedUrl) return {status:"stream",url:S.info.preloadedUrl,filename:S.info.preloadedFname};
     const data = await tikwmFetch(url);
-    return {status:"stream", url: audioOnly?(data.music||data.play):( data.hdplay||data.play)};
+    return {status:"stream", url: audioOnly?(data.music||data.play):(data.hdplay||data.play)};
   }
 
-  /* Preloaded stream (Instagram, Twitter etc from Cobalt during info) */
+  /* Preloaded stream */
   if (S.info?.preloadedUrl && quality==="1080p") {
     return {status:"stream",url:S.info.preloadedUrl,filename:S.info.preloadedFname};
   }
 
-  /* Terabox — public proxy attempt */
+  /* Terabox */
   if (platform === "terabox") {
     const proxies = [
       `https://terabox.udaymanthena.workers.dev/?url=${encodeURIComponent(url)}`,
@@ -828,35 +769,16 @@ async function apiDownload(url, quality) {
         if(dlUrl) return {status:"redirect",url:dlUrl};
       } catch { continue; }
     }
-    return {status:"redirect",url}; // open Terabox itself as last resort
+    return {status:"redirect",url};
   }
 
-  /* Vimeo, Instagram, Twitter, SoundCloud → Cobalt community */
+  /* Others → Cobalt */
   return await cobaltCommunity(url, quality, audioOnly);
 }
 
-/* helper — same as ytGetStream but returns url for download */
-async function ytStream_quality(ytId, quality) {
-  const data = await ivFetch(ytId,"formatStreams,adaptiveFormats");
-  if (!data) throw new Error("Could not connect to YouTube API. Check your connection and try again.");
-
-  if (quality==="audio") {
-    const audio=(data.adaptiveFormats||[]).filter(f=>f.type?.startsWith("audio/")).sort((a,b)=>(parseInt(b.bitrate)||0)-(parseInt(a.bitrate)||0));
-    if (audio[0]?.url) return audio[0].url;
-    throw new Error("No audio-only stream found. Try a video quality instead.");
-  }
-
-  const targetH=parseInt(quality)||360;
-  const streams=(data.formatStreams||[]).filter(f=>f.url).sort((a,b)=>parseInt(b.quality)-parseInt(a.quality));
-  if (!streams.length) throw new Error("No streams available. This video may be age-restricted or region-locked.");
-  const match=streams.find(f=>parseInt(f.quality)<=targetH)||streams[streams.length-1];
-  if (!match?.url) throw new Error("Quality not available. Try 720p or 480p.");
-  return match.url;
-}
-
-/* ─────────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════
    RENDER RESULT
-───────────────────────────────────────────────────────────── */
+   ═══════════════════════════════════════════════════════════ */
 function renderThumb(info) {
   if (info.thumb) {
     return `<div class="tw">
@@ -870,6 +792,31 @@ function renderThumb(info) {
     </div>`;
   }
   return `<div class="no-thumb">${PIC[info.platform]||"🎞️"}</div>`;
+}
+
+function buildQualityButtons(info) {
+  // For YouTube, build buttons from actual available heights
+  if (info.platform === "youtube" && info.availableHeights?.length) {
+    let html = "";
+    for (const h of info.availableHeights) {
+      const q = h + "p";
+      const label = h >= 1080 ? h+"p HD" : h >= 720 ? h+"p HD" : h+"p";
+      const sel = (S.quality === q) ? " on" : "";
+      html += `<button class="qb${sel}" data-q="${q}" role="radio" aria-checked="${S.quality===q}">${label}</button>`;
+    }
+    if (info.hasAudio) {
+      html += `<button class="qb aud${S.quality==="audio"?" on":""}" data-q="audio" role="radio" aria-checked="${S.quality==="audio"}"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" style="display:inline-block;vertical-align:middle;margin-right:4px"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Audio Only</button>`;
+    }
+    D.qg.innerHTML = html;
+    // reattach listeners
+    D.qg.querySelectorAll(".qb").forEach(b=>{
+      b.addEventListener("click",()=>{
+        D.qg.querySelectorAll(".qb").forEach(x=>{x.classList.remove("on");x.setAttribute("aria-checked","false");});
+        b.classList.add("on"); b.setAttribute("aria-checked","true");
+        S.quality=b.dataset.q;
+      });
+    });
+  }
 }
 
 function renderResult(info) {
@@ -897,14 +844,14 @@ function renderResult(info) {
     D.vNotice.innerHTML=info.notice?`<div class="notice ni" style="margin-top:8px"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>${esc(info.notice)}</span></div>`:"";
     D.playBtn.style.display=info.canPreview?"":"none";
     D.dlBtn.disabled=!info.canDownload;
+    // Build quality buttons from real format data (YouTube)
+    buildQualityButtons(info);
   }
   D.pw.classList.remove("on");
   D.result.classList.add("on");
 }
 
-/* ─────────────────────────────────────────────────────────────
-   VIDEO PLAYER
-───────────────────────────────────────────────────────────── */
+/* ─── VIDEO PLAYER ───────────────────────────────────────── */
 function openPlayer(html){D.playerInner.innerHTML=html;D.playerWrap.classList.add("on");D.playerWrap.scrollIntoView({behavior:"smooth",block:"center"});}
 function closePlayer(){D.playerWrap.classList.remove("on");D.playerInner.innerHTML="";}
 D.playerClose.addEventListener("click",closePlayer);
@@ -913,15 +860,13 @@ function handlePlay() {
   const info=S.info;
   if (!info) return;
   if (info.platform==="youtube"&&info.embedUrl) { openPlayer(`<iframe src="${esc(info.embedUrl)}" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen title="${esc(info.title)}"></iframe>`); return; }
-  if (info.platform==="vimeo"&&info.embedUrl)   { openPlayer(`<iframe src="${esc(info.embedUrl)}" frameborder="0" allow="autoplay;fullscreen" allowfullscreen title="${esc(info.title)}"></iframe>`); return; }
+  if (info.platform==="vimeo"&&info.embedUrl) { openPlayer(`<iframe src="${esc(info.embedUrl)}" frameborder="0" allow="autoplay;fullscreen" allowfullscreen title="${esc(info.title)}"></iframe>`); return; }
   if (S.streamUrl) { openPlayer(`<video controls autoplay style="width:100%;height:100%;background:#000"><source src="${esc(S.streamUrl)}">Your browser does not support HTML5 video.</video>`); return; }
   if (info.preloadedUrl) { S.streamUrl=info.preloadedUrl; openPlayer(`<video controls autoplay style="width:100%;height:100%;background:#000"><source src="${esc(info.preloadedUrl)}">Your browser does not support HTML5 video.</video>`); return; }
   handleDownloadAndPlay();
 }
 
-/* ─────────────────────────────────────────────────────────────
-   DOWNLOAD HANDLER
-───────────────────────────────────────────────────────────── */
+/* ─── DOWNLOAD HANDLER ───────────────────────────────────── */
 async function animateProgress(phases) {
   D.pw.classList.add("on");
   let pct=0;
@@ -934,40 +879,29 @@ async function animateProgress(phases) {
 async function handleDownloadAndPlay() {
   const info=S.info;
   if (!info||!info.canDownload){toast("This content cannot be downloaded.");return;}
-
   D.dlBtn.disabled=true; D.playBtn.disabled=true; D.pf.style.width="0%";
-
   try {
     await animateProgress([["Connecting…",20],["Fetching stream…",55],["Processing…",85]]);
     const resp = await apiDownload(info.url||D.urlIn.value.trim(), S.quality);
-
     D.pf.style.width="100%"; D.ppct.textContent="100%"; D.plbl.textContent="Ready!";
     await delay(350); D.pw.classList.remove("on");
-
     if (resp.status==="error"||resp.error) throw new Error(resp.error||"Download failed.");
-
     let dlUrl=null;
     if (["stream","redirect","tunnel"].includes(resp.status)) { dlUrl=resp.url; }
     else if (resp.status==="picker"&&resp.picker?.length>0) { showPicker(resp.picker); return; }
     else if (resp.url) { dlUrl=resp.url; }
-
     if (!dlUrl) throw new Error("No download URL received. The content may be private or DRM-protected.");
-
     S.streamUrl=dlUrl;
     const isAudio=S.quality==="audio";
     const ext=isAudio?"mp3":"mp4";
     const fname=resp.filename||((info.title||"video").replace(/[^a-z0-9 ]/gi,"_").slice(0,60)+"."+ext);
-
     const a=document.createElement("a");
     a.href=dlUrl; a.download=fname; a.target="_blank"; a.rel="noopener noreferrer";
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     toast(`✓ Download started — ${fname}`);
-
     D.playBtn.style.display="";
     D.playBtn.innerHTML=`<svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Play`;
-
     addRecent({platform:info.platform,title:info.title||"Video",thumb:info.thumb||null,url:info.url||D.urlIn.value.trim(),quality:S.quality,duration:info.duration||"—",savedAt:Date.now()});
-
   } catch(e) {
     D.pw.classList.remove("on");
     showErr(e.message||"Download failed. Please try again.");
@@ -982,9 +916,7 @@ function showPicker(items) {
   toast("Multiple items found — pick below");
 }
 
-/* ─────────────────────────────────────────────────────────────
-   FETCH HANDLER
-───────────────────────────────────────────────────────────── */
+/* ─── FETCH HANDLER ─────────────────────────────────────── */
 function setLoading(on){D.fetchBtn.disabled=on;D.fetchTx.textContent=on?"Fetching…":"Fetch";D.fetchIco.style.display=on?"none":"";const sp=D.fetchBtn.querySelector(".spin");if(on&&!sp){const s=document.createElement("div");s.className="spin";D.fetchBtn.prepend(s);}if(!on&&sp)sp.remove();}
 
 async function handleFetch() {
@@ -998,86 +930,149 @@ async function handleFetch() {
     info.url=url;
     renderResult(info);
   } catch(e) {
-    showErr(e.message||"Could not fetch video info. Check the URL and try again.");
-  } finally { setLoading(false); }
+    showErr(e.message||"Failed to fetch video info. Check the URL and try again.");
+  } finally {
+    setLoading(false);
+  }
 }
 
-async function handlePaste(){try{if(navigator.clipboard?.readText){const t=await navigator.clipboard.readText();if(t){D.urlIn.value=t;clearErr();toast("Pasted!");D.urlIn.focus();}}else{D.urlIn.focus();toast("Press Ctrl+V to paste");}}catch{D.urlIn.focus();toast("Paste manually with Ctrl+V");}}
-async function handleCopy(){const url=S.info?.url||D.urlIn.value;if(!url)return;try{await navigator.clipboard.writeText(url);toast("URL copied!");}catch{toast("Copy manually from the address bar.");}}
-
-function initQuality(){$$(".qb").forEach(b=>{b.addEventListener("click",()=>{$$(".qb").forEach(x=>{x.classList.remove("on");x.setAttribute("aria-checked","false");});b.classList.add("on");b.setAttribute("aria-checked","true");S.quality=b.dataset.q;S.streamUrl=null;});});}
-
-/* ─────────────────────────────────────────────────────────────
-   RECENT DOWNLOADS
-───────────────────────────────────────────────────────────── */
-function loadRec(){try{return JSON.parse(localStorage.getItem(RKEY)||"[]");}catch{return[];}}
-function saveRec(l){localStorage.setItem(RKEY,JSON.stringify(l.slice(0,MAX_REC)));}
-function addRecent(v){const l=loadRec();const i=l.findIndex(r=>r.url===v.url);if(i!==-1)l.splice(i,1);l.unshift(v);saveRec(l);renderRecent();}
-function renderRecent(){
-  const l=loadRec();
-  if(!l.length){D.rl.innerHTML=`<div class="emp"><div class="eic">⏳</div><p>No recent downloads yet.<br/>Paste a URL above to get started.</p></div>`;return;}
-  D.rl.innerHTML=l.map(r=>`<div class="ri" data-url="${encodeURIComponent(r.url)}" role="button" tabindex="0" aria-label="${esc(r.title)}">${r.thumb?`<img class="rth" src="${esc(r.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'"/>`:`<div class="rth" style="display:flex;align-items:center;justify-content:center;font-size:1.2rem">${PIC[r.platform]||"🎞️"}</div>`}<div class="rif"><div class="rtx">${esc(r.title)}</div><div class="rmx">${pl(r.platform)} · ${r.quality||"—"} · ${fmtDate(r.savedAt)}</div></div><span class="rbg ${pc(r.platform)}">${r.duration||"—"}</span></div>`).join("");
-  $$(".ri").forEach(el=>{const go=()=>{D.urlIn.value=decodeURIComponent(el.dataset.url);clearErr();window.scrollTo({top:0,behavior:"smooth"});};el.addEventListener("click",go);el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")go();});});
-}
-
-/* ─────────────────────────────────────────────────────────────
-   FAQ
-───────────────────────────────────────────────────────────── */
-const FAQS=[
-  {q:"How does the download work without a backend server?",a:"LinkToVideo uses free, open-source public APIs. YouTube downloads go through Invidious (open-source YouTube frontend). TikTok uses the TikWM public API. Instagram and Twitter use community Cobalt instances. Google Drive and Dropbox links are converted to direct download URLs. No backend server of your own is needed."},
-  {q:"Can I preview the video before downloading?",a:"Yes! YouTube and Vimeo play directly in an embedded player before you download. TikTok and Instagram videos can be previewed via an HTML5 player once fetched. For cloud storage files, click Download to start directly."},
-  {q:"How do I download Instagram Reels?",a:"Paste the URL of an individual post (instagram.com/p/...) or Reel (instagram.com/reel/...) — not a profile page. Profile URLs will show a helpful guide instead."},
-  {q:"Does it support TikTok videos without watermark?",a:"Yes! TikWM provides HD TikTok downloads without watermark when available. Select the quality you need and click Download."},
-  {q:"Why does YouTube download sometimes take longer?",a:"YouTube downloads use the Invidious API which tries multiple servers. If one is slow, it automatically tries the next. This usually completes within 10-15 seconds."},
-  {q:"Which qualities are available?",a:"360p, 480p, 720p HD, 1080p HD, and Audio-Only (MP3). Available quality depends on what the original uploader provided. YouTube typically has all qualities; other platforms may vary."},
-  {q:"Is my data private?",a:"Yes. No URLs or personal data are sent to any server we control. APIs used are third-party public services. Your recent downloads are stored only in your own browser's localStorage."},
-];
-function renderFAQ(){
-  D.fl.innerHTML=FAQS.map((f,i)=>`<div class="fi"><div class="fq" role="button" tabindex="0" aria-expanded="false" aria-controls="fa-${i}"><span>${esc(f.q)}</span><div class="fa2" aria-hidden="true"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div><div class="fa" id="fa-${i}" role="region"><div class="fai">${esc(f.a)}</div></div></div>`).join("");
-  $$(".fi").forEach(it=>{const q=it.querySelector(".fq");const tog=()=>{const op=it.classList.contains("op");$$(".fi").forEach(x=>{x.classList.remove("op");x.querySelector(".fq").setAttribute("aria-expanded","false");});if(!op){it.classList.add("op");q.setAttribute("aria-expanded","true");}};q.addEventListener("click",tog);q.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();tog();}});});
-}
-
-/* ─────────────────────────────────────────────────────────────
-   LIVE ACTIVITY
-───────────────────────────────────────────────────────────── */
-const ACTS=[
-  {c:"ad-y",msgs:["<strong>Arjun</strong> from Delhi downloaded a YouTube video","<strong>Ravi</strong> from Mumbai grabbed 1080p YouTube","<strong>Priya</strong> from Bangalore fetched YouTube audio"]},
-  {c:"ad-i",msgs:["<strong>Sana</strong> from Pakistan saved an Instagram Reel","<strong>Mia</strong> from Brazil downloaded an Instagram post"]},
-  {c:"ad-t",msgs:["<strong>Rahul</strong> from Hyderabad downloaded a TikTok video","<strong>Jose</strong> from Philippines saved a TikTok clip"]},
-  {c:"ad-c",msgs:["<strong>Emma</strong> from Canada downloaded a Google Drive video","<strong>Jake</strong> from UK fetched from Dropbox"]},
-];
-function addAct(){const a=rnd(ACTS),m=rnd(a.msgs),mins=Math.floor(Math.random()*4);const el=document.createElement("div");el.className="ai";el.innerHTML=`<div class="ad ${a.c}"></div><div class="at">${m}</div><div class="atm">${mins===0?"Just now":mins+"m ago"}</div>`;D.af.prepend(el);const its=D.af.querySelectorAll(".ai");if(its.length>5)its[its.length-1].remove();}
-function initActivity(){for(let i=0;i<3;i++)addAct();const tick=()=>{addAct();setTimeout(tick,4000+Math.random()*3000);};setTimeout(tick,4200);}
-
-/* ─────────────────────────────────────────────────────────────
-   COUNTERS / REVEAL / COLOR / CANVAS
-───────────────────────────────────────────────────────────── */
-let counted=false;
-function animateCounters(){if(counted)return;counted=true;$$(".sn[data-to]").forEach(el=>{const to=parseFloat(el.dataset.to),sf=el.dataset.sf||"";const dur=1800,start=performance.now();const step=now=>{const p=Math.min((now-start)/dur,1),e=1-Math.pow(1-p,3),v=to*e;el.textContent=(v<10?v.toFixed(1):Math.round(v))+sf;if(p<1)requestAnimationFrame(step);};requestAnimationFrame(step);});}
-function initReveal(){const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");if(e.target.classList.contains("stats"))animateCounters();obs.unobserve(e.target);}});},{threshold:.12});$$(".rv").forEach(el=>obs.observe(el));}
-function hexToHSL(hex){let r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let h,s,l=(mx+mn)/2;if(mx===mn){h=s=0;}else{const d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);switch(mx){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;case b:h=(r-g)/d+4;break;}h/=6;}return[Math.round(h*360),Math.round(s*100),Math.round(l*100)];}
-function applyColor(hex){const[h,s,l]=hexToHSL(hex),R=document.documentElement;R.style.setProperty("--ah",h);R.style.setProperty("--as",s+"%");R.style.setProperty("--al",l+"%");R.style.setProperty("--ac",`hsl(${h},${s}%,${l}%)`);R.style.setProperty("--a2",`hsl(${(h+30)%360},${Math.min(s+5,100)}%,${Math.min(l+5,85)}%)`);}
-D.cpick.addEventListener("input",()=>applyColor(D.cpick.value));
-function initCanvas(){const cv=$("bgc"),ctx=cv.getContext("2d");let W,H,P;const resize=()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;};const make=()=>{const n=Math.min(Math.floor(W*H/20000),60);P=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:Math.random()*1.7+.4,a:Math.random()*.4+.1}));};const draw=()=>{ctx.clearRect(0,0,W,H);P.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(160,160,255,${p.a})`;ctx.fill();p.x=(p.x+p.vx+W)%W;p.y=(p.y+p.vy+H)%H;});for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){const a=P[i],b=P[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(99,102,241,${.12*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke();}}requestAnimationFrame(draw);};resize();make();draw();addEventListener("resize",()=>{resize();make();});}
-
-/* ─────────────────────────────────────────────────────────────
-   WIRE UP EVENTS + BOOT
-───────────────────────────────────────────────────────────── */
 D.fetchBtn.addEventListener("click",handleFetch);
 D.urlIn.addEventListener("keydown",e=>{if(e.key==="Enter")handleFetch();});
-D.urlIn.addEventListener("input",()=>{if(D.urlIn.classList.contains("err"))clearErr();});
-D.pasteBtn.addEventListener("click",handlePaste);
+
+D.pasteBtn.addEventListener("click",async()=>{
+  try{const t=await navigator.clipboard.readText();if(t?.trim()){D.urlIn.value=t.trim();toast("Pasted from clipboard");}}catch{toast("Clipboard access denied — paste manually");}
+});
+
 D.dlBtn.addEventListener("click",handleDownloadAndPlay);
 D.playBtn.addEventListener("click",handlePlay);
-D.copyBtn.addEventListener("click",handleCopy);
-D.clearBtn.addEventListener("click",()=>{localStorage.removeItem(RKEY);renderRecent();toast("Cleared.");});
-D.urlIn.addEventListener("dragover",e=>e.preventDefault());
-D.urlIn.addEventListener("drop",e=>{e.preventDefault();const t=e.dataTransfer.getData("text");if(t){D.urlIn.value=t;clearErr();}});
 
-document.addEventListener("DOMContentLoaded",()=>{
-  setTimeout(()=>D.loader.classList.add("off"),1600);
-  initCanvas(); initQuality(); initActivity(); initReveal(); renderRecent(); renderFAQ();
+D.copyBtn.addEventListener("click",()=>{
+  const u=D.urlIn.value.trim();
+  if(!u){toast("No URL to copy");return;}
+  navigator.clipboard.writeText(u).then(()=>toast("URL copied!")).catch(()=>toast("Copy failed"));
 });
+
+/* Quality button listeners (default static buttons) */
+D.qg.addEventListener("click",e=>{
+  const b=e.target.closest(".qb");
+  if(!b)return;
+  D.qg.querySelectorAll(".qb").forEach(x=>{x.classList.remove("on");x.setAttribute("aria-checked","false");});
+  b.classList.add("on"); b.setAttribute("aria-checked","true");
+  S.quality=b.dataset.q;
+});
+
+/* ─── RECENT DOWNLOADS ────────────────────────────────────── */
+function loadRecent(){return JSON.parse(localStorage.getItem(RKEY)||"[]");}
+function saveRecent(a){localStorage.setItem(RKEY,JSON.stringify(a));}
+function addRecent(item){const a=loadRecent().filter(x=>x.url!==item.url);a.unshift(item);saveRecent(a.slice(0,MAX_REC));renderRecent();}
+
+function renderRecent(){
+  const a=loadRecent();
+  if(!a.length){D.rl.innerHTML=`<div class="emp"><div class="eic">📂</div>No recent downloads yet</div>`;return;}
+  D.rl.innerHTML=a.map(it=>`
+    <div class="ri" data-url="${esc(it.url)}">
+      ${it.thumb?`<img class="rth" src="${esc(it.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'">`:`<div class="rth" style="display:flex;align-items:center;justify-content:center;font-size:1.3rem">${PIC[it.platform]||"🎞️"}</div>`}
+      <div class="rif"><div class="rtx">${esc(it.title)}</div><div class="rmx">${pl(it.platform)} · ${it.quality} · ${fmtDate(it.savedAt)}</div></div>
+      <span class="rbg ${pc(it.platform)}" style="padding:3px 8px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid var(--gb);color:var(--t2);font-size:.66rem;">${pl(it.platform)}</span>
+    </div>`).join("");
+  D.rl.querySelectorAll(".ri").forEach(el=>{
+    el.addEventListener("click",()=>{D.urlIn.value=el.dataset.url;D.urlIn.scrollIntoView({behavior:"smooth"});handleFetch();});
+  });
+}
+
+D.clearBtn.addEventListener("click",()=>{saveRecent([]);renderRecent();toast("History cleared");});
+renderRecent();
+
+/* ─── LIVE ACTIVITY ──────────────────────────────────────── */
+const ACT_TMPL=[
+  {p:"youtube",t:"User from 🇧🇷 downloaded a YouTube video","q":"1080p"},
+  {p:"instagram",t:"Reel saved from Mumbai 📱","q":"HD"},
+  {p:"tiktok",t:"TikTok video downloaded in 🇺🇸","q":"720p"},
+  {p:"youtube",t:"4K YouTube video grabbed 🎬","q":"4K"},
+  {p:"tiktok",t:"TikTok audio extracted 🎵","q":"audio"},
+  {p:"instagram",t:"Instagram post saved from 🇩🇪","q":"HD"},
+  {p:"youtube",t:"YouTube Shorts downloaded ✂️","q":"360p"},
+  {p:"vimeo",t:"Vimeo clip saved 🎥","q":"1080p"},
+];
+function addActivity(){
+  const t=ACT_TMPL[Math.floor(Math.random()*ACT_TMPL.length)];
+  const c={youtube:"ad-y",instagram:"ad-i",tiktok:"ad-t",vimeo:"ad-c"}[t.p]||"ad-c";
+  const ago=`${Math.floor(Math.random()*50)+5}s ago`;
+  const el=document.createElement("div");
+  el.className="ai";
+  el.innerHTML=`<div class="ad ${c}"></div><div class="at"><strong>${esc(t.t)}</strong> — ${t.q}</div><span class="atm">${ago}</span>`;
+  D.af.prepend(el);
+  while(D.af.children.length>6)D.af.removeChild(D.af.lastChild);
+}
+for(let i=0;i<4;i++) addActivity();
+setInterval(addActivity,4200);
+
+/* ─── FAQ ────────────────────────────────────────────────── */
+const FAQS=[
+  ["Is this free?","Yes, 100% free. No account, no limits, no ads."],
+  ["How does YouTube downloading work?","YouTube downloads are handled by a custom yt-dlp API server, giving you real format data and reliable streams."],
+  ["Why does YouTube take longer sometimes?","The API server may be spinning up on Render's free tier (cold start). It usually takes 30–60 seconds on first use. Subsequent requests are fast."],
+  ["Can I download private videos?","Only public videos and content you own. Private or members-only content cannot be downloaded."],
+  ["What's the max file size?","Up to 1GB for most platforms."],
+  ["Is it safe?","Yes. No files are stored on any server. Downloads go directly from the source to your device."],
+];
+D.fl.innerHTML=FAQS.map(([q,a],i)=>`
+  <div class="fi" id="fi${i}">
+    <div class="fq" tabindex="0" role="button" aria-expanded="false" aria-controls="fa${i}" onclick="toggleFaq(${i})">
+      <span>${esc(q)}</span>
+      <div class="fa2"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </div>
+    <div class="fa" id="fa${i}" role="region"><div class="fai">${esc(a)}</div></div>
+  </div>`).join("");
+
+function toggleFaq(i){const el=document.getElementById("fi"+i);el.classList.toggle("op");}
+
+/* ─── THEME COLOR ────────────────────────────────────────── */
+D.cpick.addEventListener("input",e=>{
+  const hex=e.target.value;
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  const h=rgb2h(r,g,b);
+  document.documentElement.style.setProperty("--ah",h[0]);
+  document.documentElement.style.setProperty("--as",h[1]+"%");
+  document.documentElement.style.setProperty("--al",h[2]+"%");
+});
+function rgb2h(r,g,b){r/=255;g/=255;b/=255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;let h=0,s=0,l=(mx+mn)/2;if(d){s=d/(1-Math.abs(2*l-1));if(mx===r)h=((g-b)/d)%6;else if(mx===g)h=(b-r)/d+2;else h=(r-g)/d+4;h=Math.round(h*60);if(h<0)h+=360;}return[h,Math.round(s*100),Math.round(l*100)];}
+
+/* ─── STAT COUNTERS ─────────────────────────────────────── */
+$$(".sn[data-to]").forEach(el=>{
+  const to=parseFloat(el.dataset.to),sf=el.dataset.sf||"";
+  let cur=0; const step=to/60;
+  const iv=setInterval(()=>{cur=Math.min(cur+step,to);el.textContent=(Number.isInteger(to)?Math.round(cur):cur.toFixed(1))+sf;if(cur>=to)clearInterval(iv);},30);
+});
+
+/* ─── CANVAS PARTICLES ───────────────────────────────────── */
+(function(){
+  const cv=document.getElementById("bgc"),ctx=cv.getContext("2d");
+  let W,H,pts=[];
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;pts=Array.from({length:55},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5}));}
+  window.addEventListener("resize",resize); resize();
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const ah=parseInt(getComputedStyle(document.documentElement).getPropertyValue("--ah"))||245;
+    pts.forEach(p=>{
+      p.x=(p.x+p.vx+W)%W; p.y=(p.y+p.vy+H)%H;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`hsla(${ah},70%,65%,.25)`; ctx.fill();
+    });
+    pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`hsla(${ah},70%,65%,${.06*(1-d/110)})`;ctx.lineWidth=.7;ctx.stroke();}}));
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ─── LOADER ─────────────────────────────────────────────── */
+window.addEventListener("load",()=>{setTimeout(()=>{D.loader.classList.add("off");},900);});
+
+/* ─── SCROLL REVEAL ─────────────────────────────────────── */
+const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.cssText+="opacity:1;transform:translateY(0);transition:opacity .6s ease,transform .6s ease";ro.unobserve(e.target);}});},{threshold:.08});
+$$(".rv").forEach(el=>{el.style.cssText="opacity:0;transform:translateY(28px)";ro.observe(el);});
 </script>
 </body>
 </html>
+HTMLEOF
+echo "Done. $(wc -l < /mnt/user-data/outputs/index.html) lines written."
